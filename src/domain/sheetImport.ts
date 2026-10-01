@@ -64,6 +64,9 @@ const HEADER_ALIASES: Record<string, readonly string[]> = {
 
 const DATE_HEADERS = ["fecha", "date", "dia"];
 
+/** Sufijo invisible que acompaña a emojis como el check verde. */
+const VARIATION_SELECTOR = String.fromCharCode(0xfe0f);
+
 const TRUE_TEXTS = new Set(
   ["true", "verdadero", "si", "1", "hecho", "✓", "✔", "✅", "☑"].map(
     normalizeTruthText,
@@ -79,7 +82,7 @@ const REST_TEXTS = new Set(["descanso", "rest"]);
 /** Como `normalizeText`, pero conserva los símbolos de check y cruz. */
 function normalizeTruthText(text: string): string {
   const trimmed = text.trim();
-  return normalizeText(trimmed) || trimmed.replace(/️/g, "");
+  return normalizeText(trimmed) || trimmed.replaceAll(VARIATION_SELECTOR, "");
 }
 
 function cellText(cell: SheetCell): string {

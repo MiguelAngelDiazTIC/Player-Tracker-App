@@ -27,6 +27,13 @@ function toCell(cell: XLSX.CellObject | undefined): SheetCell {
   }
 }
 
+const BOM = String.fromCharCode(0xfeff);
+
+function decodeCsv(bytes: Uint8Array): string {
+  const text = new TextDecoder("utf-8").decode(bytes);
+  return text.startsWith(BOM) ? text.slice(1) : text;
+}
+
 /**
  * Lee la primera hoja de un CSV o Excel como matriz de celdas.
  *
@@ -39,7 +46,7 @@ export function readSheetFile(
   fileName: string,
 ): SheetMatrix {
   const workbook = isCsv(fileName)
-    ? XLSX.read(new TextDecoder("utf-8").decode(bytes).replace(/^﻿/, ""), {
+    ? XLSX.read(decodeCsv(bytes), {
         type: "string",
         raw: true,
       })

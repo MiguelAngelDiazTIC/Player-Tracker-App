@@ -55,8 +55,11 @@ export async function buildExport(
   attachments: AttachmentStore,
   now: Date = new Date(),
 ): Promise<ExportData> {
-  const settings = await repository.getSettings();
-  for (const key of SECRET_SETTING_KEYS) delete settings[key];
+  const settings = Object.fromEntries(
+    Object.entries(await repository.getSettings()).filter(
+      ([key]) => !SECRET_SETTING_KEYS.includes(key),
+    ),
+  );
 
   const names = (await attachments.list()).sort();
   const files = [];
