@@ -1,18 +1,97 @@
-import { render, screen, within } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import App from "./App";
+import { applySheetImport } from "./data/sheetApply";
+import { DEFAULT_FIELDS } from "./domain/fields";
+import { readSheetFile } from "./domain/sheetFile";
+import {
+  findHeaderRow,
+  guessMapping,
+  parseSheet,
+  sheetHeaders,
+} from "./domain/sheetImport";
+import {
+  createTestServices,
+  fixtureFile,
+  type TestServices,
+} from "./test/testServices";
 
-describe("App", () => {
-  it("muestra las seis secciones en la barra lateral", () => {
-    render(<App />);
+// TipTap necesita un navegador de verdad para medir el texto; aquí basta con
+// un área de texto que guarde igual que el editor.
+vi.mock("./views/tabla/FeelingsEditor", () => ({
+  FeelingsEditor: ({
+    markdown,
+    onChange,
+  }: {
+    markdown: string;
+    onChange: (markdown: string, text: string) => void;
+  }) => (
+    <textarea
+      aria-label="Feelings del día"
+      defaultValue={markdown}
+      onBlur={(event) => onChange(event.target.value, event.target.value)}
+    />
+  ),
+}));
+
+const TODAY = new Date(2026, 9, 2, 12, 0);
+
+beforeEach(() => {
+  vi.useFakeTimers({ toFake: ["Date"] });
+  vi.setSystemTime(TODAY);
+});
+
+afterEach(() => {
+  vi.useRealTimers();
+});
+
+/** Deja en la base de datos los 13 días de la hoja de ejemplo. */
+async function seedSheet(services: TestServices) {
+  const { bytes, name } = fixtureFile("hoja.csv");
+  const matrix = readSheetFile(bytes, name);
+  const headerRow = findHeaderRow(matrix);
+  const mapping = guessMapping(sheetHeaders(matrix, headerRow), DEFAULT_FIELDS);
+  const sheet = parseSheet(matrix, headerRow, mapping, DEFAULT_FIELDS);
+  let next = 0;
+  await applySheetImport(
+    services.repository,
+    sheet,
+    "replace",
+    () => `scrim-${(next += 1)}`,
+  );
+}
+
+async function renderApp(seeded = true) {
+  const services = await createTestServices();
+  if (seeded) await seedSheet(services);
+  const user = userEvent.setup();
+  render(<App services={services} />);
+  await screen.findByRole("navigation", { name: "Secciones" });
+  return { services, user };
+}
+
+const goTo = (user: ReturnType<typeof userEvent.setup>, section: string) =>
+  user.click(
+    within(screen.getByRole("navigation", { name: "Secciones" })).getByRole(
+      "button",
+      { name: section },
+    ),
+  );
+
+const rowDates = () =>
+  screen.getAllByRole("rowheader").map((cell) => cell.textContent);
+
+describe("estructura", () => {
+  it("muestra las seis secciones y abre en la Tabla", async () => {
+    await renderApp(false);
 
     const nav = screen.getByRole("navigation", { name: "Secciones" });
-    const labels = within(nav)
-      .getAllByRole("button")
-      .map((button) => button.textContent);
-
-    expect(labels).toEqual([
+    expect(
+      within(nav)
+        .getAllByRole("button")
+        .map((button) => button.textContent),
+    ).toEqual([
       "Tabla",
       "Scrims y 10mans",
       "Calendario",
@@ -20,50 +99,536 @@ describe("App", () => {
       "Revisión semanal",
       "Ajustes",
     ]);
-  });
-
-  it("abre en la Tabla", () => {
-    render(<App />);
-
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
       "Tabla",
     );
-    expect(screen.getByRole("button", { name: "Tabla" })).toHaveAttribute(
+    expect(within(nav).getByRole("button", { name: "Tabla" })).toHaveAttribute(
       "aria-current",
       "page",
     );
   });
 
-  it("cambia de sección al pulsar en la barra lateral", async () => {
-    const user = userEvent.setup();
-    render(<App />);
-
-    await user.click(screen.getByRole("button", { name: "Dashboard" }));
-
-    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
-      "Dashboard",
-    );
-    expect(screen.getByRole("button", { name: "Dashboard" })).toHaveAttribute(
-      "aria-current",
-      "page",
-    );
-    expect(screen.getByRole("button", { name: "Tabla" })).not.toHaveAttribute(
-      "aria-current",
-    );
-  });
-
-  it("se puede recorrer y activar con el teclado", async () => {
-    const user = userEvent.setup();
-    render(<App />);
+  it("se recorre y se activa con el teclado", async () => {
+    const { user } = await renderApp(false);
 
     await user.tab();
     expect(screen.getByRole("button", { name: "Tabla" })).toHaveFocus();
-
     await user.tab();
     await user.keyboard("{Enter}");
 
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
       "Scrims y 10mans",
     );
+  });
+
+  it("sin datos, invita a importar la hoja y lleva a Ajustes", async () => {
+    const { user } = await renderApp(false);
+
+    await user.click(screen.getByRole("button", { name: "Importar mi hoja" }));
+
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
+      "Ajustes",
+    );
+  });
+});
+
+describe("Tabla", () => {
+  it("muestra una fila por día, del más reciente al más antiguo", async () => {
+    await renderApp();
+
+    expect(rowDates()).toHaveLength(13);
+    expect(rowDates()[0]).toBe("26/09/2026");
+    expect(rowDates()[12]).toBe("14/09/2026");
+    expect(screen.getByLabelText("Rankeds, 14/09/2026")).toHaveValue("6");
+    expect(screen.getByLabelText("Horas de sueño, 20/09/2026")).toHaveValue(
+      "8h09",
+    );
+    expect(screen.getByLabelText("K/D, 15/09/2026")).toHaveValue("1.08");
+    expect(screen.getByText("13 días")).toBeInTheDocument();
+  });
+
+  it("agrupa las columnas como la hoja", async () => {
+    await renderApp();
+
+    const [groups, columns] = screen
+      .getAllByRole("row")
+      .slice(0, 2)
+      .map((row) =>
+        within(row)
+          .getAllByRole("columnheader")
+          .map((cell) => cell.textContent),
+      );
+    expect(groups).toEqual([
+      "",
+      "Juego",
+      "Hábitos core",
+      "Sueño",
+      "Rendimiento",
+      "",
+    ]);
+    expect(columns).toEqual([
+      "Fecha",
+      "Rankeds",
+      "10mans / scrims",
+      "DMs",
+      "Kovaaks",
+      "Gimnasio",
+      "Suplementación",
+      "Nutrición",
+      "Sleep score",
+      "Horas de sueño",
+      "K/D",
+      "ACS",
+      "Feelings del día",
+    ]);
+  });
+
+  it("guarda una celda con Enter y baja a la fila siguiente", async () => {
+    const { services, user } = await renderApp();
+
+    const cell = screen.getByLabelText("Rankeds, 26/09/2026");
+    await user.clear(cell);
+    await user.type(cell, "11{Enter}");
+
+    expect(screen.getByLabelText("Rankeds, 25/09/2026")).toHaveFocus();
+    expect(cell).toHaveValue("11");
+    await waitFor(async () => {
+      const days = await services.repository.listDays();
+      expect(
+        days.find((day) => day.date === "2026-09-26")?.values.rankeds,
+      ).toBe(11);
+    });
+  });
+
+  it("no guarda lo que no entiende y lo explica", async () => {
+    const { services, user } = await renderApp();
+
+    const cell = screen.getByLabelText("K/D, 25/09/2026");
+    await user.clear(cell);
+    await user.type(cell, "abc{Enter}");
+
+    expect(cell).toBeInvalid();
+    expect(screen.getByRole("alert")).toHaveTextContent("No es un número");
+
+    await user.keyboard("{Escape}");
+    expect(cell).toHaveValue("1.20");
+    expect(cell).toBeValid();
+    const days = await services.repository.listDays();
+    expect(days.find((day) => day.date === "2026-09-25")?.values.kd).toBe(1.2);
+  });
+
+  it("vaciar una celda la deja sin dato", async () => {
+    const { services, user } = await renderApp();
+
+    await user.clear(screen.getByLabelText("ACS, 14/09/2026"));
+    await user.tab();
+
+    await waitFor(async () => {
+      const [first] = await services.repository.listDays();
+      expect(first.values).not.toHaveProperty("acs");
+    });
+  });
+
+  it("rota un hábito entre sus estados", async () => {
+    const { user } = await renderApp();
+
+    await user.click(screen.getByLabelText("Nutrición, 25/09/2026: no"));
+    expect(
+      screen.getByLabelText("Nutrición, 25/09/2026: sin dato"),
+    ).toBeInTheDocument();
+
+    await user.click(screen.getByLabelText("Gimnasio, 14/09/2026: hecho"));
+    expect(
+      screen.getByLabelText("Gimnasio, 14/09/2026: descanso"),
+    ).toBeInTheDocument();
+  });
+
+  it("colorea por umbral y por encima de la media", async () => {
+    await renderApp();
+
+    const tint = (label: string) =>
+      screen.getByLabelText(label).closest("td")?.className ?? "";
+
+    expect(tint("Sleep score, 15/09/2026")).toContain("bg-success/20");
+    expect(tint("Sleep score, 18/09/2026")).toContain("bg-warning/25");
+    expect(tint("Sleep score, 14/09/2026")).toContain("bg-danger/25");
+    expect(tint("K/D, 21/09/2026")).toContain("bg-success/20");
+    expect(tint("K/D, 16/09/2026")).not.toContain("bg-");
+    expect(tint("Nutrición, 25/09/2026: no")).toContain("bg-danger/25");
+  });
+
+  it("ordena al pulsar una cabecera y lo anuncia", async () => {
+    const { user } = await renderApp();
+
+    await user.click(screen.getByRole("button", { name: /^Fecha/ }));
+    expect(rowDates()[0]).toBe("14/09/2026");
+    expect(
+      screen.getByRole("columnheader", { name: /^Fecha/ }),
+    ).toHaveAttribute("aria-sort", "ascending");
+
+    // Las columnas numéricas empiezan por el valor más alto.
+    await user.click(screen.getByRole("button", { name: /^K\/D/ }));
+    expect(rowDates()[0]).toBe("21/09/2026");
+    await user.click(screen.getByRole("button", { name: /^K\/D/ }));
+    expect(rowDates()[0]).toBe("16/09/2026");
+  });
+
+  it("filtra por etiqueta, por texto y por fechas", async () => {
+    const { user } = await renderApp();
+
+    await user.selectOptions(screen.getByLabelText("Etiqueta"), "saturado");
+    expect(rowDates()).toEqual(["24/09/2026", "23/09/2026"]);
+    expect(screen.getByText("2 de 13 días")).toBeInTheDocument();
+
+    await user.selectOptions(screen.getByLabelText("Etiqueta"), "");
+    await user.type(screen.getByLabelText("Buscar en feelings"), "energia");
+    expect(rowDates()).toEqual(["15/09/2026"]);
+
+    await user.clear(screen.getByLabelText("Buscar en feelings"));
+    await user.selectOptions(screen.getByLabelText("Fechas"), "7d");
+    expect(rowDates()).toEqual(["26/09/2026"]);
+  });
+});
+
+describe("página del día", () => {
+  it("crea el día de hoy con un clic y lo abre", async () => {
+    const { services, user } = await renderApp();
+
+    await user.click(screen.getByRole("button", { name: "Añadir hoy" }));
+
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
+      "viernes, 2 de octubre de 2026",
+    );
+    await waitFor(async () => {
+      expect(await services.repository.listDays()).toHaveLength(14);
+    });
+  });
+
+  it("guarda campos, hábitos y feelings con sus etiquetas", async () => {
+    const { services, user } = await renderApp();
+    await user.click(screen.getByRole("button", { name: "Añadir hoy" }));
+
+    await user.type(screen.getByLabelText("Rankeds"), "7");
+    await user.type(screen.getByLabelText("Horas de sueño"), "7h30");
+    await user.click(
+      within(screen.getByRole("group", { name: "Gimnasio" })).getByRole(
+        "radio",
+        { name: "Hecho" },
+      ),
+    );
+    await user.type(
+      screen.getByLabelText("Feelings del día"),
+      "Fino, pero con algo de #tilt",
+    );
+    await user.click(screen.getByRole("button", { name: "Volver a la Tabla" }));
+
+    expect(screen.getByLabelText("Rankeds, 02/10/2026")).toHaveValue("7");
+    expect(
+      screen.getByLabelText("Gimnasio, 02/10/2026: hecho"),
+    ).toBeInTheDocument();
+    await waitFor(async () => {
+      const days = await services.repository.listDays();
+      expect(days.at(-1)).toEqual({
+        date: "2026-10-02",
+        values: { rankeds: 7, sleep_hours: 450, gym: "done" },
+        feelingsMd: "Fino, pero con algo de #tilt",
+        tags: ["tilt"],
+      });
+    });
+  });
+
+  it("abre un día desde su fila y navega al anterior y al siguiente", async () => {
+    const { user } = await renderApp();
+
+    await user.click(screen.getByRole("button", { name: "20/09/2026" }));
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
+      "domingo, 20 de septiembre de 2026",
+    );
+    expect(screen.getByLabelText("Rankeds")).toHaveValue("12");
+
+    await user.click(screen.getByRole("button", { name: "Día siguiente" }));
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
+      "lunes, 21 de septiembre de 2026",
+    );
+    await user.click(screen.getByRole("button", { name: "Día anterior" }));
+    await user.click(screen.getByRole("button", { name: "Día anterior" }));
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
+      "sábado, 19 de septiembre de 2026",
+    );
+  });
+
+  it("elimina un día solo tras confirmarlo", async () => {
+    const { services, user } = await renderApp();
+    await user.click(screen.getByRole("button", { name: "20/09/2026" }));
+
+    await user.click(screen.getByRole("button", { name: "Eliminar día" }));
+    const dialog = screen.getByRole("dialog", {
+      name: "¿Eliminar el 20/09/2026?",
+    });
+    await user.click(within(dialog).getByRole("button", { name: "Cancelar" }));
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: "Eliminar día" }));
+    await user.click(
+      within(screen.getByRole("dialog")).getByRole("button", {
+        name: "Eliminar día",
+      }),
+    );
+
+    expect(rowDates()).toHaveLength(12);
+    expect(rowDates()).not.toContain("20/09/2026");
+    await waitFor(async () => {
+      expect(await services.repository.listDays()).toHaveLength(12);
+    });
+  });
+});
+
+describe("Scrims y 10mans", () => {
+  it("lista las partidas creadas desde la hoja", async () => {
+    const { user } = await renderApp();
+    await goTo(user, "Scrims y 10mans");
+
+    expect(screen.getByText("18 partidas")).toBeInTheDocument();
+  });
+
+  it("añade una partida y el día muestra el recuento", async () => {
+    const { services, user } = await renderApp();
+    await goTo(user, "Scrims y 10mans");
+
+    await user.click(screen.getByRole("button", { name: "Añadir partida" }));
+    await user.type(
+      screen.getByLabelText("Kills, partida del 02/10/2026"),
+      "21",
+    );
+    await user.type(
+      screen.getByLabelText("Muertes, partida del 02/10/2026"),
+      "14",
+    );
+    await user.tab();
+
+    expect(screen.getByText("19 partidas")).toBeInTheDocument();
+    expect(screen.getAllByTitle("Kills entre muertes")[0]).toHaveTextContent(
+      "1.50",
+    );
+
+    await goTo(user, "Tabla");
+    await user.click(screen.getByRole("button", { name: "Añadir hoy" }));
+    await user.click(screen.getByRole("button", { name: "Volver a la Tabla" }));
+    const today = screen.getByRole("button", { name: "02/10/2026" });
+    const row = today.closest("tr");
+    if (!row) throw new Error("Falta la fila de hoy");
+    expect(within(row).getAllByRole("cell")[1]).toHaveTextContent("1");
+
+    await waitFor(async () => {
+      const scrims = await services.repository.listScrims();
+      expect(scrims.at(-1)).toMatchObject({
+        date: "2026-10-02",
+        kills: 21,
+        deaths: 14,
+      });
+    });
+  });
+
+  it("elimina una partida tras confirmarlo", async () => {
+    const { user } = await renderApp();
+    await goTo(user, "Scrims y 10mans");
+
+    await user.click(
+      screen.getAllByRole("button", {
+        name: "Eliminar la partida del 19/09/2026",
+      })[0],
+    );
+    await user.click(
+      within(screen.getByRole("dialog")).getByRole("button", {
+        name: "Eliminar partida",
+      }),
+    );
+
+    expect(screen.getByText("17 partidas")).toBeInTheDocument();
+  });
+});
+
+describe("Ajustes", () => {
+  it("importa la hoja con vista previa", async () => {
+    const { services, user } = await renderApp(false);
+    services.filesToPick.push(fixtureFile("hoja.csv"));
+    await goTo(user, "Ajustes");
+
+    await user.click(screen.getByRole("button", { name: "Elegir archivo…" }));
+
+    expect(
+      await screen.findByText(
+        "13 días entendidos, del 14/09/2026 al 26/09/2026.",
+      ),
+    ).toBeInTheDocument();
+    expect(screen.getByLabelText("Destino de Horas de sueño")).toHaveValue(
+      "field:sleep_hours",
+    );
+    expect(services.backups).toBe(0);
+
+    await user.click(screen.getByRole("button", { name: "Importar 13 días" }));
+
+    expect(
+      await screen.findByText(/Importación hecha: 13 días/),
+    ).toHaveTextContent("18 partidas vacías creadas");
+    expect(services.backups).toBe(1);
+
+    await goTo(user, "Tabla");
+    expect(rowDates()).toHaveLength(13);
+    expect(screen.getByLabelText("Rankeds, 14/09/2026")).toHaveValue("6");
+  });
+
+  it("pregunta qué hacer con los días que ya existen", async () => {
+    const { services, user } = await renderApp();
+    await user.clear(screen.getByLabelText("Rankeds, 14/09/2026"));
+    await user.type(screen.getByLabelText("Rankeds, 14/09/2026"), "50{Enter}");
+
+    services.filesToPick.push(fixtureFile("hoja.csv"));
+    await goTo(user, "Ajustes");
+    await user.click(screen.getByRole("button", { name: "Elegir archivo…" }));
+
+    expect(
+      await screen.findByText(/13 días ya existen en la app/),
+    ).toBeInTheDocument();
+    // Conservar es la opción por defecto: no hay nada nuevo que importar.
+    expect(
+      screen.getByRole("button", { name: "Importar 0 días" }),
+    ).toBeDisabled();
+
+    await user.click(
+      screen.getByRole("radio", { name: "Sustituirlos por los de la hoja" }),
+    );
+    await user.click(screen.getByRole("button", { name: "Importar 13 días" }));
+    await screen.findByText(/Importación hecha: 13 días/);
+
+    await goTo(user, "Tabla");
+    expect(screen.getByLabelText("Rankeds, 14/09/2026")).toHaveValue("6");
+  });
+
+  it("exporta a JSON e importa en otra instalación sin perder nada", async () => {
+    const origin = await renderApp();
+    await goTo(origin.user, "Ajustes");
+    await origin.user.click(
+      screen.getByRole("button", { name: "Exportar JSON" }),
+    );
+    await screen.findByText(/Exportados 13 días y 18 partidas/);
+    const [exported] = origin.services.savedFiles;
+    expect(exported.name).toBe("player-tracker-2026-10-02.json");
+    document.body.innerHTML = "";
+
+    const target = await renderApp(false);
+    target.services.filesToPick.push({
+      name: exported.name,
+      bytes: new TextEncoder().encode(exported.text),
+    });
+    await goTo(target.user, "Ajustes");
+    await target.user.click(
+      screen.getByRole("button", { name: "Importar JSON…" }),
+    );
+    const dialog = await screen.findByRole("dialog", {
+      name: "Importar datos",
+    });
+    expect(dialog).toHaveTextContent(
+      "Contiene 13 días, 18 partidas y 11 campos",
+    );
+    await target.user.click(
+      within(dialog).getByRole("button", { name: "Importar" }),
+    );
+    await screen.findByText(/Importación hecha: 13 días y 18 partidas/);
+
+    expect(await target.services.repository.listDays()).toEqual(
+      await origin.services.repository.listDays(),
+    );
+    expect(await target.services.repository.listScrims()).toEqual(
+      await origin.services.repository.listScrims(),
+    );
+    expect(target.services.backups).toBe(1);
+  });
+
+  it("rechaza un JSON que no es una exportación y no cambia nada", async () => {
+    const { services, user } = await renderApp();
+    services.filesToPick.push({
+      name: "otro.json",
+      bytes: new TextEncoder().encode('{"format":"otra-app"}'),
+    });
+    await goTo(user, "Ajustes");
+
+    await user.click(screen.getByRole("button", { name: "Importar JSON…" }));
+
+    expect(await screen.findByRole("alert")).toHaveTextContent(
+      "otro.json no es una exportación válida de Player Tracker",
+    );
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    expect(services.backups).toBe(0);
+  });
+
+  it("añade, renombra y archiva campos, y la Tabla lo refleja", async () => {
+    const { user } = await renderApp();
+    await goTo(user, "Ajustes");
+
+    await user.type(screen.getByLabelText("Nuevo campo"), "Cafés");
+    await user.type(screen.getByLabelText("Grupo"), "Hábitos core");
+    await user.click(screen.getByRole("button", { name: "Añadir campo" }));
+
+    const rename = screen.getByLabelText("Nombre de Kovaaks");
+    await user.clear(rename);
+    await user.type(rename, "Kovaak's{Enter}");
+    await user.click(screen.getByRole("button", { name: "Archivar DMs" }));
+    await user.click(screen.getByRole("button", { name: "Subir Cafés" }));
+
+    await goTo(user, "Tabla");
+    const headers = within(screen.getAllByRole("row")[1])
+      .getAllByRole("columnheader")
+      .map((cell) => cell.textContent);
+    expect(headers).toEqual([
+      "Fecha",
+      "Rankeds",
+      "10mans / scrims",
+      "Kovaak's",
+      "Gimnasio",
+      "Suplementación",
+      "Cafés",
+      "Nutrición",
+      "Sleep score",
+      "Horas de sueño",
+      "K/D",
+      "ACS",
+      "Feelings del día",
+    ]);
+
+    await goTo(user, "Ajustes");
+    await user.click(screen.getByRole("button", { name: "Recuperar DMs" }));
+    await goTo(user, "Tabla");
+    expect(screen.getByLabelText("DMs, 14/09/2026")).toHaveValue("3");
+  });
+
+  it("cambia los colores de un campo", async () => {
+    const { user } = await renderApp();
+    await goTo(user, "Ajustes");
+
+    const group = screen.getByRole("region", { name: "Grupo Juego" });
+    await user.click(
+      within(group).getAllByRole("button", { name: "Sin color" })[0],
+    );
+    const dialog = screen.getByRole("dialog", { name: "Colores de Rankeds" });
+    await user.selectOptions(
+      within(dialog).getByLabelText("Cuándo se colorea"),
+      "fixed",
+    );
+    await user.selectOptions(
+      within(dialog).getByLabelText("Qué es mejor"),
+      "lower",
+    );
+    await user.type(within(dialog).getByLabelText("Umbral verde"), "8");
+    await user.tab();
+    await user.click(
+      within(dialog).getByRole("button", { name: "Guardar colores" }),
+    );
+
+    await goTo(user, "Tabla");
+    const tint = (label: string) =>
+      screen.getByLabelText(label).closest("td")?.className ?? "";
+    expect(tint("Rankeds, 14/09/2026")).toContain("bg-success/20");
+    expect(tint("Rankeds, 20/09/2026")).toContain("bg-danger/25");
   });
 });

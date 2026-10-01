@@ -13,13 +13,18 @@
     "windows": [
       {
         "title": "Player Tracker",
-        "width": 1280,
-        "height": 800,
+        "width": 1440,
+        "height": 900,
         "minWidth": 960,
-        "minHeight": 600
+        "minHeight": 600,
+        "dragDropEnabled": false
       }
     ],
     "security": {
+      "assetProtocol": {
+        "enable": true,
+        "scope": ["**"]
+      },
       "csp": "default-src 'self'; img-src 'self' data: asset: http://asset.localhost; style-src 'self' 'unsafe-inline'; font-src 'self' data:; connect-src ipc: http://ipc.localhost"
     }
   },

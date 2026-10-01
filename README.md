@@ -4,6 +4,7 @@ App de escritorio, al estilo de Notion u Obsidian, para que un jugador de Valora
 
 - [La idea](docs/IDEA.md): concepto, vistas, insights, sincronización de estadísticas y estilo visual.
 - [El plan](docs/PLAN.md): tecnologías, modelo de datos y fases de desarrollo.
+- [El diseño](docs/DESIGN.md): tokens, componentes y reglas de accesibilidad.
 
 ## Desarrollo
 

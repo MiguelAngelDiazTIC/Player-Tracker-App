@@ -50,7 +50,9 @@ Tokens de la skill (no uses valores sueltos, define tokens en Tailwind):
 - Accesibilidad WCAG 2.2 AA: el texto de las tablas va sobre cristal casi opaco; el desenfoque fuerte solo en fondos y tarjetas. Foco visible y todo usable con teclado.
 - Verde = cumplido o por encima de la media, rojo = fallado, naranja = aviso.
 
-Dónde viven los tokens: Tailwind 4 se configura en CSS, así que están en el bloque `@theme` de [src/styles/index.css](../src/styles/index.css). El token `text` de la skill se llama `ink` (para no escribir `text-text`) y se añade `canvas` para el fondo oscuro. Las utilidades `glass` (translúcido con desenfoque) y `glass-solid` (casi opaco, para tablas) están en el mismo archivo.
+Dónde viven los tokens: Tailwind 4 se configura en CSS, así que están en el bloque `@theme` de [src/styles/index.css](../src/styles/index.css). El token `text` de la skill se llama `ink` (para no escribir `text-text`) y se añaden `canvas` para el fondo oscuro y `panel` para el fondo opaco de tablas y diálogos. Las utilidades `glass` (translúcido con desenfoque) y `glass-solid` (opaco, para tablas) están en el mismo archivo.
+
+Las reglas de componentes, accesibilidad y tono están en [DESIGN.md](DESIGN.md). Antes de cualquier trabajo visual, carga la skill de glassmorphism (`typeui-glassmorphism` en Claude Code) y aplica esa guía.
 
 ## Datos
 
@@ -65,7 +67,15 @@ Una carpeta de datos elegida por el usuario contiene `tracker.db` (SQLite) y `at
 | `ranked_sessions` | `id`, `date`, `map`, `agent`, `result`, `kills`, `deaths`, `score`, `rounds`, `source` (`manual` o `henrikdev`), `external_match_id` (único) | 4 |
 | `notes` | `id`, `title`, `body_md`, `links` | 4 |
 
-Tipos de campo: `number`, `decimal`, `duration` (minutos), `scale` (0-100), `tristate` (hecho / descanso / no hecho), `bool`, `text`, `tag`.
+Tipos de campo: `number`, `decimal`, `duration` (minutos), `scale` (0-100), `tristate` (hecho / descanso / no hecho), `bool`, `text`, `tag`. Hay un noveno tipo interno, `scrim_count`, para la columna de 10mans/scrims: no guarda nada en el día, muestra el recuento de `scrim_matches` y el usuario no puede crear campos de ese tipo.
+
+Detalles de implementación (fase 1):
+
+- La ruta de la carpeta de datos no se guarda en `settings` (esa tabla está dentro de la carpeta), sino en `config.json` de la carpeta de configuración de la app. En el primer arranque la app pregunta dónde crearla y propone `Documentos/Player Tracker`.
+- Las migraciones están en [src/data/migrations.ts](../src/data/migrations.ts) y se aplican desde TypeScript al abrir la base de datos; las aplicadas se apuntan en la tabla `schema_migrations`.
+- En `days.values`, "sin dato" es la ausencia de la clave. `tristate` se guarda como `done`, `rest` o `missed`.
+- `thresholds` es `null` (sin color), `{ "mode": "average" }` (verde si iguala o supera la media del jugador) o `{ "mode": "fixed", "direction": "higher" | "lower", "good": n, "warn": n | null }`. Por defecto: sleep score verde desde 80 y naranja desde 70; horas de sueño verde desde 7h y naranja desde 6h; K/D y ACS respecto a la media. Se editan en Ajustes.
+- Las copias de `tracker.db` (respaldo antes de importar, cambio de carpeta) se hacen con `VACUUM INTO`, porque SQLite mantiene los últimos cambios en `tracker.db-wal`.
 
 Plantilla por defecto = la hoja del usuario, por grupos:
 
@@ -89,17 +99,26 @@ Valores vacíos o `X` = "sin dato": no cuentan en medias ni gráficas.
   "scrimMatches": [],
   "rankedSessions": [],
   "notes": [],
-  "settings": {}
+  "settings": {},
+  "attachments": [{ "name": "captura.png", "dataBase64": "..." }]
 }
 ```
 
 - La clave de la API de HenrikDev **no** se exporta.
 - Al importar: validar todo con Zod antes de escribir, copiar `tracker.db` como respaldo, y si hay fechas repetidas preguntar si sustituir o conservar.
-- Las imágenes de `attachments/` van incrustadas en base64 o en un `.zip` junto al JSON (elige una opción y documéntala).
+- Las imágenes de `attachments/` van incrustadas en base64 en la lista `attachments`, para que la copia siga siendo un único archivo. Un JSON sin esa lista también es válido.
+- La elección de sustituir o conservar se aplica a los días y a las partidas que ya existen. Los campos (emparejados por `key`) y los ajustes del archivo siempre sustituyen a los actuales.
+
+### Importar la hoja
+
+- La columna de 10mans/scrims de la hoja solo tiene un número por día. Al importarla se crean partidas vacías en `scrim_matches` (tipo `10mans`, nota "Importada de la hoja") hasta igualar ese número, para que el recuento del día coincida y el usuario pueda rellenarlas después.
+- Una celda que no se entiende deja ese campo sin dato; una fila sin fecha válida o con la fecha repetida no se importa. Ambas cosas se muestran antes de guardar.
 
 ## Fases
 
 Trabaja una fase cada vez. Al acabar cada fase: pruebas en verde, un commit por bloque lógico, y para a que el usuario la revise antes de empezar la siguiente.
+
+Estado: fase 0 terminada. Fase 1 implementada y pendiente de que el usuario la pruebe con sus datos (su criterio de cierre es una semana de uso real y pasar los datos a otro equipo).
 
 ### Fase 0: cimientos
 
