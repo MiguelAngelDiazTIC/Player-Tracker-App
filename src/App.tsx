@@ -1,30 +1,110 @@
 import { useState } from "react";
 import { DEFAULT_SECTION_ID, getSection, type SectionId } from "./app/sections";
+import type { Services } from "./app/services";
+import { StoreProvider, useStore } from "./app/store";
 import { Sidebar } from "./components/Sidebar";
+import { Button } from "./components/ui/Button";
+import { Notice } from "./components/ui/surfaces";
+import { NO_FILTER } from "./domain/filters";
+import { AjustesView } from "./views/ajustes/AjustesView";
+import { ScrimsView } from "./views/scrims/ScrimsView";
+import { DayPage } from "./views/tabla/DayPage";
+import { TablaView, type TablaState } from "./views/tabla/TablaView";
 
-export default function App() {
+const INITIAL_TABLA: TablaState = {
+  preset: "all",
+  filter: NO_FILTER,
+  sorting: [{ id: "date", desc: true }],
+};
+
+function Shell() {
+  const { error, dismissError } = useStore();
   const [activeId, setActiveId] = useState<SectionId>(DEFAULT_SECTION_ID);
+  // Día abierto como página dentro de la Tabla.
+  const [openDate, setOpenDate] = useState<string | null>(null);
+  // Filtros y orden de la Tabla: se conservan al abrir un día y volver.
+  const [tabla, setTabla] = useState<TablaState>(INITIAL_TABLA);
   const section = getSection(activeId);
+  const showingDay = activeId === "tabla" && openDate !== null;
+
+  function select(id: SectionId) {
+    setActiveId(id);
+    setOpenDate(null);
+  }
+
+  function renderSection() {
+    switch (activeId) {
+      case "tabla":
+        return openDate !== null ? (
+          <DayPage
+            date={openDate}
+            onBack={() => setOpenDate(null)}
+            onOpenDay={setOpenDate}
+            onOpenScrims={() => select("scrims")}
+          />
+        ) : (
+          <TablaView
+            state={tabla}
+            onStateChange={setTabla}
+            onOpenDay={setOpenDate}
+            onOpenSettings={() => select("ajustes")}
+          />
+        );
+      case "scrims":
+        return <ScrimsView />;
+      case "ajustes":
+        return <AjustesView />;
+      default:
+        return (
+          <section
+            aria-label={`Contenido de ${section.label}`}
+            className="glass flex flex-1 items-center justify-center rounded-md p-4"
+          >
+            <p className="text-surface/70 font-mono text-xs tracking-wide uppercase">
+              Disponible en la fase {section.phase}
+            </p>
+          </section>
+        );
+    }
+  }
 
   return (
     <div className="flex h-full gap-4 p-4">
-      <Sidebar activeId={activeId} onSelect={setActiveId} />
+      <Sidebar activeId={activeId} onSelect={select} />
 
       <main className="flex min-w-0 flex-1 flex-col gap-4">
-        <header className="px-2">
-          <h1 className="text-3xl font-bold">{section.label}</h1>
-          <p className="text-surface/70">{section.description}</p>
-        </header>
+        {showingDay ? null : (
+          <header className="px-2">
+            <h1 className="text-3xl font-bold">{section.label}</h1>
+            <p className="text-surface/70">{section.description}</p>
+          </header>
+        )}
 
-        <section
-          aria-label={`Contenido de ${section.label}`}
-          className="glass flex flex-1 items-center justify-center rounded-md p-4"
-        >
-          <p className="text-surface/70 font-mono text-xs tracking-wide uppercase">
-            Disponible en la fase {section.phase}
-          </p>
-        </section>
+        {error ? (
+          <Notice tone="danger">
+            <div className="flex items-center gap-2">
+              <p className="flex-1 break-words">{error}</p>
+              <Button variant="ghost" onClick={dismissError}>
+                Cerrar aviso
+              </Button>
+            </div>
+          </Notice>
+        ) : null}
+
+        {renderSection()}
       </main>
     </div>
+  );
+}
+
+interface AppProps {
+  services: Services;
+}
+
+export default function App({ services }: AppProps) {
+  return (
+    <StoreProvider services={services}>
+      <Shell />
+    </StoreProvider>
   );
 }
