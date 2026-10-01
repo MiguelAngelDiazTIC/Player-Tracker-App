@@ -85,7 +85,7 @@ export async function migrate(
       await driver.execute(statement);
     }
     await driver.execute(
-      "INSERT INTO schema_migrations (version, name, applied_at) VALUES (?, ?, ?)",
+      "INSERT OR IGNORE INTO schema_migrations (version, name, applied_at) VALUES (?, ?, ?)",
       [migration.version, migration.name, new Date().toISOString()],
     );
     applied.push(migration.version);
