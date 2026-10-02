@@ -32,14 +32,14 @@ import { cx } from "../../lib/cx";
 
 /**
  * Escala de un solo tono: más valor, más intenso. En el paso más oscuro el
- * texto pasa a blanco para mantener el contraste.
+ * texto usa el color de «sobre el acento» para mantener el contraste.
  */
 const HEAT_CLASSES = [
   "bg-chart/15 text-ink",
   "bg-chart/35 text-ink",
   "bg-chart/55 text-ink",
   "bg-chart/75 text-ink",
-  "bg-chart text-surface",
+  "bg-chart text-on-accent",
 ] as const;
 
 interface CalendarioViewProps {

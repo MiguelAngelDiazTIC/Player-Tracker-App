@@ -17,8 +17,12 @@
   --color-success: #0a8158;
   --color-warning: #b4580f;
   --color-danger: #d11a3a;
-  /* Blanco: base del cristal y texto sobre el acento. */
+  /* Base del cristal y de los controles. */
   --color-surface: #ffffff;
+  /* Texto e iconos sobre un relleno de acento o de color de gráfica. */
+  --color-on-accent: #ffffff;
+  /* Sombras y velo de los diálogos. */
+  --color-shadow: #141414;
   /* Token "text" de la skill; se llama ink para no escribir `text-text`. */
   --color-ink: #141414;
   /* Base clara del fondo, bajo el degradado. */
@@ -44,14 +48,45 @@
   --shadow-*: initial;
   /* Sombra suave que despega el cristal del fondo. */
   --shadow-glass: 0 10px 30px
-    color-mix(in srgb, var(--color-ink) 8%, transparent);
+    color-mix(in srgb, var(--color-shadow) 8%, transparent);
   /* Sombra corta de píldoras y controles. */
-  --shadow-pill: 0 2px 8px color-mix(in srgb, var(--color-ink) 10%, transparent);
+  --shadow-pill: 0 2px 8px
+    color-mix(in srgb, var(--color-shadow) 10%, transparent);
+}
+
+/*
+ * Modo oscuro: los mismos tokens con otros valores. El acento y los estados
+ * se aclaran para leerse sobre cristal oscuro, y lo que va encima del acento
+ * pasa a ser oscuro.
+ */
+[data-theme="dark"] {
+  --color-primary: #3ecf95;
+  --color-secondary: #3d2542;
+  --color-lime: #17301f;
+  --color-success: #3ecf95;
+  --color-warning: #f0a35e;
+  --color-danger: #ff8496;
+  --color-surface: #3b3446;
+  --color-on-accent: #10231b;
+  --color-shadow: #000000;
+  --color-ink: #f4f0f6;
+  --color-canvas: #15111c;
+  --color-panel: #221d2b;
+  --color-chart: #5c86ff;
+
+  --shadow-glass: 0 10px 30px
+    color-mix(in srgb, var(--color-shadow) 35%, transparent);
+  --shadow-pill: 0 2px 8px
+    color-mix(in srgb, var(--color-shadow) 40%, transparent);
 }
 
 @layer base {
   html {
     color-scheme: light;
+  }
+
+  html[data-theme="dark"] {
+    color-scheme: dark;
   }
 
   html,
@@ -79,6 +114,13 @@
     outline: 2px solid var(--color-ink);
     outline-offset: 2px;
   }
+}
+
+/* Fundido al cambiar entre modo claro y oscuro (src/app/theme.ts). */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 400ms;
+  animation-timing-function: ease-in-out;
 }
 
 /* Cristal translúcido con desenfoque: barra lateral y tarjetas. */

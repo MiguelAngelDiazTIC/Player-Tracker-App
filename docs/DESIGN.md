@@ -12,19 +12,25 @@ Player Tracker es una hoja de registro diario que se rellena en un minuto, así 
 
 Los tokens están en el bloque `@theme` de [src/styles/index.css](../src/styles/index.css). No se usan valores sueltos: si falta un token, se añade ahí.
 
-| Token | Valor | Uso |
-| --- | --- | --- |
-| `primary` | `#0A8158` | Acento: acción principal y elemento activo. Como relleno lleva texto blanco |
-| `secondary` | `#C9A4CB` | Extremo malva del degradado de fondo |
-| `lime` | `#D8F5BC` | Extremo verde del degradado de fondo |
-| `success` | `#0A8158` | Cumplido o por encima de la media |
-| `warning` | `#B4580F` | Aviso |
-| `danger` | `#D11A3A` | Fallado, error o acción destructiva |
-| `surface` | `#FFFFFF` | Base del cristal y texto sobre el acento |
-| `ink` | `#141414` | Texto (token `text` de la skill), bordes y tintes de hover |
-| `canvas` | `#F3EAF2` | Base clara del fondo, bajo el degradado |
-| `panel` | `#FCF9FC` | Fondo opaco de tablas, diálogos y gráficas (`glass-solid`) |
-| `chart` | `#1856FF` | Series de las gráficas: un azul que no se confunde con los estados |
+| Token | Claro | Oscuro | Uso |
+| --- | --- | --- | --- |
+| `primary` | `#0A8158` | `#3ECF95` | Acento: acción principal y elemento activo |
+| `on-accent` | `#FFFFFF` | `#10231B` | Texto e iconos sobre un relleno `primary` o `chart` |
+| `secondary` | `#C9A4CB` | `#3D2542` | Extremo malva del degradado de fondo |
+| `lime` | `#D8F5BC` | `#17301F` | Extremo verde del degradado de fondo |
+| `success` | `#0A8158` | `#3ECF95` | Cumplido o por encima de la media |
+| `warning` | `#B4580F` | `#F0A35E` | Aviso |
+| `danger` | `#D11A3A` | `#FF8496` | Fallado, error o acción destructiva |
+| `surface` | `#FFFFFF` | `#3B3446` | Base del cristal y de los controles |
+| `ink` | `#141414` | `#F4F0F6` | Texto (token `text` de la skill), bordes y tintes de hover |
+| `canvas` | `#F3EAF2` | `#15111C` | Base del fondo, bajo el degradado |
+| `panel` | `#FCF9FC` | `#221D2B` | Fondo opaco de tablas, diálogos y gráficas (`glass-solid`) |
+| `chart` | `#1856FF` | `#5C86FF` | Series de las gráficas: un azul que no se confunde con los estados |
+| `shadow` | `#141414` | `#000000` | Sombras y velo de los diálogos |
+
+- **Dos modos, los mismos tokens**: el modo oscuro solo cambia los valores, en el bloque `[data-theme="dark"]` de `index.css`. Los componentes no saben en qué modo están: nada de clases `dark:` ni de colores por modo en un componente. El modo se elige en la barra lateral o en Ajustes (claro, oscuro o como el sistema), se guarda en el equipo y por defecto es claro.
+- **Cambio de modo**: fundido de toda la ventana en 400ms (transición de vista), para que el salto no sea brusco. Es solo opacidad, sin movimiento, así que se mantiene aunque el sistema pida menos movimiento.
+- **Por qué cambian el acento y los estados**: en oscuro tienen que leerse como texto e icono sobre cristal oscuro, así que se aclaran, y lo que va encima del acento pasa a ser oscuro (`on-accent`).
 
 - **Fondo**: degradado de `secondary` a `lime` pasando por `canvas`, fijo.
 - **Tipografía**: Plus Jakarta Sans para texto, títulos y etiquetas en mayúsculas de 12px (`text-xs font-semibold tracking-wide uppercase`). JetBrains Mono solo para números que se alinean: celdas de tabla, ejes y fechas.
@@ -38,7 +44,7 @@ Los tokens están en el bloque `@theme` de [src/styles/index.css](../src/styles/
 
 Todos los componentes interactivos deben tener los estados reposo, hover, `focus-visible`, activo y deshabilitado. El foco es siempre el contorno `ink` de 2px definido en la base.
 
-- **Botón** (`Button`): píldora de 36px de alto, texto de 14px en semibold. Variantes: `primary` (relleno `primary` con texto blanco, una por vista), `secondary` (píldora blanca con borde y sombra corta), `ghost` (sin fondo, para acciones secundarias) y `danger` (tinte y texto `danger`). Deshabilitado: 50% de opacidad y sin eventos.
+- **Botón** (`Button`): píldora de 36px de alto, texto de 14px en semibold. Variantes: `primary` (relleno `primary` con texto `on-accent`, una por vista), `secondary` (píldora blanca con borde y sombra corta), `ghost` (sin fondo, para acciones secundarias) y `danger` (tinte y texto `danger`). Deshabilitado: 50% de opacidad y sin eventos.
 - **Campo de texto y selector** (`TextInput`, `Select`): píldora blanca de 36px de alto, borde `ink/10`, siempre con etiqueta visible o `aria-label`. Un valor que no se entiende marca el campo con borde `danger`, `aria-invalid` y el motivo en texto.
 - **Selector de pocas opciones** (`Segmented`): cápsula blanca con las opciones a la vista; la elegida es una píldora `primary`. Para dos a cuatro opciones (periodo, métrica); con más, `Select`.
 - **Navegación** (`Sidebar`): cada sección es una píldora; la activa es blanca con texto e icono `primary` y sombra corta.
@@ -48,14 +54,14 @@ Todos los componentes interactivos deben tener los estados reposo, hover, `focus
 - **Color por umbral**: tinte de fondo `success/20`, `warning/25` o `danger/25`. El color nunca es la única señal: los hábitos llevan icono y los números se leen igual sin él.
 - **Etiqueta** (`Chip`): píldora de 12px con fondo `ink/5` y borde `ink/10`.
 - **Tarjeta bento** (`Card`): `glass`, `rounded-md`, relleno de 16px y título en etiqueta en mayúsculas.
-- **Diálogo** (`Dialog`): `glass-solid` sobre un velo `ink/30`; atrapa el foco, se cierra con Escape y devuelve el foco a quien lo abrió. Las acciones destructivas piden confirmación aquí, nunca con un diálogo nativo.
+- **Diálogo** (`Dialog`): `glass-solid` sobre un velo `shadow/40`; atrapa el foco, se cierra con Escape y devuelve el foco a quien lo abrió. Las acciones destructivas piden confirmación aquí, nunca con un diálogo nativo.
 - **Aviso** (`Notice`): tinte suave del color de su tono con icono; los errores usan `role="alert"` y el resto `role="status"`.
 
 Casos límite: las etiquetas largas se cortan con puntos suspensivos y muestran el texto completo en `title`; las tablas se desplazan dentro de su panel, no la página; toda vista sin datos explica qué hacer a continuación.
 
 ## Gráficas
 
-Hechas con la skill `dataviz`: primero la forma, el color al final y comprobado con su validador (`chart` sobre blanco pasa luminosidad, croma y contraste 3:1; verde, gris y rojo de los resultados se distinguen también con daltonismo).
+Hechas con la skill `dataviz`: primero la forma, el color al final y comprobado con su validador en los dos modos (`chart` sobre `panel` pasa luminosidad, croma y contraste 3:1; verde, gris y rojo de los resultados se distinguen también con daltonismo).
 
 - **Una gráfica, una medida y un solo eje.** Cada columna tiene la suya; nunca dos escalas en el mismo dibujo.
 - **Una serie, un color**: `chart`. El dato de contexto (el valor diario bajo su media móvil, el periodo anterior en una tendencia) va en gris (`ink/35`). Con dos series hay leyenda; con una basta el título.
@@ -63,7 +69,7 @@ Hechas con la skill `dataviz`: primero la forma, el color al final y comprobado 
 - **Marcas finas**: líneas de 2px, puntos con anillo del color del panel, barras de 24px como mucho con la punta redondeada 4px, y 2px de panel entre segmentos apilados. Rejilla y ejes en `ink/10`, continuos.
 - **Texto en color de texto**, nunca en el de la serie. Los números de los ejes van en mono de 12px.
 - **Un día sin dato es un hueco**: las líneas no lo cruzan.
-- **Mapa de calor**: un solo tono en cinco pasos; más valor, más intenso. En el paso más oscuro el texto pasa a blanco.
+- **Mapa de calor**: un solo tono en cinco pasos; más valor, más intenso. En el paso más intenso el texto pasa a `on-accent`.
 - **Medidor** (`Gauge`): semicírculo `primary` sobre una pista `ink/10` para la cifra con la que abre una vista (la preparación de hoy), con la cifra en grande dentro.
 - **Lectura sin ratón**: cada gráfica tiene una cifra de resumen junto al título y una descripción para lectores de pantalla; la tabla de encima es su versión en datos. Al pasar el ratón, el valor manda y el nombre acompaña.
 - **Sin animaciones** al cargar ni al filtrar.
@@ -88,15 +94,16 @@ Español, de tú, conciso y directo. Los botones son verbos ("Añadir día", "Im
 
 - Texto de tabla sobre cristal translúcido con desenfoque: usa `glass-solid`.
 - `success` o `warning` como color de texto pequeño sobre un tinte de su mismo color: no llegan a 4.5:1. El texto va en `ink` y el tono lo dan el tinte y el icono.
-- Texto blanco fuera de un relleno `primary` o del paso más oscuro del mapa de calor.
+- Texto `on-accent` fuera de un relleno `primary` o `chart`.
+- Clases `dark:` o colores distintos por modo dentro de un componente: el modo se resuelve en los tokens.
 - Colores, radios, sombras o desenfoques escritos a mano en un componente.
-- Animaciones decorativas. Solo hay transiciones de color en hover.
+- Animaciones decorativas. Solo hay transiciones de color en hover y el fundido al cambiar de modo.
 - Mezclar otra metáfora visual (sombras duras, relieves, degradados de neón).
 - Diálogos nativos (`alert`, `confirm`).
 
 ## Lista de comprobación
 
-1. ¿Solo se usan tokens de `index.css`?
+1. ¿Solo se usan tokens de `index.css`, y se ve bien en claro y en oscuro?
 2. ¿Texto denso sobre `glass-solid` y desenfoque solo en paneles y tarjetas?
 3. ¿Cada control tiene hover, foco visible, activo y deshabilitado?
 4. ¿Se puede completar la tarea solo con teclado?

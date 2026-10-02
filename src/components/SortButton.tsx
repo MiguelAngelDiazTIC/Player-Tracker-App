@@ -18,7 +18,7 @@ export function SortButton({ label, sorted, onToggle }: SortButtonProps) {
       type="button"
       onClick={onToggle}
       title={`Ordenar por ${label}`}
-      className="hover:text-ink inline-flex min-h-10 w-full cursor-pointer items-center justify-center gap-1 px-2 leading-tight tracking-wide uppercase focus-visible:-outline-offset-2"
+      className="hover:text-ink inline-flex min-h-10 w-full cursor-pointer items-center justify-center gap-1 px-1.5 leading-tight uppercase focus-visible:-outline-offset-2"
     >
       {label}
       {sorted ? <Icon aria-hidden="true" className="size-3 shrink-0" /> : null}

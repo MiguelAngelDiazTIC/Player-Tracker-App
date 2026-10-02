@@ -34,7 +34,7 @@ export function ChoiceGroup({
                 "flex h-9 cursor-pointer items-center gap-2 rounded-full border px-3 text-sm",
                 "has-focus-visible:outline-ink has-focus-visible:outline-2 has-focus-visible:outline-offset-2",
                 checked
-                  ? "border-primary bg-primary text-surface font-semibold"
+                  ? "border-primary bg-primary text-on-accent font-semibold"
                   : "border-ink/10 bg-surface/80 text-ink/80 hover:bg-surface hover:text-ink",
               )}
             >

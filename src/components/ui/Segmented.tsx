@@ -31,7 +31,7 @@ export function Segmented<T extends string>({
                 "flex h-full cursor-pointer items-center rounded-full px-3 text-sm whitespace-nowrap",
                 "has-focus-visible:outline-ink has-focus-visible:outline-2 has-focus-visible:outline-offset-2",
                 checked
-                  ? "bg-primary text-surface font-semibold"
+                  ? "bg-primary text-on-accent font-semibold"
                   : "text-ink/80 hover:bg-ink/5 hover:text-ink font-medium",
               )}
             >

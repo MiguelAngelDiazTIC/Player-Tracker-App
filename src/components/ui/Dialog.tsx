@@ -55,7 +55,7 @@ export function Dialog({
   }
 
   return (
-    <div className="bg-ink/30 fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div className="bg-shadow/40 fixed inset-0 z-50 flex items-center justify-center p-4">
       <div
         ref={panelRef}
         role="dialog"

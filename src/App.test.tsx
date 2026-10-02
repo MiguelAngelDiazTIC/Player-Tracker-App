@@ -1437,3 +1437,103 @@ describe("Sincronización con HenrikDev", () => {
     expect(exported.text).not.toContain("clave-secreta");
   });
 });
+
+describe("modo oscuro", () => {
+  afterEach(() => {
+    window.localStorage.clear();
+    delete document.documentElement.dataset.theme;
+  });
+
+  it("se cambia desde la barra lateral y se recuerda", async () => {
+    const { user } = await renderApp(false);
+
+    await user.click(screen.getByRole("button", { name: "Modo oscuro" }));
+
+    expect(document.documentElement.dataset.theme).toBe("dark");
+    expect(window.localStorage.getItem("player-tracker.theme")).toBe("dark");
+
+    await user.click(screen.getByRole("button", { name: "Modo claro" }));
+    expect(document.documentElement.dataset.theme).toBe("light");
+    expect(window.localStorage.getItem("player-tracker.theme")).toBe("light");
+  });
+
+  it("se elige en Ajustes, también siguiendo al sistema", async () => {
+    const { user } = await renderApp(false);
+    await goTo(user, "Ajustes");
+    const panel = screen.getByRole("region", { name: "Apariencia" });
+    expect(within(panel).getByRole("radio", { name: "Claro" })).toBeChecked();
+
+    await user.click(within(panel).getByRole("radio", { name: "Oscuro" }));
+    expect(document.documentElement.dataset.theme).toBe("dark");
+    // La barra lateral ofrece volver al claro: los dos controles van a una.
+    expect(
+      screen.getByRole("button", { name: "Modo claro" }),
+    ).toBeInTheDocument();
+
+    const matchMedia = vi.fn().mockReturnValue({
+      matches: true,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+    });
+    vi.stubGlobal("matchMedia", matchMedia);
+    await user.click(
+      within(panel).getByRole("radio", { name: "Como el sistema" }),
+    );
+    expect(window.localStorage.getItem("player-tracker.theme")).toBe("system");
+    expect(document.documentElement.dataset.theme).toBe("dark");
+    vi.unstubAllGlobals();
+  });
+});
+
+describe("fundido al cambiar de tema", () => {
+  afterEach(() => {
+    window.localStorage.clear();
+    delete document.documentElement.dataset.theme;
+    vi.unstubAllGlobals();
+    Reflect.deleteProperty(document, "startViewTransition");
+  });
+
+  /** jsdom no trae transiciones de vista: se simula una que aplica el cambio. */
+  function fakeViewTransition() {
+    const start = vi.fn((update: () => void) => {
+      update();
+      return {};
+    });
+    Object.defineProperty(document, "startViewTransition", {
+      configurable: true,
+      value: start,
+    });
+    return start;
+  }
+
+  it("cambia de tema dentro de una transición de vista", async () => {
+    const start = fakeViewTransition();
+    const { user } = await renderApp(false);
+
+    await user.click(screen.getByRole("button", { name: "Modo oscuro" }));
+
+    expect(start).toHaveBeenCalledTimes(1);
+    expect(document.documentElement.dataset.theme).toBe("dark");
+  });
+
+  it("no hace fundido si la elección no cambia lo que se ve", async () => {
+    const start = fakeViewTransition();
+    // El sistema está en claro, igual que la app.
+    vi.stubGlobal(
+      "matchMedia",
+      vi.fn().mockReturnValue({
+        matches: false,
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+      }),
+    );
+    const { user } = await renderApp(false);
+    await goTo(user, "Ajustes");
+
+    await user.click(screen.getByRole("radio", { name: "Como el sistema" }));
+
+    expect(start).not.toHaveBeenCalled();
+    expect(document.documentElement.dataset.theme).toBe("light");
+    expect(window.localStorage.getItem("player-tracker.theme")).toBe("system");
+  });
+});
