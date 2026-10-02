@@ -110,9 +110,9 @@ function parseText(text: string): ParseResult<string> {
 
 const identity = (text: string) => text;
 
-const CELL = "border-surface/10 border-b p-0";
+const CELL = "border-ink/10 border-b p-0";
 const SELECT_CELL =
-  "hover:bg-surface/10 h-10 w-full bg-transparent px-2 text-sm focus-visible:-outline-offset-2 [&>option]:bg-canvas [&>option]:text-surface";
+  "hover:bg-ink/10 h-10 w-full bg-transparent px-2 text-sm focus-visible:-outline-offset-2 [&>option]:bg-canvas [&>option]:text-ink";
 
 interface RankedsFilter {
   preset: RangePreset;
@@ -227,7 +227,7 @@ export function RankedsView({ focusDate = null }: RankedsViewProps) {
 
       {sessions.length === 0 ? (
         <div className="glass flex flex-1 items-center justify-center rounded-md p-4 text-center">
-          <p className="text-surface/70 max-w-md">
+          <p className="text-ink/70 max-w-md">
             Aún no hay partidas. Apunta cada ranked con su mapa y su agente para
             ver dónde rindes mejor. Es opcional: la fila del día sigue
             funcionando sin ellas.
@@ -255,7 +255,7 @@ export function RankedsView({ focusDate = null }: RankedsViewProps) {
                               ? ariaSort(sorted)
                               : undefined
                           }
-                          className={`bg-panel border-surface/10 text-surface/70 sticky top-0 h-10 border-b p-0 font-mono text-xs font-medium ${
+                          className={`bg-panel border-ink/10 text-ink/70 sticky top-0 h-10 border-b p-0 text-xs font-semibold ${
                             header.column.id === "date" ? "left-0 z-30" : "z-20"
                           }`}
                         >
@@ -275,7 +275,7 @@ export function RankedsView({ focusDate = null }: RankedsViewProps) {
                     })}
                     <th
                       scope="col"
-                      className="bg-panel border-surface/10 sticky top-0 z-20 border-b"
+                      className="bg-panel border-ink/10 sticky top-0 z-20 border-b"
                     >
                       <span className="sr-only">Acciones</span>
                     </th>
@@ -336,7 +336,7 @@ export function RankedsView({ focusDate = null }: RankedsViewProps) {
                               change({ date: event.target.value });
                             }
                           }}
-                          className="hover:bg-surface/10 h-10 w-full bg-transparent px-2 font-mono text-sm tabular-nums focus-visible:-outline-offset-2"
+                          className="hover:bg-ink/10 h-10 w-full bg-transparent px-2 font-mono text-sm tabular-nums focus-visible:-outline-offset-2"
                         />
                       </td>
                       <td className={`${CELL} min-w-28`}>
@@ -377,7 +377,7 @@ export function RankedsView({ focusDate = null }: RankedsViewProps) {
                         title="Kills entre muertes"
                       >
                         {sessionKd === null ? (
-                          <span className="text-surface/70">—</span>
+                          <span className="text-ink/70">—</span>
                         ) : (
                           sessionKd.toFixed(2)
                         )}
@@ -440,7 +440,7 @@ export function RankedsView({ focusDate = null }: RankedsViewProps) {
                           aria-label={`Eliminar la ${name}`}
                           title="Eliminar partida"
                           onClick={() => setDeleting(session)}
-                          className="text-surface/80 hover:bg-danger/25 hover:text-surface active:bg-danger/40 flex size-10 items-center justify-center focus-visible:-outline-offset-2"
+                          className="text-ink/80 hover:bg-danger/25 hover:text-ink active:bg-danger/40 flex size-10 items-center justify-center focus-visible:-outline-offset-2"
                         >
                           <Trash2 aria-hidden="true" className="size-4" />
                         </button>
@@ -451,12 +451,12 @@ export function RankedsView({ focusDate = null }: RankedsViewProps) {
               </tbody>
             </table>
             {rows.length === 0 ? (
-              <p className="text-surface/70 p-4 text-center text-sm">
+              <p className="text-ink/70 p-4 text-center text-sm">
                 Ninguna partida en esas fechas.
               </p>
             ) : null}
           </div>
-          <p className="text-surface/70 px-2 font-mono text-xs" role="status">
+          <p className="text-ink/70 px-2 font-mono text-xs" role="status">
             {rows.length === sessions.length
               ? `${sessions.length} ${sessions.length === 1 ? "partida" : "partidas"}`
               : `${rows.length} de ${sessions.length} partidas`}

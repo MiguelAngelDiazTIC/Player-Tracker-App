@@ -23,3 +23,14 @@ npm run tauri dev
 | `npm run format`      | Formatea con Prettier (`format:check` solo comprueba)      |
 | `npm run typecheck`   | Comprueba los tipos con TypeScript                         |
 | `npm test`            | Pruebas con Vitest (`test:watch` las deja en marcha)       |
+
+### Datos de ejemplo
+
+Para ver la app llena sin tocar datos reales:
+
+```powershell
+npm run demo:data
+npm run demo
+```
+
+`demo:data` genera `.demo/player-tracker-demo.json` con unas 11 semanas de datos inventados que acaban hoy. `demo` abre la app con una identidad aparte (`com.playertracker.demo`), así que su carpeta de datos no se mezcla con la de la app normal. La primera vez, elige una carpeta (por ejemplo `.demo/datos`) y carga el archivo desde Ajustes > Importar JSON.

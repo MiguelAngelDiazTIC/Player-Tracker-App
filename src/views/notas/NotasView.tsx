@@ -71,12 +71,12 @@ export function NotasView({ selectedId, onSelect, onOpenDay }: NotasViewProps) {
           />
         </Labeled>
         {notes.length === 0 ? (
-          <p className="text-surface/70 text-sm">
+          <p className="text-ink/70 text-sm">
             Aún no hay notas. Crea una para un VOD, unos lineups, un rival o tus
             objetivos de la semana.
           </p>
         ) : listed.length === 0 ? (
-          <p className="text-surface/70 text-sm">Ninguna nota coincide.</p>
+          <p className="text-ink/70 text-sm">Ninguna nota coincide.</p>
         ) : (
           <ul className="relative -mx-2 flex min-h-0 flex-col gap-1 overflow-auto px-2 py-1">
             {listed.map((item) => (
@@ -89,7 +89,7 @@ export function NotasView({ selectedId, onSelect, onOpenDay }: NotasViewProps) {
                     "w-full truncate rounded-md px-2 py-2 text-left text-sm font-medium",
                     item.id === selectedId
                       ? "bg-primary text-surface"
-                      : "text-surface/80 hover:bg-surface/10 hover:text-surface active:bg-surface/15",
+                      : "text-ink/80 hover:bg-ink/10 hover:text-ink active:bg-ink/15",
                   )}
                 >
                   {noteName(item)}
@@ -102,7 +102,7 @@ export function NotasView({ selectedId, onSelect, onOpenDay }: NotasViewProps) {
 
       {note === null || backlinks === null ? (
         <div className="glass flex items-center justify-center rounded-md p-4">
-          <p className="text-surface/70 max-w-md text-center">
+          <p className="text-ink/70 max-w-md text-center">
             Elige una nota o crea una nueva. Escribe [[Título de otra nota]] o
             [[14/09/2026]] para enlazarla con otra nota o con un día.
           </p>
@@ -144,7 +144,7 @@ export function NotasView({ selectedId, onSelect, onOpenDay }: NotasViewProps) {
           <div className="flex flex-col gap-4">
             <Card title="Enlaza a">
               {links.length === 0 ? (
-                <p className="text-surface/70 text-sm">
+                <p className="text-ink/70 text-sm">
                   Esta nota no enlaza a nada todavía.
                 </p>
               ) : (
@@ -182,7 +182,7 @@ export function NotasView({ selectedId, onSelect, onOpenDay }: NotasViewProps) {
 
             <Card title="La mencionan">
               {backlinks.notes.length + backlinks.days.length === 0 ? (
-                <p className="text-surface/70 text-sm">
+                <p className="text-ink/70 text-sm">
                   Nadie la menciona todavía. Escribe [[{noteName(note)}]] en
                   otra nota o en los feelings de un día.
                 </p>

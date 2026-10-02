@@ -2,8 +2,10 @@ import { TriangleAlert } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useStore } from "../../app/store";
 import { EditableText } from "../../components/cells";
+import { Gauge } from "../../components/charts/Gauge";
 import { Button } from "../../components/ui/Button";
-import { Labeled, Select } from "../../components/ui/fields";
+import { Select } from "../../components/ui/fields";
+import { Segmented } from "../../components/ui/Segmented";
 import { Card, Chip, Notice } from "../../components/ui/surfaces";
 import { formatDate, todayIso } from "../../domain/dates";
 import type { FieldDefinition } from "../../domain/fields";
@@ -90,7 +92,7 @@ function Meter({ label, value, tone = "accent" }: MeterProps) {
       <div
         className={cx(
           "h-full rounded-sm",
-          tone === "accent" ? "bg-chart" : "bg-surface/35",
+          tone === "accent" ? "bg-chart" : "bg-ink/35",
         )}
         style={{ width: `${Math.min(100, Math.max(0, value))}%` }}
       />
@@ -179,7 +181,7 @@ export function InsightsView({ onShowDays }: InsightsViewProps) {
           tone={tone}
         />
         <div className="flex items-center justify-between gap-2">
-          <span className="text-surface/70 font-mono text-xs">
+          <span className="text-ink/70 font-mono text-xs">
             {days(group.dates.length)}
           </span>
           <Button
@@ -204,19 +206,16 @@ export function InsightsView({ onShowDays }: InsightsViewProps) {
     <div className="flex min-h-0 flex-1 flex-col gap-4">
       {metric ? (
         <div className="flex flex-wrap items-end gap-2 px-2">
-          <Labeled label="Rendimiento medido en" className="w-56">
-            <Select
-              value={metric.key}
-              onChange={(event) => setMetricKey(event.target.value)}
-            >
-              {metrics.map((field) => (
-                <option key={field.id} value={field.key}>
-                  {field.label}
-                </option>
-              ))}
-            </Select>
-          </Labeled>
-          <p className="text-surface/70 pb-2 text-sm">
+          <Segmented
+            label="Rendimiento medido en"
+            value={metric.key}
+            options={metrics.map((field) => ({
+              value: field.key,
+              label: field.label,
+            }))}
+            onChange={setMetricKey}
+          />
+          <p className="text-ink/70 pb-2 text-sm">
             Con menos de {MIN_DAYS_PER_GROUP} días en un grupo, la diferencia
             puede ser casualidad.
           </p>
@@ -227,18 +226,17 @@ export function InsightsView({ onShowDays }: InsightsViewProps) {
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
           <Card title="Preparación de hoy">
             {ready.score === null || ready.level === null ? (
-              <p className="text-surface/70 text-sm">
+              <p className="text-ink/70 text-sm">
                 Aún no hay datos para calcularla: rellena el sueño de hoy y los
                 últimos días en la Tabla.
               </p>
             ) : (
-              <div>
-                <p className="flex items-baseline gap-2">
-                  <span className="text-5xl font-semibold">
-                    {Math.round(ready.score)}
-                  </span>
-                  <span className="text-surface/70 text-sm">de 100</span>
-                </p>
+              <div className="flex flex-col items-center gap-2">
+                <Gauge
+                  value={ready.score}
+                  label="Preparación de hoy"
+                  caption="de 100"
+                />
                 <p className="font-semibold">{LEVELS[ready.level]}</p>
               </div>
             )}
@@ -258,9 +256,7 @@ export function InsightsView({ onShowDays }: InsightsViewProps) {
                     />
                   )}
                   <div className="flex items-center justify-between gap-2">
-                    <span className="text-surface/70 text-xs">
-                      {part.detail}
-                    </span>
+                    <span className="text-ink/70 text-xs">{part.detail}</span>
                     {part.dates.length > 0 ? (
                       <Button
                         variant="ghost"
@@ -279,7 +275,7 @@ export function InsightsView({ onShowDays }: InsightsViewProps) {
                 </li>
               ))}
             </ul>
-            <p className="text-surface/70 text-xs">
+            <p className="text-ink/70 text-xs">
               Pesa un 40 % el descanso de hoy, un 30 % los hábitos de los 3 días
               anteriores y un 30 % la carga de esos días. Lo que no tiene datos
               no cuenta.
@@ -313,13 +309,13 @@ export function InsightsView({ onShowDays }: InsightsViewProps) {
                   </Notice>
                 ))
             ) : (
-              <p className="text-surface/70 text-sm">
+              <p className="text-ink/70 text-sm">
                 Ahora mismo no hay ningún aviso activo.
               </p>
             )}
 
             <fieldset className="flex flex-col gap-2">
-              <legend className="text-surface/70 mb-2 font-mono text-xs tracking-wide uppercase">
+              <legend className="text-ink/70 mb-2 text-xs font-semibold tracking-wide uppercase">
                 Reglas
               </legend>
               <div className="flex flex-wrap items-center gap-2 text-sm">
@@ -420,7 +416,7 @@ export function InsightsView({ onShowDays }: InsightsViewProps) {
 
             {alerts.some((alert) => !alert.active) ? (
               <div className="flex flex-col gap-2">
-                <h3 className="text-surface/70 font-mono text-xs tracking-wide uppercase">
+                <h3 className="text-ink/70 text-xs font-semibold tracking-wide uppercase">
                   Avisos anteriores
                 </h3>
                 <ul className="flex flex-col gap-1">
@@ -489,7 +485,7 @@ export function InsightsView({ onShowDays }: InsightsViewProps) {
                         </div>
                         {renderGroup(comparison, comparison.with, "accent")}
                         {renderGroup(comparison, comparison.without, "muted")}
-                        <p className="text-surface/70 text-xs">
+                        <p className="text-ink/70 text-xs">
                           {comparison.difference === null
                             ? "Falta un grupo para poder comparar."
                             : formatDelta(
@@ -514,7 +510,7 @@ export function InsightsView({ onShowDays }: InsightsViewProps) {
                 {metric.label}: según las etiquetas
               </h2>
               {tags.length === 0 ? (
-                <p className="text-surface/70 px-2 text-sm">
+                <p className="text-ink/70 px-2 text-sm">
                   Aún no hay etiquetas. Escribe #tilt, #saturado o la que
                   quieras en los feelings de un día.
                 </p>
@@ -538,7 +534,7 @@ export function InsightsView({ onShowDays }: InsightsViewProps) {
                           <th
                             key={index}
                             scope="col"
-                            className="border-surface/10 text-surface/70 border-b px-2 py-2 text-left font-mono text-xs font-medium tracking-wide uppercase"
+                            className="border-ink/10 text-ink/70 border-b px-2 py-2 text-left text-xs font-semibold tracking-wide uppercase"
                           >
                             {heading || (
                               <span className="sr-only">Acciones</span>
@@ -552,20 +548,20 @@ export function InsightsView({ onShowDays }: InsightsViewProps) {
                         <tr key={item.tag}>
                           <th
                             scope="row"
-                            className="border-surface/10 border-b px-2 py-2 text-left font-normal"
+                            className="border-ink/10 border-b px-2 py-2 text-left font-normal"
                           >
                             <Chip>#{item.tag}</Chip>
                           </th>
-                          <td className="border-surface/10 border-b px-2 py-2 font-mono">
+                          <td className="border-ink/10 border-b px-2 py-2 font-mono">
                             {item.dates.length}
                           </td>
-                          <td className="border-surface/10 border-b px-2 py-2 font-mono">
+                          <td className="border-ink/10 border-b px-2 py-2 font-mono">
                             {stat(item.withMean)}
                           </td>
-                          <td className="border-surface/10 border-b px-2 py-2 font-mono">
+                          <td className="border-ink/10 border-b px-2 py-2 font-mono">
                             {stat(item.withoutMean)}
                           </td>
-                          <td className="border-surface/10 border-b px-2 py-2">
+                          <td className="border-ink/10 border-b px-2 py-2">
                             <span className="flex items-center gap-2 font-mono">
                               {item.difference === null
                                 ? "—"
@@ -573,7 +569,7 @@ export function InsightsView({ onShowDays }: InsightsViewProps) {
                               {item.lowData ? LOW_DATA : null}
                             </span>
                           </td>
-                          <td className="border-surface/10 border-b px-2 py-1 text-right">
+                          <td className="border-ink/10 border-b px-2 py-1 text-right">
                             <Button
                               variant="ghost"
                               aria-label={`Ver los días con #${item.tag}`}

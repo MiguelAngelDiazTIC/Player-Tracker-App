@@ -749,7 +749,7 @@ describe("Dashboard", () => {
     expect(tile("Rankeds")).toHaveTextContent("−38que los 7 días anteriores");
     expect(tile("K/D")).toHaveTextContent("1.20Media de 1 día");
 
-    await user.selectOptions(screen.getByLabelText("Periodo"), "30");
+    await user.click(screen.getByRole("radio", { name: "Últimos 30 días" }));
     expect(tile("Rankeds")).toHaveTextContent("89Total del periodo");
     expect(tile("Horas de sueño")).toHaveTextContent("7h10Media de 13 días");
   });
@@ -757,7 +757,7 @@ describe("Dashboard", () => {
   it("muestra rachas y cumplimiento de hábitos", async () => {
     const { user } = await renderApp();
     await goTo(user, "Dashboard");
-    await user.selectOptions(screen.getByLabelText("Periodo"), "30");
+    await user.click(screen.getByRole("radio", { name: "Últimos 30 días" }));
 
     expect(screen.getByText("Mejor racha: 11 días")).toBeInTheDocument();
     expect(
@@ -768,7 +768,7 @@ describe("Dashboard", () => {
   it("separa las cifras de scrims", async () => {
     const { user } = await renderApp();
     await goTo(user, "Dashboard");
-    await user.selectOptions(screen.getByLabelText("Periodo"), "30");
+    await user.click(screen.getByRole("radio", { name: "Últimos 30 días" }));
 
     expect(tile("Partidas")).toHaveTextContent("18Total del periodo");
     expect(tile("K/D en scrims")).toHaveTextContent("Sin datos en el periodo");
@@ -859,6 +859,9 @@ describe("Insights", () => {
 
     const card = screen.getByRole("region", { name: "Preparación de hoy" });
     expect(card).toHaveTextContent("91de 100");
+    expect(
+      within(card).getByRole("meter", { name: "Preparación de hoy" }),
+    ).toHaveAttribute("aria-valuenow", "91");
     expect(card).toHaveTextContent("Día para grindear");
     expect(card).toHaveTextContent("7 de 9 cumplidos en los 3 días anteriores");
     expect(
@@ -924,10 +927,7 @@ describe("Insights", () => {
     expect(sleep).toHaveTextContent("80 o más1.199 días");
     expect(sleep).toHaveTextContent("Menos de 801.233 días");
 
-    await user.selectOptions(
-      screen.getByLabelText("Rendimiento medido en"),
-      "acs",
-    );
+    await user.click(screen.getByRole("radio", { name: "ACS" }));
     expect(
       screen.getByRole("article", { name: "Sleep score" }),
     ).toHaveTextContent("Menos de 80236.73 días");

@@ -13,8 +13,8 @@ interface ChartTooltipProps {
 /** Lectura al pasar el ratón: el valor manda y el nombre de la serie acompaña. */
 export function ChartTooltip({ title, rows }: ChartTooltipProps) {
   return (
-    <div className="border-surface/20 bg-canvas rounded-md border p-2 text-xs">
-      <p className="text-surface/70 font-mono">{title}</p>
+    <div className="border-ink/10 bg-surface shadow-pill rounded-sm border p-2 text-xs">
+      <p className="text-ink/70 font-mono">{title}</p>
       <ul className="mt-1 flex flex-col gap-1">
         {rows.map((row) => (
           <li key={row.label} className="flex items-center gap-2">
@@ -24,7 +24,7 @@ export function ChartTooltip({ title, rows }: ChartTooltipProps) {
               style={{ backgroundColor: row.color }}
             />
             <span className="font-mono text-sm font-semibold">{row.value}</span>
-            <span className="text-surface/70">{row.label}</span>
+            <span className="text-ink/70">{row.label}</span>
           </li>
         ))}
       </ul>

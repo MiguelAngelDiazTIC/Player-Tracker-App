@@ -92,7 +92,7 @@ interface TablaViewProps {
 }
 
 const HEAD_CELL =
-  "bg-panel border-surface/10 text-surface/70 sticky border-b p-0 font-mono text-xs font-medium";
+  "bg-panel border-ink/10 text-ink/70 sticky border-b p-0 text-xs font-semibold";
 
 export function TablaView({
   state,
@@ -276,7 +276,7 @@ export function TablaView({
 
       {days.length === 0 ? (
         <div className="glass flex flex-1 flex-col items-center justify-center gap-4 rounded-md p-4 text-center">
-          <p className="text-surface/70 max-w-md">
+          <p className="text-ink/70 max-w-md">
             Aún no hay ningún día. Añade el de hoy o importa tu hoja de cálculo
             para seguir donde la dejaste.
           </p>
@@ -310,7 +310,7 @@ export function TablaView({
                             HEAD_CELL,
                             depth === 0 ? "top-0 h-8" : "top-8 h-10",
                             isDate ? "left-0 z-30" : "z-20",
-                            !isLeaf && "border-surface/10 border-l",
+                            !isLeaf && "border-ink/10 border-l",
                           )}
                         >
                           {header.isPlaceholder ? null : !isLeaf ? (
@@ -346,13 +346,13 @@ export function TablaView({
                             <th
                               key={column.id}
                               scope="row"
-                              className="bg-panel border-surface/10 sticky left-0 z-10 border-b p-0 font-normal"
+                              className="bg-panel border-ink/10 sticky left-0 z-10 border-b p-0 font-normal"
                             >
                               <button
                                 type="button"
                                 onClick={() => onOpenDay(day.date)}
                                 title="Abrir la página del día"
-                                className="hover:bg-surface/10 active:bg-surface/15 h-10 w-full px-2 font-mono whitespace-nowrap tabular-nums underline-offset-4 hover:underline focus-visible:-outline-offset-2"
+                                className="hover:bg-ink/10 active:bg-ink/15 h-10 w-full px-2 font-mono whitespace-nowrap tabular-nums underline-offset-4 hover:underline focus-visible:-outline-offset-2"
                               >
                                 {label}
                               </button>
@@ -365,18 +365,18 @@ export function TablaView({
                           return (
                             <td
                               key={column.id}
-                              className="border-surface/10 w-full max-w-0 min-w-48 border-b p-0"
+                              className="border-ink/10 w-full max-w-0 min-w-48 border-b p-0"
                             >
                               <button
                                 type="button"
                                 onClick={() => onOpenDay(day.date)}
                                 aria-label={`Feelings del ${label}`}
-                                className="hover:bg-surface/10 active:bg-surface/15 flex h-10 w-full items-center gap-2 px-2 text-left focus-visible:-outline-offset-2"
+                                className="hover:bg-ink/10 active:bg-ink/15 flex h-10 w-full items-center gap-2 px-2 text-left focus-visible:-outline-offset-2"
                               >
                                 <span
                                   className={cx(
                                     "min-w-0 flex-1 truncate",
-                                    preview === "" && "text-surface/70",
+                                    preview === "" && "text-ink/70",
                                   )}
                                 >
                                   {preview || "Escribir…"}
@@ -407,7 +407,7 @@ export function TablaView({
                           <td
                             key={column.id}
                             className={cx(
-                              "border-surface/10 min-w-16 border-b p-0",
+                              "border-ink/10 min-w-16 border-b p-0",
                               STATUS_TINT[status],
                             )}
                           >
@@ -445,12 +445,12 @@ export function TablaView({
               </tbody>
             </table>
             {rows.length === 0 ? (
-              <p className="text-surface/70 p-4 text-center text-sm">
+              <p className="text-ink/70 p-4 text-center text-sm">
                 Ningún día cumple los filtros.
               </p>
             ) : null}
           </div>
-          <p className="text-surface/70 px-2 font-mono text-xs" role="status">
+          <p className="text-ink/70 px-2 font-mono text-xs" role="status">
             {rows.length === days.length
               ? `${days.length} ${days.length === 1 ? "día" : "días"}`
               : `${rows.length} de ${days.length} días`}

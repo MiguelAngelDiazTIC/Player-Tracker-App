@@ -45,8 +45,8 @@ function sampleText(cell: SheetCell | undefined): string {
 }
 
 const TH =
-  "border-surface/10 text-surface/70 border-b px-2 py-2 text-left font-mono text-xs font-medium tracking-wide uppercase";
-const TD = "border-surface/10 border-b px-2 py-2";
+  "border-ink/10 text-ink/70 border-b px-2 py-2 text-left text-xs font-semibold tracking-wide uppercase";
+const TD = "border-ink/10 border-b px-2 py-2";
 
 /** Importa la hoja de cálculo (CSV o Excel) con vista previa antes de guardar. */
 export function SheetImportPanel() {
@@ -134,7 +134,7 @@ export function SheetImportPanel() {
   if (!sheet || !result) {
     return (
       <Card title="Importar mi hoja">
-        <p className="text-surface/70 text-sm">
+        <p className="text-ink/70 text-sm">
           Trae tus días desde un CSV o un Excel. Verás cómo se ha entendido cada
           columna antes de guardar nada.
         </p>
@@ -216,7 +216,7 @@ export function SheetImportPanel() {
                       {name}
                     </th>
                     <td
-                      className={`${TD} text-surface/70 max-w-64 truncate font-mono`}
+                      className={`${TD} text-ink/70 max-w-64 truncate font-mono`}
                     >
                       {sample}
                     </td>
@@ -359,7 +359,7 @@ export function SheetImportPanel() {
                         {formatFieldValue(
                           field.type,
                           day.values[field.key] ?? null,
-                        ) || <span className="text-surface/70">—</span>}
+                        ) || <span className="text-ink/70">—</span>}
                       </td>
                     ))}
                     <td className={`${TD} max-w-80 truncate`}>
@@ -370,7 +370,7 @@ export function SheetImportPanel() {
               </tbody>
             </table>
             {result.days.length > PREVIEW_ROWS ? (
-              <p className="text-surface/70 p-2 text-xs">
+              <p className="text-ink/70 p-2 text-xs">
                 …y {result.days.length - PREVIEW_ROWS} días más.
               </p>
             ) : null}

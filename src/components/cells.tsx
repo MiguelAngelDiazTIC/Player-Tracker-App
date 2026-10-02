@@ -122,11 +122,11 @@ export function EditableText<T>({
         onBlur={commit}
         onKeyDown={handleKeyDown}
         className={cx(
-          "placeholder:text-surface/70 w-full min-w-0 text-sm",
+          "placeholder:text-ink/70 w-full min-w-0 text-sm",
           numeric && "font-mono tabular-nums",
           variant === "cell"
-            ? "hover:bg-surface/10 aria-invalid:outline-danger h-10 bg-transparent px-2 focus-visible:-outline-offset-2 aria-invalid:outline-2 aria-invalid:-outline-offset-2"
-            : "border-surface/20 bg-surface/5 hover:border-surface/40 aria-invalid:border-danger h-9 rounded-md border px-2",
+            ? "hover:bg-ink/5 aria-invalid:outline-danger h-10 bg-transparent px-2 focus-visible:-outline-offset-2 aria-invalid:outline-2 aria-invalid:-outline-offset-2"
+            : "border-ink/10 bg-surface/80 hover:border-ink/30 aria-invalid:border-danger h-9 rounded-full border px-3",
           variant === "cell" && numeric && "text-center",
           className,
         )}
@@ -135,7 +135,7 @@ export function EditableText<T>({
         <span
           id={problemId}
           role="alert"
-          className={variant === "cell" ? "sr-only" : "text-surface text-xs"}
+          className={variant === "cell" ? "sr-only" : "text-ink text-xs"}
         >
           {problem}
         </span>
@@ -229,7 +229,7 @@ export function ChoiceCell({
         if (event.key === "ArrowUp" && focusRow(nav, -1))
           event.preventDefault();
       }}
-      className="hover:bg-surface/10 active:bg-surface/15 flex h-10 w-full items-center justify-center focus-visible:-outline-offset-2"
+      className="hover:bg-ink/10 active:bg-ink/15 flex h-10 w-full items-center justify-center focus-visible:-outline-offset-2"
     >
       <Icon aria-hidden="true" className={cx("size-4", current.color)} />
     </button>

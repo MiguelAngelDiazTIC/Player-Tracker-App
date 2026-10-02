@@ -201,7 +201,7 @@ export function FieldChart({
         kind === "line-average" ? (
           <ChartLegend
             items={[
-              { label: "Cada día", swatch: "bg-surface/35", shape: "line" },
+              { label: "Cada día", swatch: "bg-ink/35", shape: "line" },
               { label: "Media de 7 días", swatch: "bg-chart", shape: "line" },
             ]}
           />
@@ -209,7 +209,7 @@ export function FieldChart({
           <ChartLegend
             items={[
               { label: field.label, swatch: "bg-chart", shape: "line" },
-              { label: goalLabel, swatch: "bg-surface/55", shape: "line" },
+              { label: goalLabel, swatch: "bg-ink/55", shape: "line" },
             ]}
           />
         ) : undefined

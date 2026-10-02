@@ -24,7 +24,7 @@ export function Card({ title, actions, className, children }: CardProps) {
           {title ? (
             <h2
               id={titleId}
-              className="text-surface/70 font-mono text-xs tracking-wide uppercase"
+              className="text-ink/70 text-xs font-semibold tracking-wide uppercase"
             >
               {title}
             </h2>
@@ -39,7 +39,7 @@ export function Card({ title, actions, className, children }: CardProps) {
 
 export function Chip({ children }: { children: ReactNode }) {
   return (
-    <span className="bg-surface/10 inline-flex items-center rounded-sm px-2 py-0.5 font-mono text-xs">
+    <span className="bg-ink/5 border-ink/10 inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-medium">
       {children}
     </span>
   );
@@ -48,19 +48,19 @@ export function Chip({ children }: { children: ReactNode }) {
 type Tone = "info" | "success" | "warning" | "danger";
 
 const TONES: Record<Tone, { box: string; icon: typeof Info; color: string }> = {
-  info: { box: "border-surface/20 bg-surface/10", icon: Info, color: "" },
+  info: { box: "border-ink/10 bg-surface/70", icon: Info, color: "" },
   success: {
-    box: "border-success/60 bg-success/20",
+    box: "border-success/30 bg-success/10",
     icon: CircleCheck,
     color: "text-success",
   },
   warning: {
-    box: "border-warning/60 bg-warning/25",
+    box: "border-warning/30 bg-warning/10",
     icon: TriangleAlert,
     color: "text-warning",
   },
   danger: {
-    box: "border-danger bg-danger/25",
+    box: "border-danger/30 bg-danger/10",
     icon: CircleAlert,
     color: "text-danger",
   },
@@ -79,7 +79,7 @@ export function Notice({ tone = "info", className, children }: NoticeProps) {
     <div
       role={tone === "danger" ? "alert" : "status"}
       className={cx(
-        "flex items-start gap-2 rounded-md border p-2 text-sm",
+        "flex items-start gap-2 rounded-md border px-4 py-2 text-sm",
         box,
         className,
       )}

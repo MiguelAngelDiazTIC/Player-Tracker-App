@@ -6,20 +6,20 @@ export const CHART = {
   /** Serie principal. */
   series: "var(--color-chart)",
   /** Serie de contexto (el dato diario bajo su media móvil). */
-  muted: "color-mix(in srgb, var(--color-surface) 35%, transparent)",
+  muted: "color-mix(in srgb, var(--color-ink) 35%, transparent)",
   /** Rejilla y ejes: un paso por encima del panel, sin llamar la atención. */
-  grid: "color-mix(in srgb, var(--color-surface) 10%, transparent)",
+  grid: "color-mix(in srgb, var(--color-ink) 10%, transparent)",
   /** Línea de objetivo. */
-  goal: "color-mix(in srgb, var(--color-surface) 55%, transparent)",
+  goal: "color-mix(in srgb, var(--color-ink) 55%, transparent)",
   /** Fondo del panel: separa marcas que se tocan. */
   surface: "var(--color-panel)",
   good: "var(--color-success)",
   bad: "var(--color-danger)",
-  neutral: "color-mix(in srgb, var(--color-surface) 40%, transparent)",
+  neutral: "color-mix(in srgb, var(--color-ink) 40%, transparent)",
 } as const;
 
 export const AXIS_TICK = {
-  fill: "color-mix(in srgb, var(--color-surface) 70%, transparent)",
+  fill: "color-mix(in srgb, var(--color-ink) 70%, transparent)",
   fontSize: 12,
   fontFamily: "var(--font-mono)",
 } as const;

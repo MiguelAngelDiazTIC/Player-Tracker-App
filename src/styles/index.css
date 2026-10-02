@@ -3,45 +3,55 @@
 @import "@fontsource-variable/jetbrains-mono/index.css";
 
 /*
- * Tokens de la skill de glassmorphism (docs/PLAN.md, "Estilo visual").
- * Las escalas por defecto de Tailwind se vacían para que solo existan estos.
+ * Tokens del estilo de cristal claro (docs/DESIGN.md). Las escalas por
+ * defecto de Tailwind se vacían para que solo existan estos.
  */
 @theme {
   --color-*: initial;
-  --color-primary: #1856ff;
-  --color-secondary: #3a344e;
-  --color-success: #07ca6b;
-  --color-warning: #e89558;
-  --color-danger: #ea2143;
+  /* Acento: acción principal y elemento activo. Lleva texto blanco encima. */
+  --color-primary: #0a8158;
+  /* Los dos extremos del degradado de fondo. */
+  --color-secondary: #c9a4cb;
+  --color-lime: #d8f5bc;
+  /* Estados. Oscuros para que iconos y texto se lean sobre cristal claro. */
+  --color-success: #0a8158;
+  --color-warning: #b4580f;
+  --color-danger: #d11a3a;
+  /* Blanco: base del cristal y texto sobre el acento. */
   --color-surface: #ffffff;
   /* Token "text" de la skill; se llama ink para no escribir `text-text`. */
   --color-ink: #141414;
-  /* Fondo oscuro de la app, sobre el que flotan los paneles de cristal. */
-  --color-canvas: #0c0a17;
-  /* Canvas con un 12% de surface: el fondo opaco de tablas y diálogos. */
-  --color-panel: #292733;
-  /*
-   * Color de las series en las gráficas: primary aclarado hasta dar 3:1
-   * sobre panel (validado con el comprobador de la skill dataviz).
-   */
-  --color-chart: #5c86ff;
+  /* Base clara del fondo, bajo el degradado. */
+  --color-canvas: #f3eaf2;
+  /* Fondo opaco de tablas, diálogos y gráficas. */
+  --color-panel: #fcf9fc;
+  /* Series de las gráficas: un azul que no se confunde con los estados. */
+  --color-chart: #1856ff;
 
   --font-sans:
     "Plus Jakarta Sans Variable", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono Variable", ui-monospace, monospace;
 
   --radius-*: initial;
-  --radius-sm: 4px;
-  --radius-md: 8px;
+  /* Celdas, chips pequeños y marcas. */
+  --radius-sm: 8px;
+  /* Tarjetas y paneles; en un control de 36px de alto da forma de píldora. */
+  --radius-md: 18px;
 
   --blur-*: initial;
   --blur-glass: 24px;
+
+  --shadow-*: initial;
+  /* Sombra suave que despega el cristal del fondo. */
+  --shadow-glass: 0 10px 30px
+    color-mix(in srgb, var(--color-ink) 8%, transparent);
+  /* Sombra corta de píldoras y controles. */
+  --shadow-pill: 0 2px 8px color-mix(in srgb, var(--color-ink) 10%, transparent);
 }
 
 @layer base {
   html {
-    /* Controles nativos (fecha, desplegables, barras) en su versión oscura. */
-    color-scheme: dark;
+    color-scheme: light;
   }
 
   html,
@@ -54,34 +64,28 @@
     /* La ventana no se desplaza: cada vista desplaza su propio contenido. */
     overflow: hidden;
     background-color: var(--color-canvas);
-    background-image:
-      radial-gradient(
-        60rem 40rem at 10% -10%,
-        color-mix(in srgb, var(--color-primary) 45%, transparent),
-        transparent 70%
-      ),
-      radial-gradient(
-        50rem 40rem at 100% 100%,
-        color-mix(in srgb, var(--color-secondary) 80%, transparent),
-        transparent 70%
-      );
+    background-image: linear-gradient(
+      115deg,
+      var(--color-secondary) 0%,
+      var(--color-canvas) 42%,
+      var(--color-lime) 100%
+    );
     background-attachment: fixed;
-    color: var(--color-surface);
+    color: var(--color-ink);
     font-family: var(--font-sans);
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-surface);
+    outline: 2px solid var(--color-ink);
     outline-offset: 2px;
   }
 }
 
-/* Cristal translúcido con desenfoque fuerte: fondos y tarjetas. */
+/* Cristal translúcido con desenfoque: barra lateral y tarjetas. */
 @utility glass {
-  background-color: color-mix(in srgb, var(--color-surface) 8%, transparent);
-  border: 1px solid color-mix(in srgb, var(--color-surface) 16%, transparent);
-  box-shadow: inset 0 1px 0
-    color-mix(in srgb, var(--color-surface) 12%, transparent);
+  background-color: color-mix(in srgb, var(--color-surface) 58%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-surface) 80%, transparent);
+  box-shadow: var(--shadow-glass);
   backdrop-filter: blur(var(--blur-glass)) saturate(140%);
 
   @media (prefers-reduced-transparency: reduce) {
@@ -93,10 +97,11 @@
 /* Panel opaco: tablas, diálogos y cualquier bloque de texto denso (WCAG AA). */
 @utility glass-solid {
   background-color: var(--color-panel);
-  border: 1px solid color-mix(in srgb, var(--color-surface) 16%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-surface) 90%, transparent);
+  box-shadow: var(--shadow-glass);
 }
 
-/* Texto con formato del editor de feelings. */
+/* Texto con formato del editor de feelings y de las notas. */
 @utility notes {
   outline: none;
   line-height: 1.6;
@@ -127,8 +132,7 @@
     list-style: decimal;
   }
   & blockquote {
-    border-left: 2px solid
-      color-mix(in srgb, var(--color-surface) 40%, transparent);
+    border-left: 2px solid color-mix(in srgb, var(--color-ink) 30%, transparent);
     padding-left: calc(var(--spacing) * 4);
   }
   & a {
@@ -140,9 +144,9 @@
   }
   & img {
     max-width: 100%;
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-sm);
   }
   & hr {
-    border-color: color-mix(in srgb, var(--color-surface) 20%, transparent);
+    border-color: color-mix(in srgb, var(--color-ink) 15%, transparent);
   }
 }

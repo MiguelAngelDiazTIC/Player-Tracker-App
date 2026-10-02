@@ -41,16 +41,16 @@ Mantén el código Rust al mínimo: configuración de Tauri y plugins. La lógic
 
 ## Estilo visual
 
-Tokens de la skill (no uses valores sueltos, define tokens en Tailwind):
+El usuario cambió el aspecto el 02/10/2026 con una imagen de referencia: cristal claro sobre un degradado malva y verde, acento verde y controles en forma de píldora. Sustituye al cristal oscuro con los colores de la skill que tenían las fases 0 a 4. La guía completa y los valores están en [DESIGN.md](DESIGN.md); en resumen (no uses valores sueltos, define tokens en Tailwind):
 
-- Colores: primary `#1856FF`, secondary `#3A344E`, success `#07CA6B`, warning `#E89558`, danger `#EA2143`, surface `#FFFFFF`, text `#141414`.
-- Tipografía: Plus Jakarta Sans para texto y títulos, JetBrains Mono para números (K/D, ACS, horas) y etiquetas.
-- Radios 4px y 8px; espaciado base 8px y 16px.
-- Fondo oscuro con color; paneles translúcidos con `backdrop-filter: blur`, borde claro semitransparente y tarjetas tipo bento.
-- Accesibilidad WCAG 2.2 AA: el texto de las tablas va sobre cristal casi opaco; el desenfoque fuerte solo en fondos y tarjetas. Foco visible y todo usable con teclado.
+- Colores: primary `#0A8158` (acento), fondo en degradado de `#C9A4CB` a `#D8F5BC`, success `#0A8158`, warning `#B4580F`, danger `#D11A3A`, surface `#FFFFFF`, text `#141414`, y `#1856FF` para las series de las gráficas.
+- Tipografía: Plus Jakarta Sans para texto, títulos y etiquetas; JetBrains Mono solo para números que se alinean (tablas, ejes, fechas).
+- Píldoras en botones, campos y pestañas; tarjetas con radio de 18px; espaciado base 8px y 16px.
+- Fondo claro con color; paneles blancos translúcidos con `backdrop-filter: blur`, borde blanco, sombra suave y tarjetas tipo bento.
+- Accesibilidad WCAG 2.2 AA: el texto de las tablas va sobre un panel opaco; el desenfoque solo en fondos y tarjetas. Foco visible y todo usable con teclado.
 - Verde = cumplido o por encima de la media, rojo = fallado, naranja = aviso.
 
-Dónde viven los tokens: Tailwind 4 se configura en CSS, así que están en el bloque `@theme` de [src/styles/index.css](../src/styles/index.css). El token `text` de la skill se llama `ink` (para no escribir `text-text`) y se añaden `canvas` para el fondo oscuro y `panel` para el fondo opaco de tablas y diálogos. Las utilidades `glass` (translúcido con desenfoque) y `glass-solid` (opaco, para tablas) están en el mismo archivo.
+Dónde viven los tokens: Tailwind 4 se configura en CSS, así que están en el bloque `@theme` de [src/styles/index.css](../src/styles/index.css). El token `text` de la skill se llama `ink` (para no escribir `text-text`) y se añaden `canvas` y `lime` para el fondo, `panel` para el fondo opaco de tablas y diálogos y `chart` para las gráficas. Las utilidades `glass` (translúcido con desenfoque) y `glass-solid` (opaco, para tablas) están en el mismo archivo.
 
 Las reglas de componentes, accesibilidad y tono están en [DESIGN.md](DESIGN.md). Antes de cualquier trabajo visual, carga la skill de glassmorphism (`typeui-glassmorphism` en Claude Code) y aplica esa guía.
 

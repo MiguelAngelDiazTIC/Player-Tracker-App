@@ -55,7 +55,7 @@ function Tool({ label, icon: Icon, active, onClick }: ToolProps) {
         "flex size-9 items-center justify-center rounded-md",
         active
           ? "bg-primary text-surface"
-          : "text-surface/80 hover:bg-surface/10 hover:text-surface active:bg-surface/15",
+          : "text-ink/80 hover:bg-ink/10 hover:text-ink active:bg-ink/15",
       )}
     >
       <Icon aria-hidden="true" className="size-4" />
@@ -176,11 +176,11 @@ export function FeelingsEditor({
   const chain = () => editor.chain().focus();
 
   return (
-    <div className="border-surface/20 bg-panel flex min-h-0 flex-1 flex-col rounded-md border">
+    <div className="border-ink/10 bg-panel flex min-h-0 flex-1 flex-col rounded-md border">
       <div
         role="toolbar"
         aria-label="Formato del texto"
-        className="border-surface/20 flex flex-wrap gap-2 border-b p-2"
+        className="border-ink/20 flex flex-wrap gap-2 border-b p-2"
       >
         <Tool
           label="Negrita"

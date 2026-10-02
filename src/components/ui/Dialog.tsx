@@ -55,7 +55,7 @@ export function Dialog({
   }
 
   return (
-    <div className="bg-canvas/70 fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div className="bg-ink/30 fixed inset-0 z-50 flex items-center justify-center p-4">
       <div
         ref={panelRef}
         role="dialog"
@@ -70,7 +70,7 @@ export function Dialog({
         <h2 id={titleId} className="text-lg font-bold">
           {title}
         </h2>
-        <div className="text-surface/80 flex flex-col gap-2 text-sm">
+        <div className="text-ink/80 flex flex-col gap-2 text-sm">
           {children}
         </div>
         <div className="flex flex-wrap justify-end gap-2">{actions}</div>

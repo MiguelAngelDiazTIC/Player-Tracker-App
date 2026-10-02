@@ -61,7 +61,7 @@ export function ResultsChart({ title, summary, rows }: ResultsChartProps) {
         <ChartLegend
           items={[
             { label: "Victorias", swatch: "bg-success", shape: "rect" },
-            { label: "Empates", swatch: "bg-surface/40", shape: "rect" },
+            { label: "Empates", swatch: "bg-ink/40", shape: "rect" },
             { label: "Derrotas", swatch: "bg-danger", shape: "rect" },
           ]}
         />

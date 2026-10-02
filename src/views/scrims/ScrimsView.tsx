@@ -107,9 +107,9 @@ function parseText(text: string): ParseResult<string> {
 
 const identity = (text: string) => text;
 
-const CELL = "border-surface/10 border-b p-0";
+const CELL = "border-ink/10 border-b p-0";
 const SELECT_CELL =
-  "hover:bg-surface/10 h-10 w-full bg-transparent px-2 text-sm focus-visible:-outline-offset-2 [&>option]:bg-canvas [&>option]:text-surface";
+  "hover:bg-ink/10 h-10 w-full bg-transparent px-2 text-sm focus-visible:-outline-offset-2 [&>option]:bg-canvas [&>option]:text-ink";
 
 interface ScrimsFilter {
   preset: RangePreset;
@@ -234,7 +234,7 @@ export function ScrimsView() {
 
       {scrims.length === 0 ? (
         <div className="glass flex flex-1 items-center justify-center rounded-md p-4 text-center">
-          <p className="text-surface/70 max-w-md">
+          <p className="text-ink/70 max-w-md">
             Aún no hay partidas. Añade cada 10mans o scrim que juegues: sus
             estadísticas van aparte de las rankeds y la fila del día solo
             muestra cuántas jugaste.
@@ -262,7 +262,7 @@ export function ScrimsView() {
                               ? ariaSort(sorted)
                               : undefined
                           }
-                          className={`bg-panel border-surface/10 text-surface/70 sticky top-0 h-10 border-b p-0 font-mono text-xs font-medium ${
+                          className={`bg-panel border-ink/10 text-ink/70 sticky top-0 h-10 border-b p-0 text-xs font-semibold ${
                             header.column.id === "date" ? "left-0 z-30" : "z-20"
                           }`}
                         >
@@ -282,7 +282,7 @@ export function ScrimsView() {
                     })}
                     <th
                       scope="col"
-                      className="bg-panel border-surface/10 sticky top-0 z-20 border-b"
+                      className="bg-panel border-ink/10 sticky top-0 z-20 border-b"
                     >
                       <span className="sr-only">Acciones</span>
                     </th>
@@ -346,7 +346,7 @@ export function ScrimsView() {
                               change({ date: event.target.value });
                             }
                           }}
-                          className="hover:bg-surface/10 h-10 w-full bg-transparent px-2 font-mono text-sm tabular-nums focus-visible:-outline-offset-2"
+                          className="hover:bg-ink/10 h-10 w-full bg-transparent px-2 font-mono text-sm tabular-nums focus-visible:-outline-offset-2"
                         />
                       </td>
                       <td className={`${CELL} min-w-28`}>
@@ -398,7 +398,7 @@ export function ScrimsView() {
                       <td className={`${CELL} min-w-28`}>
                         <div className="flex items-center">
                           {count("roundsWon", "Rondas ganadas")}
-                          <span aria-hidden="true" className="text-surface/70">
+                          <span aria-hidden="true" className="text-ink/70">
                             –
                           </span>
                           {count("roundsLost", "Rondas perdidas")}
@@ -415,7 +415,7 @@ export function ScrimsView() {
                         title="Kills entre muertes"
                       >
                         {kd === null ? (
-                          <span className="text-surface/70">—</span>
+                          <span className="text-ink/70">—</span>
                         ) : (
                           kd.toFixed(2)
                         )}
@@ -435,7 +435,7 @@ export function ScrimsView() {
                           aria-label={`Eliminar la ${name}`}
                           title="Eliminar partida"
                           onClick={() => setDeleting(match)}
-                          className="text-surface/80 hover:bg-danger/25 hover:text-surface active:bg-danger/40 flex size-10 items-center justify-center focus-visible:-outline-offset-2"
+                          className="text-ink/80 hover:bg-danger/25 hover:text-ink active:bg-danger/40 flex size-10 items-center justify-center focus-visible:-outline-offset-2"
                         >
                           <Trash2 aria-hidden="true" className="size-4" />
                         </button>
@@ -446,12 +446,12 @@ export function ScrimsView() {
               </tbody>
             </table>
             {rows.length === 0 ? (
-              <p className="text-surface/70 p-4 text-center text-sm">
+              <p className="text-ink/70 p-4 text-center text-sm">
                 Ninguna partida cumple los filtros.
               </p>
             ) : null}
           </div>
-          <p className="text-surface/70 px-2 font-mono text-xs" role="status">
+          <p className="text-ink/70 px-2 font-mono text-xs" role="status">
             {rows.length === scrims.length
               ? `${scrims.length} ${scrims.length === 1 ? "partida" : "partidas"}`
               : `${rows.length} de ${scrims.length} partidas`}
