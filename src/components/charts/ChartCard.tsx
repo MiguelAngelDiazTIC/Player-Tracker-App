@@ -28,13 +28,13 @@ export function ChartCard({
           {title}
         </h3>
         {summary ? (
-          <span className="text-surface/70 shrink-0 font-mono text-xs">
+          <span className="text-ink/70 shrink-0 font-mono text-xs">
             {summary}
           </span>
         ) : null}
       </figcaption>
       {empty ? (
-        <p className="text-surface/70 flex h-44 items-center justify-center text-sm">
+        <p className="text-ink/70 flex h-44 items-center justify-center text-sm">
           Sin datos en este rango
         </p>
       ) : (
@@ -60,7 +60,7 @@ interface LegendItem {
 /** Leyenda bajo la gráfica. El texto va en color de texto, no en el de la serie. */
 export function ChartLegend({ items }: { items: readonly LegendItem[] }) {
   return (
-    <ul className="text-surface/70 flex flex-wrap gap-4 text-xs">
+    <ul className="text-ink/70 flex flex-wrap gap-4 text-xs">
       {items.map((item) => (
         <li key={item.label} className="flex items-center gap-2">
           <span

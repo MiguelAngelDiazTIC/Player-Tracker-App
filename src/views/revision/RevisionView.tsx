@@ -34,7 +34,7 @@ function Conclusion({ label, value, onCommit }: ConclusionProps) {
     <div className="flex flex-col gap-2">
       <label
         htmlFor={id}
-        className="text-surface/70 font-mono text-xs tracking-wide uppercase"
+        className="text-ink/70 text-xs font-semibold tracking-wide uppercase"
       >
         {label}
       </label>
@@ -47,7 +47,7 @@ function Conclusion({ label, value, onCommit }: ConclusionProps) {
           if (draft !== null && draft !== value) onCommit(draft);
           setDraft(null);
         }}
-        className="border-surface/20 bg-surface/5 hover:border-surface/40 resize-y rounded-md border p-2 text-sm"
+        className="border-ink/10 bg-surface/80 hover:border-ink/30 resize-y rounded-md border px-4 py-2 text-sm"
       />
     </div>
   );
@@ -125,7 +125,7 @@ export function RevisionView({ onOpenDay }: RevisionViewProps) {
                   </Button>
                 ) : (
                   <span
-                    className="border-surface/10 text-surface/70 inline-flex h-9 items-center rounded-md border px-4 text-sm"
+                    className="border-ink/10 text-ink/70 inline-flex h-9 items-center rounded-md border px-4 text-sm"
                     title="Sin registrar"
                   >
                     {formatDate(date).slice(0, 5)}
@@ -169,7 +169,7 @@ export function RevisionView({ onOpenDay }: RevisionViewProps) {
           </div>
 
           {summary.scrims.count > 0 ? (
-            <p className="text-surface/70 px-2 text-sm">
+            <p className="text-ink/70 px-2 text-sm">
               Scrims y 10mans: {summary.scrims.count}{" "}
               {summary.scrims.count === 1 ? "partida" : "partidas"}
               {summary.scrims.winRate === null
@@ -202,7 +202,7 @@ export function RevisionView({ onOpenDay }: RevisionViewProps) {
         </section>
 
         <Card title="Tus 3 conclusiones">
-          <p className="text-surface/70 text-sm">
+          <p className="text-ink/70 text-sm">
             Mira el resumen y escribe qué te llevas de la semana. Se guarda al
             salir de cada cuadro.
           </p>

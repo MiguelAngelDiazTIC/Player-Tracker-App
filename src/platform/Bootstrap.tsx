@@ -69,7 +69,7 @@ export function Bootstrap({ children }: BootstrapProps) {
 
   if (state.step === "loading") {
     return (
-      <p role="status" className="text-surface/70 p-4">
+      <p role="status" className="text-ink/70 p-4">
         Abriendo tus datos…
       </p>
     );
@@ -81,7 +81,7 @@ export function Bootstrap({ children }: BootstrapProps) {
       <Card className="w-full max-w-xl">
         <div>
           <h1 className="text-3xl font-bold">Player Tracker</h1>
-          <p className="text-surface/70">
+          <p className="text-ink/70">
             Tus datos se guardan en una carpeta de tu ordenador, sin cuentas ni
             servidores. Elige dónde.
           </p>

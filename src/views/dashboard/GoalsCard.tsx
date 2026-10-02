@@ -51,7 +51,7 @@ export function GoalsCard() {
   return (
     <Card title="Objetivos">
       {goals.length === 0 ? (
-        <p className="text-surface/70 text-sm">
+        <p className="text-ink/70 text-sm">
           Aún no hay objetivos. Apunta a dónde quieres llegar y, si quieres,
           para cuándo.
         </p>
@@ -81,12 +81,12 @@ export function GoalsCard() {
                     <span
                       className={cx(
                         "block truncate text-sm font-semibold",
-                        goal.done && "text-surface/70 line-through",
+                        goal.done && "text-ink/70 line-through",
                       )}
                     >
                       {goal.title}
                     </span>
-                    <span className="text-surface/70 block font-mono text-xs">
+                    <span className="text-ink/70 block font-mono text-xs">
                       {deadlineText(goal, today)}
                       {overdue ? " · fuera de plazo" : ""}
                     </span>
@@ -99,7 +99,7 @@ export function GoalsCard() {
                   onClick={() =>
                     save(goals.filter((other) => other.id !== goal.id))
                   }
-                  className="text-surface/80 hover:bg-danger/25 hover:text-surface active:bg-danger/40 flex size-9 shrink-0 items-center justify-center rounded-md"
+                  className="text-ink/80 hover:bg-danger/25 hover:text-ink active:bg-danger/40 flex size-9 shrink-0 items-center justify-center rounded-md"
                 >
                   <Trash2 aria-hidden="true" className="size-4" />
                 </button>

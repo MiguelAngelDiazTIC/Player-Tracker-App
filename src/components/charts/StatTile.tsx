@@ -67,7 +67,7 @@ function Sparkline({ values, current }: SparklineProps) {
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      <polyline points={path(points)} className="stroke-surface/35" />
+      <polyline points={path(points)} className="stroke-ink/35" />
       {split !== -1 ? (
         <polyline points={path(currentPoints)} className="stroke-chart" />
       ) : null}
@@ -88,10 +88,11 @@ interface StatTileProps {
 }
 
 const DELTA_ICON = { up: TrendingUp, down: TrendingDown, flat: Minus } as const;
+/** Chip de tendencia: el tinte y el icono dan el tono; el texto sigue en ink. */
 const DELTA_TONE = {
-  good: "text-success",
-  bad: "text-danger",
-  neutral: "text-surface/70",
+  good: { chip: "bg-success/15", icon: "text-success" },
+  bad: { chip: "bg-danger/10", icon: "text-danger" },
+  neutral: { chip: "bg-ink/5", icon: "text-ink/70" },
 } as const;
 
 /** Una cifra con su contexto: valor, cambio respecto al periodo anterior y tendencia. */
@@ -99,19 +100,26 @@ export function StatTile({ label, value, hint, delta, trend }: StatTileProps) {
   const Icon = delta ? DELTA_ICON[delta.direction] : null;
   return (
     <div className="glass flex flex-col gap-2 rounded-md p-4">
-      <p className="text-surface/70 truncate font-mono text-xs tracking-wide uppercase">
+      <p className="text-ink/70 truncate text-xs font-semibold tracking-wide uppercase">
         {label}
       </p>
       <p className="text-3xl font-semibold">{value}</p>
-      {hint ? <p className="text-surface/70 text-xs">{hint}</p> : null}
+      {hint ? <p className="text-ink/70 text-xs">{hint}</p> : null}
       {delta && Icon ? (
-        <p className="flex items-center gap-1 text-xs">
-          <Icon
-            aria-hidden="true"
-            className={cx("size-4 shrink-0", DELTA_TONE[delta.tone])}
-          />
-          <span className="font-mono font-semibold">{delta.text}</span>
-          <span className="text-surface/70">{delta.versus}</span>
+        <p className="flex flex-wrap items-center gap-2 text-xs">
+          <span
+            className={cx(
+              "inline-flex items-center gap-1 rounded-full px-2 py-0.5 font-semibold",
+              DELTA_TONE[delta.tone].chip,
+            )}
+          >
+            <Icon
+              aria-hidden="true"
+              className={cx("size-4 shrink-0", DELTA_TONE[delta.tone].icon)}
+            />
+            {delta.text}
+          </span>
+          <span className="text-ink/70">{delta.versus}</span>
         </p>
       ) : null}
       {trend ? <Sparkline {...trend} /> : null}

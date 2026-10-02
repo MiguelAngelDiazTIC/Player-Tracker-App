@@ -40,11 +40,11 @@ export function DataFolderPanel() {
 
   return (
     <Card title="Carpeta de datos">
-      <p className="text-surface/70 text-sm">
+      <p className="text-ink/70 text-sm">
         Todos tus datos están en esta carpeta de tu ordenador. Puedes copiarla o
         sincronizarla con Drive.
       </p>
-      <p className="bg-surface/5 border-surface/20 rounded-md border p-2 font-mono text-sm break-all">
+      <p className="bg-surface/60 border-ink/10 rounded-md border px-4 py-2 font-mono text-sm break-all">
         {platform.dataFolder}
       </p>
       {error ? <Notice tone="danger">{error}</Notice> : null}

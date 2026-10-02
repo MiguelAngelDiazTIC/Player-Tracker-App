@@ -20,7 +20,7 @@ export function ChoiceGroup({
   const name = useId();
   return (
     <fieldset className="flex flex-col gap-2">
-      <legend className="text-surface/70 mb-2 font-mono text-xs tracking-wide uppercase">
+      <legend className="text-ink/70 mb-2 text-xs font-semibold tracking-wide uppercase">
         {label}
       </legend>
       <div className="flex flex-wrap gap-2">
@@ -31,11 +31,11 @@ export function ChoiceGroup({
             <label
               key={String(choice.value)}
               className={cx(
-                "flex h-9 cursor-pointer items-center gap-2 rounded-md border px-2 text-sm",
-                "has-focus-visible:outline-surface has-focus-visible:outline-2 has-focus-visible:outline-offset-2",
+                "flex h-9 cursor-pointer items-center gap-2 rounded-full border px-3 text-sm",
+                "has-focus-visible:outline-ink has-focus-visible:outline-2 has-focus-visible:outline-offset-2",
                 checked
                   ? "border-primary bg-primary text-surface font-semibold"
-                  : "border-surface/20 bg-surface/5 text-surface/80 hover:bg-surface/10 hover:text-surface",
+                  : "border-ink/10 bg-surface/80 text-ink/80 hover:bg-surface hover:text-ink",
               )}
             >
               <input

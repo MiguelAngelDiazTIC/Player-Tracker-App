@@ -21,13 +21,13 @@ const NO_DATA: Choice = {
   value: null,
   label: "sin dato",
   icon: Minus,
-  color: "text-surface/70",
+  color: "text-ink/70",
 };
 
 const BOOL_CHOICES: readonly Choice[] = [
   NO_DATA,
-  { value: true, label: "sí", icon: Check, color: "text-surface" },
-  { value: false, label: "no", icon: X, color: "text-surface" },
+  { value: true, label: "sí", icon: Check, color: "text-ink" },
+  { value: false, label: "no", icon: X, color: "text-ink" },
 ];
 
 const TRISTATE_CHOICES: readonly Choice[] = [
@@ -36,19 +36,19 @@ const TRISTATE_CHOICES: readonly Choice[] = [
     value: "done" satisfies TristateValue,
     label: "hecho",
     icon: Check,
-    color: "text-surface",
+    color: "text-ink",
   },
   {
     value: "rest" satisfies TristateValue,
     label: "descanso",
     icon: Moon,
-    color: "text-surface",
+    color: "text-ink",
   },
   {
     value: "missed" satisfies TristateValue,
     label: "no hecho",
     icon: X,
-    color: "text-surface",
+    color: "text-ink",
   },
 ];
 

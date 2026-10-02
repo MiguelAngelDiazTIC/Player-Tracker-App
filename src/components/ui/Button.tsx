@@ -10,13 +10,13 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const VARIANTS: Record<Variant, string> = {
-  primary: "bg-primary text-surface hover:bg-primary/85 active:bg-primary/70",
+  primary:
+    "bg-primary text-surface shadow-pill hover:bg-primary/90 active:bg-primary/80",
   secondary:
-    "border border-surface/20 bg-surface/10 text-surface hover:bg-surface/20 active:bg-surface/25",
-  ghost:
-    "text-surface/80 hover:bg-surface/10 hover:text-surface active:bg-surface/15",
+    "border border-ink/10 bg-surface/80 text-ink shadow-pill hover:bg-surface active:bg-ink/5",
+  ghost: "text-ink/80 hover:bg-surface/70 hover:text-ink active:bg-ink/10",
   danger:
-    "border border-danger bg-danger/20 text-surface hover:bg-danger/30 active:bg-danger/40",
+    "border border-danger/40 bg-danger/10 text-danger hover:bg-danger/20 active:bg-danger/30",
 };
 
 export function Button({
@@ -30,7 +30,7 @@ export function Button({
     <button
       type={type}
       className={cx(
-        "inline-flex h-9 shrink-0 items-center justify-center gap-2 rounded-md text-sm font-semibold whitespace-nowrap",
+        "inline-flex h-9 shrink-0 items-center justify-center gap-2 rounded-full text-sm font-semibold whitespace-nowrap",
         "disabled:pointer-events-none disabled:opacity-50",
         iconOnly ? "w-9" : "px-4",
         VARIANTS[variant],

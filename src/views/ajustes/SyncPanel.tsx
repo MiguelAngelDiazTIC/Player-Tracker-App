@@ -54,7 +54,7 @@ export function SyncPanel() {
 
   return (
     <Card title="Sincronización con HenrikDev">
-      <p className="text-surface/70 text-sm">
+      <p className="text-ink/70 text-sm">
         Opcional. Con una clave de HenrikDev (un servicio no oficial), el botón
         «Sincronizar» de cada día trae sus rankeds y calcula el K/D y el ACS.
         Solo se conecta cuando lo pulsas. La clave se pide en
@@ -102,7 +102,7 @@ export function SyncPanel() {
               const next = event.target.value.trim();
               if (next !== apiKey) setSetting(HENRIK_SETTINGS.apiKey, next);
             }}
-            className="border-surface/20 bg-surface/5 hover:border-surface/40 h-9 w-full rounded-md border px-2 font-mono text-sm"
+            className="border-ink/10 bg-surface/80 hover:border-ink/30 h-9 w-full rounded-full border px-3 font-mono text-sm"
           />
         </Labeled>
       </div>
@@ -115,7 +115,7 @@ export function SyncPanel() {
           {check.step === "busy" ? "Probando…" : "Probar conexión"}
         </Button>
         {config === null ? (
-          <span className="text-surface/70 text-sm">
+          <span className="text-ink/70 text-sm">
             Rellena los tres campos para poder sincronizar.
           </span>
         ) : null}

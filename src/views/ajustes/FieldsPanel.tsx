@@ -149,7 +149,7 @@ function ThresholdsDialog({ field, onSave, onClose }: ThresholdsDialogProps) {
 }
 
 const ICON_BUTTON =
-  "text-surface/80 hover:bg-surface/10 hover:text-surface active:bg-surface/15 flex size-9 shrink-0 items-center justify-center rounded-md disabled:pointer-events-none disabled:opacity-50";
+  "text-ink/80 hover:bg-ink/10 hover:text-ink active:bg-ink/15 flex size-9 shrink-0 items-center justify-center rounded-md disabled:pointer-events-none disabled:opacity-50";
 
 /** Qué se registra cada día: añadir, renombrar, reordenar y archivar campos. */
 export function FieldsPanel() {
@@ -193,7 +193,7 @@ export function FieldsPanel() {
 
   return (
     <Card title="Campos">
-      <p className="text-surface/70 text-sm">
+      <p className="text-ink/70 text-sm">
         Lo que registras cada día. El orden y los grupos son los de la Tabla.
         Archivar un campo lo oculta sin borrar sus datos.
       </p>
@@ -205,8 +205,8 @@ export function FieldsPanel() {
             aria-label={`Grupo ${groupName}`}
             className="glass-solid flex flex-col rounded-md"
           >
-            <div className="border-surface/10 flex items-center gap-2 border-b px-2">
-              <h3 className="text-surface/70 flex-1 font-mono text-xs tracking-wide uppercase">
+            <div className="border-ink/10 flex items-center gap-2 border-b px-2">
+              <h3 className="text-ink/70 flex-1 text-xs font-semibold tracking-wide uppercase">
                 {groupName || "Sin grupo"}
               </h3>
               <button
@@ -235,7 +235,7 @@ export function FieldsPanel() {
               {groupFieldList.map((field, index) => (
                 <li
                   key={field.id}
-                  className="border-surface/10 flex flex-wrap items-center gap-2 border-b p-2 last:border-b-0"
+                  className="border-ink/10 flex flex-wrap items-center gap-2 border-b p-2 last:border-b-0"
                 >
                   <div className="w-48">
                     <EditableText<string>
@@ -315,7 +315,7 @@ export function FieldsPanel() {
 
       {archived.length > 0 ? (
         <section aria-label="Campos archivados" className="flex flex-col gap-2">
-          <h3 className="text-surface/70 font-mono text-xs tracking-wide uppercase">
+          <h3 className="text-ink/70 text-xs font-semibold tracking-wide uppercase">
             Archivados
           </h3>
           <ul className="flex flex-wrap gap-2">

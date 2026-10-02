@@ -6,7 +6,7 @@ import type {
 import { cx } from "../../lib/cx";
 
 const CONTROL =
-  "h-9 w-full rounded-md border border-surface/20 bg-surface/5 px-2 text-sm text-surface placeholder:text-surface/70 hover:border-surface/40 disabled:opacity-50 aria-invalid:border-danger";
+  "h-9 w-full rounded-full border border-ink/10 bg-surface/80 px-3 text-sm text-ink placeholder:text-ink/70 hover:border-ink/30 disabled:opacity-50 aria-invalid:border-danger";
 
 export function TextInput({
   className,
@@ -24,7 +24,7 @@ export function Select({
     <select
       className={cx(
         CONTROL,
-        "[&>option]:bg-canvas [&>option]:text-surface",
+        "[&>option]:bg-surface [&>option]:text-ink",
         className,
       )}
       {...props}
@@ -44,11 +44,11 @@ interface LabeledProps {
 export function Labeled({ label, hint, className, children }: LabeledProps) {
   return (
     <label className={cx("flex flex-col gap-2", className)}>
-      <span className="text-surface/70 font-mono text-xs tracking-wide uppercase">
+      <span className="text-ink/70 text-xs font-semibold tracking-wide uppercase">
         {label}
       </span>
       {children}
-      {hint ? <span className="text-surface/70 text-xs">{hint}</span> : null}
+      {hint ? <span className="text-ink/70 text-xs">{hint}</span> : null}
     </label>
   );
 }

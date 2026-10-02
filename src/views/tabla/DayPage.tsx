@@ -153,7 +153,7 @@ export function DayPage({
     if (field.type === "scrim_count") {
       return (
         <div key={field.id} className="flex flex-col gap-2">
-          <span className="text-surface/70 font-mono text-xs tracking-wide uppercase">
+          <span className="text-ink/70 text-xs font-semibold tracking-wide uppercase">
             {field.label}
           </span>
           <div className="flex items-center gap-2">
@@ -238,7 +238,7 @@ export function DayPage({
 
           <Card title="Partidas de ranked">
             {daySessions.length === 0 ? (
-              <p className="text-surface/70 text-sm">
+              <p className="text-ink/70 text-sm">
                 Sin partidas apuntadas este día. Es opcional: sirven para ver
                 tus cifras por mapa y agente.
               </p>
@@ -257,7 +257,7 @@ export function DayPage({
                   ] as const
                 ).map(([label, value]) => (
                   <div key={label}>
-                    <dt className="text-surface/70 font-mono text-xs tracking-wide uppercase">
+                    <dt className="text-ink/70 text-xs font-semibold tracking-wide uppercase">
                       {label}
                     </dt>
                     <dd className="font-mono text-lg font-bold">{value}</dd>
@@ -293,7 +293,7 @@ export function DayPage({
 
           <Card title="Notas enlazadas">
             {linkedNotes.length === 0 ? (
-              <p className="text-surface/70 text-sm">
+              <p className="text-ink/70 text-sm">
                 Ninguna nota menciona este día. En una nota, escribe [[
                 {formatDate(date)}]] para enlazarlo.
               </p>
@@ -327,7 +327,7 @@ export function DayPage({
               ))}
             </ul>
           ) : (
-            <p className="text-surface/70 text-xs">
+            <p className="text-ink/70 text-xs">
               Escribe #tilt, #saturado o cualquier #etiqueta para poder contarla
               después.
             </p>

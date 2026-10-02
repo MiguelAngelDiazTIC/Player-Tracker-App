@@ -126,7 +126,7 @@ function Shell() {
         {showingDay ? null : (
           <header className="px-2">
             <h1 className="text-3xl font-bold">{section.label}</h1>
-            <p className="text-surface/70">{section.description}</p>
+            <p className="text-ink/70">{section.description}</p>
           </header>
         )}
 

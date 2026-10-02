@@ -31,15 +31,15 @@ import { formatFieldValue } from "../../domain/values";
 import { cx } from "../../lib/cx";
 
 /**
- * Escala de un solo tono: más valor, más claro (sobre fondo oscuro). En el
- * paso más claro el texto pasa a `ink` para mantener el contraste.
+ * Escala de un solo tono: más valor, más intenso. En el paso más oscuro el
+ * texto pasa a blanco para mantener el contraste.
  */
 const HEAT_CLASSES = [
-  "bg-chart/15 text-surface",
-  "bg-chart/35 text-surface",
-  "bg-chart/55 text-surface",
-  "bg-chart/75 text-surface",
-  "bg-chart text-ink",
+  "bg-chart/15 text-ink",
+  "bg-chart/35 text-ink",
+  "bg-chart/55 text-ink",
+  "bg-chart/75 text-ink",
+  "bg-chart text-surface",
 ] as const;
 
 interface CalendarioViewProps {
@@ -105,7 +105,7 @@ export function CalendarioView({ onOpenDay }: CalendarioViewProps) {
   if (!metric) {
     return (
       <div className="glass flex flex-1 items-center justify-center rounded-md p-4">
-        <p className="text-surface/70">
+        <p className="text-ink/70">
           No hay ningún campo que se pueda pintar en el calendario.
         </p>
       </div>
@@ -172,7 +172,7 @@ export function CalendarioView({ onOpenDay }: CalendarioViewProps) {
                 <th
                   key={weekday}
                   scope="col"
-                  className="text-surface/70 font-mono text-xs font-medium tracking-wide uppercase"
+                  className="text-ink/70 text-xs font-semibold tracking-wide uppercase"
                 >
                   <abbr title={weekday} className="no-underline">
                     {weekday.slice(0, 3)}
@@ -201,12 +201,9 @@ export function CalendarioView({ onOpenDay }: CalendarioViewProps) {
                       )?.icon
                     : undefined;
                   const tone = !hasData
-                    ? "bg-surface/5 text-surface/70"
+                    ? "bg-ink/5 text-ink/70"
                     : habit
-                      ? cx(
-                          STATUS_TINT[fieldStatus(metric, raw)],
-                          "text-surface",
-                        )
+                      ? cx(STATUS_TINT[fieldStatus(metric, raw)], "text-ink")
                       : HEAT_CLASSES[heatStep(value ?? 0, min, max)];
                   const label = `${formatLongDate(date)}: ${hasData ? `${metric.label} ${shown}` : "sin dato"}`;
                   const content = (
@@ -224,7 +221,7 @@ export function CalendarioView({ onOpenDay }: CalendarioViewProps) {
                   const box = cx(
                     "flex h-16 w-full flex-col rounded-sm p-1 text-left",
                     tone,
-                    date === today && "outline-surface/70 outline-1",
+                    date === today && "outline-ink/70 outline-1",
                   );
 
                   return (
@@ -253,11 +250,11 @@ export function CalendarioView({ onOpenDay }: CalendarioViewProps) {
         </table>
 
         <div className="flex flex-wrap items-center justify-between gap-4">
-          <p className="text-surface/70 font-mono text-xs" role="status">
+          <p className="text-ink/70 font-mono text-xs" role="status">
             {summary}
           </p>
           {habit ? null : all.length > 0 ? (
-            <div className="text-surface/70 flex items-center gap-2 font-mono text-xs">
+            <div className="text-ink/70 flex items-center gap-2 font-mono text-xs">
               <span>{formatStat(metric.type, min)}</span>
               <span aria-hidden="true" className="flex gap-0.5">
                 {Array.from({ length: HEAT_STEPS }, (_, step) => (
@@ -272,7 +269,7 @@ export function CalendarioView({ onOpenDay }: CalendarioViewProps) {
               </span>
               <span>{formatStat(metric.type, max)}</span>
               <span className="sr-only">
-                Escala de color: más claro es más alto
+                Escala de color: más intenso es más alto
               </span>
             </div>
           ) : null}

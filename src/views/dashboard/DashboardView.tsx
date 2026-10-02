@@ -3,7 +3,7 @@ import { useMemo, useState } from "react";
 import { useStore } from "../../app/store";
 import { StatTile, type Delta } from "../../components/charts/StatTile";
 import { GoalsCard } from "./GoalsCard";
-import { Labeled, Select } from "../../components/ui/fields";
+import { Segmented } from "../../components/ui/Segmented";
 import { Card } from "../../components/ui/surfaces";
 import { todayIso } from "../../domain/dates";
 import type { Day } from "../../domain/day";
@@ -115,21 +115,16 @@ export function DashboardView() {
   return (
     <div className="flex min-h-0 flex-1 flex-col gap-4">
       <div className="flex flex-wrap items-end gap-2 px-2">
-        <Labeled label="Periodo" className="w-48">
-          <Select
-            value={period}
-            onChange={(event) =>
-              setPeriod(Number(event.target.value) as Period)
-            }
-          >
-            {PERIODS.map((option) => (
-              <option key={option} value={option}>
-                Últimos {option} días
-              </option>
-            ))}
-          </Select>
-        </Labeled>
-        <p className="text-surface/70 pb-2 text-sm" role="status">
+        <Segmented
+          label="Periodo"
+          value={String(period)}
+          options={PERIODS.map((option) => ({
+            value: String(option),
+            label: `Últimos ${option} días`,
+          }))}
+          onChange={(value) => setPeriod(Number(value) as Period)}
+        />
+        <p className="text-ink/70 pb-2 text-sm" role="status">
           {hasRecentData
             ? `${now.daysLogged} ${now.daysLogged === 1 ? "día registrado" : "días registrados"} en el periodo`
             : "No hay días registrados en este periodo: rellena la Tabla para ver tus tendencias."}
@@ -186,11 +181,11 @@ export function DashboardView() {
                   <span className="text-3xl font-semibold">
                     {allStreak.current}
                   </span>
-                  <span className="text-surface/70 text-sm">
+                  <span className="text-ink/70 text-sm">
                     {allStreak.current === 1 ? "día seguido" : "días seguidos"}
                   </span>
                 </p>
-                <p className="text-surface/70 text-xs">
+                <p className="text-ink/70 text-xs">
                   Mejor racha: {allStreak.best}{" "}
                   {allStreak.best === 1 ? "día" : "días"}
                 </p>
@@ -210,7 +205,7 @@ export function DashboardView() {
                           <span className="font-semibold">
                             {habit.field.label}
                           </span>
-                          <span className="text-surface/70 font-mono text-xs">
+                          <span className="text-ink/70 font-mono text-xs">
                             {habit.counted === 0
                               ? "Sin datos"
                               : `${formatPercent(habit.percent)} · ${habit.done} de ${habit.counted} días · racha ${own.current}`}

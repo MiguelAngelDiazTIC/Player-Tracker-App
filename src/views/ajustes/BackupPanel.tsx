@@ -133,7 +133,7 @@ export function BackupPanel() {
 
   return (
     <Card title="Copia de seguridad">
-      <p className="text-surface/70 text-sm">
+      <p className="text-ink/70 text-sm">
         Un único archivo JSON con tus días, partidas, campos, ajustes e
         imágenes. Sirve para cambiar de ordenador o guardar una copia.
       </p>
