@@ -76,6 +76,13 @@ async function filledInstall() {
   const renamed = { ...DEFAULT_FIELDS[0], label: "Rankeds jugadas" };
   await repository.saveFields([custom, renamed]);
 
+  await repository.saveReviews([
+    {
+      weekStart: "2026-09-14",
+      conclusions: ["Dormir más", "Menos grind", ""],
+    },
+  ]);
+
   await repository.setSetting("goals.sleepHours", 480);
   await repository.setSetting("riot.id", "jugador#EUW");
   await repository.setSetting("henrikdev.apiKey", "secreto");
@@ -103,6 +110,7 @@ describe("migraciones", () => {
       "schema_migrations",
       "scrim_matches",
       "settings",
+      "weekly_reviews",
     ]);
   });
 
@@ -196,6 +204,7 @@ describe("exportar e importar JSON", () => {
     });
     expect(exported.days).toHaveLength(13);
     expect(exported.scrimMatches).toHaveLength(19);
+    expect(exported.weeklyReviews).toHaveLength(1);
     expect(exported.fieldDefinitions).toHaveLength(DEFAULT_FIELDS.length + 1);
     expect(summary).toEqual({
       daysWritten: 13,
