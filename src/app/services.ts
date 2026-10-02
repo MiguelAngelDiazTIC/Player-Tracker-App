@@ -1,4 +1,5 @@
 import type { AttachmentStore } from "../data/backup";
+import type { HttpClient } from "../data/henrikSync";
 import type { Repository } from "../data/repository";
 
 export interface PickedFile {
@@ -14,6 +15,8 @@ export interface Platform {
   /** Carpeta que contiene `tracker.db` y `attachments/`. */
   dataFolder: string;
   attachments: AttachmentStore;
+  /** Peticiones a HenrikDev; solo se usan cuando el usuario sincroniza. */
+  http: HttpClient;
   /** URL con la que el editor puede pintar una imagen de `attachments/`. */
   attachmentUrl(name: string): string;
   pickFile(options: {

@@ -1,4 +1,10 @@
-import { ArrowLeft, ChevronLeft, ChevronRight, Trash2 } from "lucide-react";
+import {
+  ArrowLeft,
+  ChevronLeft,
+  ChevronRight,
+  RefreshCw,
+  Trash2,
+} from "lucide-react";
 import { useState } from "react";
 import { useStore } from "../../app/store";
 import { ValueInput } from "../../components/cells";
@@ -6,14 +12,17 @@ import { ChoiceGroup } from "../../components/ChoiceGroup";
 import { Button } from "../../components/ui/Button";
 import { Dialog } from "../../components/ui/Dialog";
 import { Labeled } from "../../components/ui/fields";
-import { Card, Chip } from "../../components/ui/surfaces";
+import { Card, Chip, Notice } from "../../components/ui/surfaces";
+import { syncDay, type DaySync } from "../../data/henrikSync";
 import { formatDate, formatLongDate } from "../../domain/dates";
 import { emptyDay } from "../../domain/day";
 import { groupFields, type FieldDefinition } from "../../domain/fields";
 import { formatStat } from "../../domain/format";
 import { backlinksTo, noteName, notesMentioningDay } from "../../domain/notes";
-import { rankedTotals } from "../../domain/ranked";
+import { readHenrikConfig } from "../../domain/henrik";
+import { rankedTotals, type RankedTotals } from "../../domain/ranked";
 import { countScrimsByDate } from "../../domain/scrims";
+import { newId } from "../../lib/id";
 import { FeelingsEditor } from "./FeelingsEditor";
 
 interface DayPageProps {
@@ -23,7 +32,13 @@ interface DayPageProps {
   onOpenScrims: () => void;
   onOpenRankeds: (date: string) => void;
   onOpenNote: (id: string) => void;
+  onOpenSettings: () => void;
 }
+
+type SyncState =
+  | { step: "idle" | "busy" | "unconfigured" }
+  | { step: "done"; result: DaySync }
+  | { step: "failed"; message: string };
 
 /** La fila de un día abierta como página: sus campos y el editor de feelings. */
 export function DayPage({
@@ -33,6 +48,7 @@ export function DayPage({
   onOpenScrims,
   onOpenRankeds,
   onOpenNote,
+  onOpenSettings,
 }: DayPageProps) {
   const store = useStore();
   const { days, fields, scrims, setDayValue, setDayFeelings, deleteDay } =
@@ -49,6 +65,7 @@ export function DayPage({
     ]),
   ];
   const [confirmingDelete, setConfirmingDelete] = useState(false);
+  const [syncState, setSyncState] = useState<SyncState>({ step: "idle" });
 
   const day = days.find((item) => item.date === date) ?? emptyDay(date);
   const index = days.findIndex((item) => item.date === date);
@@ -60,17 +77,73 @@ export function DayPage({
   const title = formatLongDate(date);
 
   /** Pasa a los campos del día lo que suman sus partidas de ranked. */
-  function applySessionTotals() {
+  function applyTotals(totals: RankedTotals) {
     const has = (key: string) =>
       fields.some((field) => field.key === key && !field.archived);
-    if (has("rankeds")) setDayValue(date, "rankeds", sessionTotals.count);
-    if (has("kd") && sessionTotals.kd !== null) {
-      setDayValue(date, "kd", Math.round(sessionTotals.kd * 100) / 100);
+    if (has("rankeds")) setDayValue(date, "rankeds", totals.count);
+    if (has("kd") && totals.kd !== null) {
+      setDayValue(date, "kd", Math.round(totals.kd * 100) / 100);
     }
-    if (has("acs") && sessionTotals.acs !== null) {
-      setDayValue(date, "acs", Math.round(sessionTotals.acs));
+    if (has("acs") && totals.acs !== null) {
+      setDayValue(date, "acs", Math.round(totals.acs));
     }
   }
+
+  /** Trae de HenrikDev las partidas de este día. Solo al pulsar el botón. */
+  async function sync() {
+    const config = readHenrikConfig(store.settings);
+    if (config === null) {
+      setSyncState({ step: "unconfigured" });
+      return;
+    }
+    setSyncState({ step: "busy" });
+    try {
+      const result = await syncDay(
+        store.services.platform.http,
+        config,
+        date,
+        { sessions: store.sessions, scrims: store.scrims },
+        newId,
+      );
+      store.addSessions(result.newSessions);
+      store.addScrims(result.newScrims);
+      if (result.totals.count > 0) applyTotals(result.totals);
+      setSyncState({ step: "done", result });
+    } catch (cause) {
+      setSyncState({
+        step: "failed",
+        message: cause instanceof Error ? cause.message : String(cause),
+      });
+    }
+  }
+
+  const plural = (count: number, one: string, many: string) =>
+    `${count} ${count === 1 ? one : many}`;
+  const syncNotice =
+    syncState.step === "unconfigured" ? (
+      <Notice>
+        <div className="flex flex-wrap items-center gap-2">
+          <p className="min-w-0 flex-1">
+            Para sincronizar hacen falta tu Riot ID, tu región y una clave de
+            HenrikDev.
+          </p>
+          <Button variant="ghost" onClick={onOpenSettings}>
+            Ir a Ajustes
+          </Button>
+        </div>
+      </Notice>
+    ) : syncState.step === "failed" ? (
+      <Notice tone="danger">{syncState.message}</Notice>
+    ) : syncState.step === "done" ? (
+      <Notice tone="success">
+        {syncState.result.rankedsFound === 0
+          ? "HenrikDev no tiene rankeds de este día."
+          : `${plural(syncState.result.rankedsFound, "ranked encontrada", "rankeds encontradas")}, ${plural(syncState.result.newSessions.length, "nueva", "nuevas")}. El recuento, el K/D y el ACS del día se han actualizado.`}
+        {syncState.result.newScrims.length > 0
+          ? ` ${plural(syncState.result.newScrims.length, "custom añadida", "customs añadidas")} a Scrims y 10mans.`
+          : ""}
+      </Notice>
+    ) : null;
 
   function renderField(field: FieldDefinition) {
     const value = day.values[field.key] ?? null;
@@ -193,6 +266,15 @@ export function DayPage({
               </dl>
             )}
             <div className="flex flex-wrap gap-2">
+              <Button
+                variant="primary"
+                disabled={syncState.step === "busy"}
+                title="Trae de HenrikDev las partidas de este día"
+                onClick={() => void sync()}
+              >
+                <RefreshCw aria-hidden="true" className="size-4" />
+                {syncState.step === "busy" ? "Sincronizando…" : "Sincronizar"}
+              </Button>
               <Button onClick={() => onOpenRankeds(date)}>
                 {daySessions.length === 0 ? "Apuntar partidas" : "Ver partidas"}
               </Button>
@@ -200,12 +282,13 @@ export function DayPage({
                 <Button
                   variant="ghost"
                   title="Copia el recuento, el K/D y el ACS de las partidas a los campos del día"
-                  onClick={applySessionTotals}
+                  onClick={() => applyTotals(sessionTotals)}
                 >
                   Usar estas cifras en el día
                 </Button>
               ) : null}
             </div>
+            {syncNotice}
           </Card>
 
           <Card title="Notas enlazadas">
