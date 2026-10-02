@@ -10,6 +10,9 @@ import { Card, Chip } from "../../components/ui/surfaces";
 import { formatDate, formatLongDate } from "../../domain/dates";
 import { emptyDay } from "../../domain/day";
 import { groupFields, type FieldDefinition } from "../../domain/fields";
+import { formatStat } from "../../domain/format";
+import { backlinksTo, noteName, notesMentioningDay } from "../../domain/notes";
+import { rankedTotals } from "../../domain/ranked";
 import { countScrimsByDate } from "../../domain/scrims";
 import { FeelingsEditor } from "./FeelingsEditor";
 
@@ -18,6 +21,8 @@ interface DayPageProps {
   onBack: () => void;
   onOpenDay: (date: string) => void;
   onOpenScrims: () => void;
+  onOpenRankeds: (date: string) => void;
+  onOpenNote: (id: string) => void;
 }
 
 /** La fila de un día abierta como página: sus campos y el editor de feelings. */
@@ -26,10 +31,23 @@ export function DayPage({
   onBack,
   onOpenDay,
   onOpenScrims,
+  onOpenRankeds,
+  onOpenNote,
 }: DayPageProps) {
   const store = useStore();
   const { days, fields, scrims, setDayValue, setDayFeelings, deleteDay } =
     store;
+  const daySessions = store.sessions.filter((session) => session.date === date);
+  const sessionTotals = rankedTotals(daySessions);
+  // Notas que mencionan el día y notas que el día menciona en sus feelings.
+  const linkedNotes = [
+    ...new Set([
+      ...notesMentioningDay(date, store.notes),
+      ...store.notes.filter((note) =>
+        backlinksTo(note, [], days).days.some((item) => item.date === date),
+      ),
+    ]),
+  ];
   const [confirmingDelete, setConfirmingDelete] = useState(false);
 
   const day = days.find((item) => item.date === date) ?? emptyDay(date);
@@ -40,6 +58,19 @@ export function DayPage({
   const scrimCount = countScrimsByDate(scrims)[date] ?? 0;
   const groups = groupFields(fields.filter((field) => !field.archived));
   const title = formatLongDate(date);
+
+  /** Pasa a los campos del día lo que suman sus partidas de ranked. */
+  function applySessionTotals() {
+    const has = (key: string) =>
+      fields.some((field) => field.key === key && !field.archived);
+    if (has("rankeds")) setDayValue(date, "rankeds", sessionTotals.count);
+    if (has("kd") && sessionTotals.kd !== null) {
+      setDayValue(date, "kd", Math.round(sessionTotals.kd * 100) / 100);
+    }
+    if (has("acs") && sessionTotals.acs !== null) {
+      setDayValue(date, "acs", Math.round(sessionTotals.acs));
+    }
+  }
 
   function renderField(field: FieldDefinition) {
     const value = day.values[field.key] ?? null;
@@ -131,6 +162,70 @@ export function DayPage({
               </div>
             </Card>
           ))}
+
+          <Card title="Partidas de ranked">
+            {daySessions.length === 0 ? (
+              <p className="text-surface/70 text-sm">
+                Sin partidas apuntadas este día. Es opcional: sirven para ver
+                tus cifras por mapa y agente.
+              </p>
+            ) : (
+              <dl className="grid grid-cols-3 gap-4">
+                {(
+                  [
+                    ["Partidas", String(sessionTotals.count)],
+                    ["K/D", formatStat("decimal", sessionTotals.kd)],
+                    [
+                      "ACS",
+                      sessionTotals.acs === null
+                        ? "—"
+                        : String(Math.round(sessionTotals.acs)),
+                    ],
+                  ] as const
+                ).map(([label, value]) => (
+                  <div key={label}>
+                    <dt className="text-surface/70 font-mono text-xs tracking-wide uppercase">
+                      {label}
+                    </dt>
+                    <dd className="font-mono text-lg font-bold">{value}</dd>
+                  </div>
+                ))}
+              </dl>
+            )}
+            <div className="flex flex-wrap gap-2">
+              <Button onClick={() => onOpenRankeds(date)}>
+                {daySessions.length === 0 ? "Apuntar partidas" : "Ver partidas"}
+              </Button>
+              {daySessions.length > 0 ? (
+                <Button
+                  variant="ghost"
+                  title="Copia el recuento, el K/D y el ACS de las partidas a los campos del día"
+                  onClick={applySessionTotals}
+                >
+                  Usar estas cifras en el día
+                </Button>
+              ) : null}
+            </div>
+          </Card>
+
+          <Card title="Notas enlazadas">
+            {linkedNotes.length === 0 ? (
+              <p className="text-surface/70 text-sm">
+                Ninguna nota menciona este día. En una nota, escribe [[
+                {formatDate(date)}]] para enlazarlo.
+              </p>
+            ) : (
+              <ul className="flex flex-wrap gap-2">
+                {linkedNotes.map((note) => (
+                  <li key={note.id}>
+                    <Button onClick={() => onOpenNote(note.id)}>
+                      {noteName(note)}
+                    </Button>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </Card>
         </div>
 
         <Card title="Feelings del día" className="min-h-96">

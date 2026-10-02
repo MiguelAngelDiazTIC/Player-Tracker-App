@@ -32,6 +32,8 @@ interface FeelingsEditorProps {
   /** `text` es el contenido sin formato, de donde salen las etiquetas. */
   onChange: (markdown: string, text: string) => void;
   platform: Platform;
+  /** Nombre accesible del editor; por defecto, los feelings del día. */
+  label?: string;
 }
 
 interface ToolProps {
@@ -61,11 +63,15 @@ function Tool({ label, icon: Icon, active, onClick }: ToolProps) {
   );
 }
 
-/** Editor de los feelings del día. Guarda Markdown poco después de teclear. */
+/**
+ * Editor de texto con formato: los feelings del día y el cuerpo de las notas.
+ * Guarda Markdown poco después de teclear.
+ */
 export function FeelingsEditor({
   markdown,
   onChange,
   platform,
+  label = "Feelings del día",
 }: FeelingsEditorProps) {
   const onChangeRef = useRef(onChange);
   const pending = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -98,7 +104,9 @@ export function FeelingsEditor({
         class: "notes min-h-48 flex-1 p-4",
         role: "textbox",
         "aria-multiline": "true",
-        "aria-label": "Feelings del día",
+        "aria-label": label,
+        // El corrector del sistema va en inglés y subraya todo el texto.
+        spellcheck: "false",
       },
       handlePaste(_view, event) {
         return insertImages(event.clipboardData?.files);

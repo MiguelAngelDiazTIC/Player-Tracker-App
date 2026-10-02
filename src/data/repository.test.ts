@@ -83,6 +83,43 @@ async function filledInstall() {
     },
   ]);
 
+  await repository.saveRankedSessions([
+    {
+      id: "ranked-1",
+      date: "2026-09-20",
+      map: "Ascent",
+      agent: "Jett",
+      result: "win",
+      kills: 20,
+      deaths: 10,
+      score: 5200,
+      rounds: 20,
+      source: "henrikdev",
+      externalMatchId: "match-abc",
+    },
+    {
+      id: "ranked-2",
+      date: "2026-09-20",
+      map: "",
+      agent: "",
+      result: null,
+      kills: null,
+      deaths: null,
+      score: null,
+      rounds: null,
+      source: "manual",
+      externalMatchId: null,
+    },
+  ]);
+  await repository.saveNotes([
+    {
+      id: "nota-1",
+      title: "Team Ñu",
+      bodyMd: "Revisar [[Lineups Ascent]] antes del [[20/09/2026]]",
+      links: ["Lineups Ascent", "20/09/2026"],
+    },
+  ]);
+
   await repository.setSetting("goals.sleepHours", 480);
   await repository.setSetting("riot.id", "jugador#EUW");
   await repository.setSetting("henrikdev.apiKey", "secreto");
@@ -107,6 +144,8 @@ describe("migraciones", () => {
     expect(tables.map((table) => table.name)).toEqual([
       "days",
       "field_definitions",
+      "notes",
+      "ranked_sessions",
       "schema_migrations",
       "scrim_matches",
       "settings",
@@ -205,6 +244,8 @@ describe("exportar e importar JSON", () => {
     expect(exported.days).toHaveLength(13);
     expect(exported.scrimMatches).toHaveLength(19);
     expect(exported.weeklyReviews).toHaveLength(1);
+    expect(exported.rankedSessions).toHaveLength(2);
+    expect(exported.notes).toHaveLength(1);
     expect(exported.fieldDefinitions).toHaveLength(DEFAULT_FIELDS.length + 1);
     expect(summary).toEqual({
       daysWritten: 13,
@@ -264,6 +305,35 @@ describe("exportar e importar JSON", () => {
         expect(summary.daysSkipped).toBe(0);
       }
       expect(await target.repository.listDays()).toHaveLength(13);
+    }
+  });
+
+  it("no duplica una partida sincronizada que ya está con otro id", async () => {
+    const origin = await filledInstall();
+    const exported = await buildExport(origin.repository, origin.attachments);
+
+    for (const strategy of ["keep", "replace"] as const) {
+      const target = await newRepository();
+      await target.repository.saveRankedSessions([
+        {
+          ...exported.rankedSessions[0],
+          id: "id-local",
+          map: "Bind",
+        },
+      ]);
+      await applyImport(
+        target.repository,
+        createMemoryAttachments(),
+        exported,
+        strategy,
+      );
+
+      const sessions = await target.repository.listRankedSessions();
+      expect(sessions.map((session) => session.id)).toEqual([
+        "id-local",
+        "ranked-2",
+      ]);
+      expect(sessions[0].map).toBe(strategy === "keep" ? "Bind" : "Ascent");
     }
   });
 
