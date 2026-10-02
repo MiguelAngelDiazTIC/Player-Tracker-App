@@ -20,6 +20,8 @@ Los tokens están en el bloque `@theme` de [src/styles/index.css](../src/styles/
 | `surface` | `#FFFFFF` | Texto sobre fondo oscuro y base del cristal |
 | `ink` | `#141414` | Texto sobre superficies claras (token `text` de la skill) |
 | `canvas` | `#0C0A17` | Fondo oscuro de la app |
+| `panel` | `#292733` | Fondo opaco de tablas, diálogos y gráficas (`glass-solid`) |
+| `chart` | `#5C86FF` | Series de las gráficas: `primary` aclarado hasta dar 3:1 sobre `panel` |
 
 - **Tipografía**: Plus Jakarta Sans para texto y títulos. JetBrains Mono para números (K/D, ACS, horas, fechas) y para etiquetas en mayúsculas de 12px (`font-mono text-xs uppercase tracking-wide`).
 - **Radios**: `rounded-sm` (4px) en chips y celdas; `rounded-md` (8px) en botones, campos, paneles y tarjetas.
@@ -43,6 +45,21 @@ Todos los componentes interactivos deben tener los estados reposo, hover, `focus
 - **Aviso** (`Notice`): tinte del color de su tono con icono; los errores usan `role="alert"` y el resto `role="status"`.
 
 Casos límite: las etiquetas largas se cortan con puntos suspensivos y muestran el texto completo en `title`; las tablas se desplazan dentro de su panel, no la página; toda vista sin datos explica qué hacer a continuación.
+
+## Gráficas
+
+Hechas con la skill `dataviz`: primero la forma, el color al final y comprobado con su validador (`chart` sobre `panel` pasa luminosidad, croma y contraste 3:1).
+
+- **Una gráfica, una medida y un solo eje.** Cada columna tiene la suya; nunca dos escalas en el mismo dibujo.
+- **Una serie, un color**: `chart`. El dato de contexto (el valor diario bajo su media móvil, el periodo anterior en una tendencia) va en gris (`surface/35`). Con dos series hay leyenda; con una basta el título.
+- **Estado, no identidad**: `success`, `danger` y gris solo para victorias, derrotas y empates, siempre con leyenda en texto.
+- **Marcas finas**: líneas de 2px, puntos con anillo del color del panel, barras de 24px como mucho con la punta redondeada 4px, y 2px de panel entre segmentos apilados. Rejilla y ejes en `surface/10`, continuos.
+- **Texto en color de texto**, nunca en el de la serie. Los números de los ejes van en mono de 12px.
+- **Un día sin dato es un hueco**: las líneas no lo cruzan.
+- **Mapa de calor**: un solo tono en cinco pasos; más valor, más claro. En el paso más claro el texto pasa a `ink`.
+- **Lectura sin ratón**: cada gráfica tiene una cifra de resumen junto al título y una descripción para lectores de pantalla; la tabla de encima es su versión en datos. Al pasar el ratón, el valor manda y el nombre acompaña.
+- **Sin animaciones** al cargar ni al filtrar.
+- **Cifras** (`StatTile`): etiqueta, valor grande sin `tabular-nums`, de qué es la cifra, cambio respecto al periodo anterior (icono de tendencia verde o rojo solo si se sabe si subir es bueno) y tendencia en miniatura.
 
 ## Accesibilidad
 

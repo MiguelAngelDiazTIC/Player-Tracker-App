@@ -97,6 +97,7 @@ Valores vacíos o `X` = "sin dato": no cuentan en medias ni gráficas.
   "fieldDefinitions": [],
   "days": [],
   "scrimMatches": [],
+  "weeklyReviews": [{ "weekStart": "2026-09-14", "conclusions": ["", "", ""] }],
   "rankedSessions": [],
   "notes": [],
   "settings": {},
@@ -107,7 +108,20 @@ Valores vacíos o `X` = "sin dato": no cuentan en medias ni gráficas.
 - La clave de la API de HenrikDev **no** se exporta.
 - Al importar: validar todo con Zod antes de escribir, copiar `tracker.db` como respaldo, y si hay fechas repetidas preguntar si sustituir o conservar.
 - Las imágenes de `attachments/` van incrustadas en base64 en la lista `attachments`, para que la copia siga siendo un único archivo. Un JSON sin esa lista también es válido.
-- La elección de sustituir o conservar se aplica a los días y a las partidas que ya existen. Los campos (emparejados por `key`) y los ajustes del archivo siempre sustituyen a los actuales.
+- La elección de sustituir o conservar se aplica a los días, las partidas y las revisiones semanales que ya existen. Los campos (emparejados por `key`) y los ajustes del archivo siempre sustituyen a los actuales.
+- `weeklyReviews` (fase 2) es opcional: un archivo anterior que no la traiga sigue siendo válido.
+
+### Gráficas y resúmenes (fase 2)
+
+Las reglas viven en [src/domain/stats.ts](../src/domain/stats.ts) y son las mismas en las gráficas, el Calendario, el Dashboard y la Revisión semanal:
+
+- **Total o media**: un campo `number` sin umbrales es volumen (rankeds, DMs, Kovaaks) y se suma; el resto de campos numéricos (sueño, K/D, ACS) se promedia. Los días sin dato no cuentan.
+- **Qué gráfica lleva cada campo**: volumen y recuento de scrims, barras por día; campos con umbrales fijos, línea con su objetivo (el umbral verde); el resto de numéricos, línea por día con la media móvil de 7 días naturales; hábitos, porcentaje de cumplimiento por semana. Los campos de texto no tienen gráfica.
+- **Cumplimiento de un hábito**: días cumplidos entre días con dato. En un `tristate`, el descanso cuenta como cumplido.
+- **Semanas**: de lunes a domingo.
+- **Rachas**: días naturales seguidos; un día sin registrar la rompe, salvo hoy mientras no se haya rellenado.
+- **Dashboard**: compara los últimos 7 o 30 días (acabando hoy) con el periodo anterior de la misma longitud.
+- **Revisión semanal**: las tres conclusiones se guardan en la tabla `weekly_reviews` (`week_start`, `conclusions`), creada por la migración 2.
 
 ### Importar la hoja
 
@@ -116,9 +130,9 @@ Valores vacíos o `X` = "sin dato": no cuentan en medias ni gráficas.
 
 ## Fases
 
-Trabaja una fase cada vez. Al acabar cada fase: pruebas en verde, un commit por bloque lógico, y para a que el usuario la revise antes de empezar la siguiente.
+Trabaja una fase cada vez. Al acabar cada fase: pruebas en verde y un commit por bloque lógico en su propia rama. El usuario decidió el 02/10/2026 encadenar las fases sin parar a probar entre una y otra: las pruebas con datos reales y los cambios se harán cuando haya una versión 1.0. Los criterios "Terminada cuando" que dependen del uso real quedan para entonces.
 
-Estado: fase 0 terminada. Fase 1 implementada y pendiente de que el usuario la pruebe con sus datos (su criterio de cierre es una semana de uso real y pasar los datos a otro equipo).
+Estado: fases 0, 1 y 2 implementadas.
 
 ### Fase 0: cimientos
 
