@@ -135,6 +135,15 @@ Tienen su propia sección en la barra lateral, entre Dashboard y Revisión seman
 - **Preparación de hoy** (0 a 100): 40 % el descanso de hoy (lo cerca que queda cada campo con objetivo de su umbral verde), 30 % los hábitos cumplidos en los 3 días anteriores y 30 % la carga de esos días (100 si no supera lo habitual, 0 si llega al límite de la regla de saturación). Las partes sin datos no cuentan y el resto se reparte su peso. Desde 75, "día para grindear"; desde 50, "día normal"; por debajo, "día de pocas partidas".
 - **Comprobar un insight**: cada uno tiene un botón "Ver días" que abre la Tabla mostrando solo los días en los que se basa.
 
+### Rankeds, notas y objetivos (fase 4, sin la sincronización)
+
+- **Rankeds** (sección propia, tras la Tabla): una fila por partida en `ranked_sessions`, con gráficas de resultados, K/D y ACS por mapa y por agente. El K/D y el ACS de un grupo se calculan sobre los totales (kills entre muertes, puntuación entre rondas), como hace el juego. Al apuntar a mano se escribe el ACS y las rondas; se guarda la puntuación total (`score` = ACS × rondas).
+- **Del registro al día**: la página del día resume sus partidas y el botón "Usar estas cifras en el día" copia el recuento, el K/D y el ACS a los campos `rankeds`, `kd` y `acs`. No se copian solas: los campos del día siguen siendo manuales.
+- **Notas** (sección propia): título y texto en Markdown. `[[Título]]` enlaza a otra nota (sin distinguir mayúsculas ni acentos) y `[[14/09/2026]]` o `[[2026-09-14]]` a un día. Los destinos se guardan en `notes.links`. Cada nota muestra a qué enlaza y quién la menciona (otras notas y los feelings de los días); la página del día muestra las notas que lo mencionan o que menciona.
+- **Objetivos**: lista en el ajuste `goals` (`id`, `title`, `deadline`, `done`), editable en el Dashboard, con los días que faltan. Al estar en los ajustes, viajan en la exportación.
+- La migración 3 crea `ranked_sessions` (con `external_match_id` único) y `notes`. Al importar un JSON, una partida con el mismo `external_match_id` que una local se trata como la misma, aunque su `id` sea otro.
+- **Pendiente**: la sincronización con HenrikDev. Antes de construirla hay que hacer la prueba aislada con la cuenta del usuario (clave, Riot ID y región).
+
 ### Importar la hoja
 
 - La columna de 10mans/scrims de la hoja solo tiene un número por día. Al importarla se crean partidas vacías en `scrim_matches` (tipo `10mans`, nota "Importada de la hoja") hasta igualar ese número, para que el recuento del día coincida y el usuario pueda rellenarlas después.
@@ -144,7 +153,7 @@ Tienen su propia sección en la barra lateral, entre Dashboard y Revisión seman
 
 Trabaja una fase cada vez. Al acabar cada fase: pruebas en verde y un commit por bloque lógico en su propia rama. El usuario decidió el 02/10/2026 encadenar las fases sin parar a probar entre una y otra: las pruebas con datos reales y los cambios se harán cuando haya una versión 1.0. Los criterios "Terminada cuando" que dependen del uso real quedan para entonces.
 
-Estado: fases 0, 1, 2 y 3 implementadas.
+Estado: fases 0, 1, 2 y 3 implementadas. De la fase 4 están hechas las partidas de ranked, las notas y los objetivos; falta la sincronización con HenrikDev, que espera la prueba con la cuenta del usuario.
 
 ### Fase 0: cimientos
 
