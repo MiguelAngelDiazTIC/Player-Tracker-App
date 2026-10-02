@@ -1,5 +1,6 @@
-import { Crosshair } from "lucide-react";
+import { Crosshair, Moon, Sun } from "lucide-react";
 import { SECTIONS, type SectionId } from "../app/sections";
+import { useTheme } from "../app/theme";
 
 interface SidebarProps {
   activeId: SectionId;
@@ -7,6 +8,10 @@ interface SidebarProps {
 }
 
 export function Sidebar({ activeId, onSelect }: SidebarProps) {
+  const { theme, setChoice } = useTheme();
+  const isDark = theme === "dark";
+  const ThemeIcon = isDark ? Sun : Moon;
+
   return (
     <aside className="glass flex w-60 shrink-0 flex-col gap-4 rounded-md p-4">
       <div className="flex items-center gap-2 px-2">
@@ -45,6 +50,16 @@ export function Sidebar({ activeId, onSelect }: SidebarProps) {
           })}
         </ul>
       </nav>
+
+      <div className="flex-1" />
+      <button
+        type="button"
+        onClick={() => setChoice(isDark ? "light" : "dark")}
+        className="text-ink/80 hover:bg-surface/60 hover:text-ink active:bg-surface/80 flex w-full items-center gap-2 rounded-full px-3 py-2 text-left text-sm font-medium"
+      >
+        <ThemeIcon aria-hidden="true" className="size-4 shrink-0" />
+        {isDark ? "Modo claro" : "Modo oscuro"}
+      </button>
     </aside>
   );
 }

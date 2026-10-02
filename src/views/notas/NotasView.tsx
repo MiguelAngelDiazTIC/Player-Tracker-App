@@ -88,7 +88,7 @@ export function NotasView({ selectedId, onSelect, onOpenDay }: NotasViewProps) {
                   className={cx(
                     "w-full truncate rounded-md px-2 py-2 text-left text-sm font-medium",
                     item.id === selectedId
-                      ? "bg-primary text-surface"
+                      ? "bg-primary text-on-accent"
                       : "text-ink/80 hover:bg-ink/10 hover:text-ink active:bg-ink/15",
                   )}
                 >

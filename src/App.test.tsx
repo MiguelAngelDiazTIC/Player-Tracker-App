@@ -1437,3 +1437,50 @@ describe("Sincronización con HenrikDev", () => {
     expect(exported.text).not.toContain("clave-secreta");
   });
 });
+
+describe("modo oscuro", () => {
+  afterEach(() => {
+    window.localStorage.clear();
+    delete document.documentElement.dataset.theme;
+  });
+
+  it("se cambia desde la barra lateral y se recuerda", async () => {
+    const { user } = await renderApp(false);
+
+    await user.click(screen.getByRole("button", { name: "Modo oscuro" }));
+
+    expect(document.documentElement.dataset.theme).toBe("dark");
+    expect(window.localStorage.getItem("player-tracker.theme")).toBe("dark");
+
+    await user.click(screen.getByRole("button", { name: "Modo claro" }));
+    expect(document.documentElement.dataset.theme).toBe("light");
+    expect(window.localStorage.getItem("player-tracker.theme")).toBe("light");
+  });
+
+  it("se elige en Ajustes, también siguiendo al sistema", async () => {
+    const { user } = await renderApp(false);
+    await goTo(user, "Ajustes");
+    const panel = screen.getByRole("region", { name: "Apariencia" });
+    expect(within(panel).getByRole("radio", { name: "Claro" })).toBeChecked();
+
+    await user.click(within(panel).getByRole("radio", { name: "Oscuro" }));
+    expect(document.documentElement.dataset.theme).toBe("dark");
+    // La barra lateral ofrece volver al claro: los dos controles van a una.
+    expect(
+      screen.getByRole("button", { name: "Modo claro" }),
+    ).toBeInTheDocument();
+
+    const matchMedia = vi.fn().mockReturnValue({
+      matches: true,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+    });
+    vi.stubGlobal("matchMedia", matchMedia);
+    await user.click(
+      within(panel).getByRole("radio", { name: "Como el sistema" }),
+    );
+    expect(window.localStorage.getItem("player-tracker.theme")).toBe("system");
+    expect(document.documentElement.dataset.theme).toBe("dark");
+    vi.unstubAllGlobals();
+  });
+});

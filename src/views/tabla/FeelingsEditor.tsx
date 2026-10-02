@@ -54,7 +54,7 @@ function Tool({ label, icon: Icon, active, onClick }: ToolProps) {
       className={cx(
         "flex size-9 items-center justify-center rounded-md",
         active
-          ? "bg-primary text-surface"
+          ? "bg-primary text-on-accent"
           : "text-ink/80 hover:bg-ink/10 hover:text-ink active:bg-ink/15",
       )}
     >
