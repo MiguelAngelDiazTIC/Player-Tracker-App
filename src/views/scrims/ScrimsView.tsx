@@ -241,8 +241,8 @@ export function ScrimsView() {
           </p>
         </div>
       ) : (
-        <div className="flex min-h-0 flex-1 flex-col gap-4 overflow-auto">
-          <div className="glass-solid max-h-[60vh] shrink-0 overflow-auto rounded-md">
+        <div className="flex min-h-0 flex-1 flex-col gap-4 relative overflow-auto">
+          <div className="glass-solid max-h-[60vh] shrink-0 relative overflow-auto rounded-md">
             <table className="w-full border-separate border-spacing-0 text-sm">
               <caption className="sr-only">
                 Scrims y 10mans: una fila por partida

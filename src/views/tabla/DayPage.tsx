@@ -122,7 +122,7 @@ export function DayPage({
         </Button>
       </header>
 
-      <div className="grid min-h-0 flex-1 grid-cols-1 gap-4 overflow-auto lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
+      <div className="grid min-h-0 flex-1 grid-cols-1 gap-4 relative overflow-auto lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
         <div className="flex flex-col gap-4">
           {groups.map(({ group, fields: groupFieldList }) => (
             <Card key={group} title={group}>

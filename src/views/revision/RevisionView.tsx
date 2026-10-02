@@ -104,7 +104,7 @@ export function RevisionView({ onOpenDay }: RevisionViewProps) {
         </Button>
       </div>
 
-      <div className="flex min-h-0 flex-1 flex-col gap-4 overflow-auto">
+      <div className="flex min-h-0 flex-1 flex-col gap-4 relative overflow-auto">
         <section
           aria-labelledby="review-summary"
           className="flex flex-col gap-2"

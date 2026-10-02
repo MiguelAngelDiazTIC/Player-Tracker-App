@@ -63,7 +63,7 @@ export function Dialog({
         aria-labelledby={titleId}
         onKeyDown={handleKeyDown}
         className={cx(
-          "glass-solid flex max-h-full w-full max-w-md flex-col gap-4 overflow-auto rounded-md p-4",
+          "glass-solid flex max-h-full w-full max-w-md flex-col gap-4 relative overflow-auto rounded-md p-4",
           className,
         )}
       >

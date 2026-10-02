@@ -222,7 +222,7 @@ export function FeelingsEditor({
       </div>
       <EditorContent
         editor={editor}
-        className="flex min-h-0 flex-1 flex-col overflow-auto"
+        className="flex min-h-0 flex-1 flex-col relative overflow-auto"
       />
     </div>
   );

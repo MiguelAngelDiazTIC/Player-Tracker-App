@@ -51,6 +51,8 @@
   }
 
   body {
+    /* La ventana no se desplaza: cada vista desplaza su propio contenido. */
+    overflow: hidden;
     background-color: var(--color-canvas);
     background-image:
       radial-gradient(
