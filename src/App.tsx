@@ -7,6 +7,9 @@ import { Button } from "./components/ui/Button";
 import { Notice } from "./components/ui/surfaces";
 import { NO_FILTER } from "./domain/filters";
 import { AjustesView } from "./views/ajustes/AjustesView";
+import { CalendarioView } from "./views/calendario/CalendarioView";
+import { DashboardView } from "./views/dashboard/DashboardView";
+import { RevisionView } from "./views/revision/RevisionView";
 import { ScrimsView } from "./views/scrims/ScrimsView";
 import { DayPage } from "./views/tabla/DayPage";
 import { TablaView, type TablaState } from "./views/tabla/TablaView";
@@ -32,6 +35,12 @@ function Shell() {
     setOpenDate(null);
   }
 
+  /** Abre la página de un día desde cualquier vista. */
+  function openDay(date: string) {
+    setActiveId("tabla");
+    setOpenDate(date);
+  }
+
   function renderSection() {
     switch (activeId) {
       case "tabla":
@@ -52,19 +61,14 @@ function Shell() {
         );
       case "scrims":
         return <ScrimsView />;
+      case "calendario":
+        return <CalendarioView onOpenDay={openDay} />;
+      case "dashboard":
+        return <DashboardView />;
+      case "revision":
+        return <RevisionView onOpenDay={openDay} />;
       case "ajustes":
         return <AjustesView />;
-      default:
-        return (
-          <section
-            aria-label={`Contenido de ${section.label}`}
-            className="glass flex flex-1 items-center justify-center rounded-md p-4"
-          >
-            <p className="text-surface/70 font-mono text-xs tracking-wide uppercase">
-              Disponible en la fase {section.phase}
-            </p>
-          </section>
-        );
     }
   }
 
