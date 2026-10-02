@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import type { PickedFile, Platform, Services } from "../app/services";
+import type { HttpResponse } from "../data/henrikSync";
 import { createRepository } from "../data/repository";
 import { createMemoryAttachments, createMemoryDriver } from "./memoryDriver";
 
@@ -20,6 +21,9 @@ export interface TestServices extends Services {
   /** Textos "guardados" con el diálogo de exportar. */
   savedFiles: { name: string; text: string }[];
   backups: number;
+  /** Respuesta de HenrikDev para cada petición; por defecto, sin partidas. */
+  httpResponses: HttpResponse[];
+  httpCalls: string[];
 }
 
 /** Servicios en memoria: SQLite de `node:sqlite` y un sistema sin diálogos. */
@@ -27,15 +31,32 @@ export async function createTestServices(): Promise<TestServices> {
   const repository = createRepository(createMemoryDriver());
   await repository.init();
 
-  const test: Pick<TestServices, "filesToPick" | "savedFiles" | "backups"> = {
+  const test: Pick<
+    TestServices,
+    "filesToPick" | "savedFiles" | "backups" | "httpResponses" | "httpCalls"
+  > = {
     filesToPick: [],
     savedFiles: [],
     backups: 0,
+    httpResponses: [],
+    httpCalls: [],
   };
 
   const platform: Platform = {
     dataFolder: "C:/datos-de-prueba",
     attachments: createMemoryAttachments(),
+    http: {
+      async get(url) {
+        test.httpCalls.push(url);
+        return (
+          test.httpResponses.shift() ?? {
+            status: 200,
+            body: { results: { after: 0 }, data: [] },
+            retryAfterSeconds: null,
+          }
+        );
+      },
+    },
     attachmentUrl: (name) => `asset://attachments/${name}`,
     async pickFile() {
       return test.filesToPick.shift() ?? null;
