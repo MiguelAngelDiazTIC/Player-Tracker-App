@@ -1,6 +1,8 @@
 import type { Settings } from "../data/repository";
 import { emptyDay, type Day } from "../domain/day";
 import type { FieldDefinition, FieldValue } from "../domain/fields";
+import { emptyNote, extractLinks, type Note } from "../domain/notes";
+import { emptyRankedSession, type RankedSession } from "../domain/ranked";
 import { isEmptyReview, type WeeklyReview } from "../domain/review";
 import { emptyScrimMatch, type ScrimMatch } from "../domain/scrims";
 import { extractTags } from "../domain/tags";
@@ -13,6 +15,8 @@ export interface AppData {
   days: Day[];
   scrims: ScrimMatch[];
   reviews: WeeklyReview[];
+  sessions: RankedSession[];
+  notes: Note[];
   settings: Settings;
 }
 
@@ -28,6 +32,13 @@ export interface AppActions {
   saveFields(fields: readonly FieldDefinition[]): void;
   /** Guarda la revisión de una semana; si queda vacía, la borra. */
   saveReview(review: WeeklyReview): void;
+  addSession(date: string): RankedSession;
+  updateSession(session: RankedSession): void;
+  deleteSession(id: string): void;
+  addNote(title?: string): Note;
+  /** Guarda título y cuerpo; los enlaces se extraen del cuerpo. */
+  updateNote(note: Pick<Note, "id" | "title" | "bodyMd">): void;
+  deleteNote(id: string): void;
   setSetting(key: string, value: unknown): void;
   /** Vuelve a leer todo de la base de datos (tras una importación). */
   reload(): Promise<void>;
@@ -53,6 +64,8 @@ const EMPTY: AppData = {
   days: [],
   scrims: [],
   reviews: [],
+  sessions: [],
+  notes: [],
   settings: {},
 };
 
@@ -120,6 +133,8 @@ export function createAppStore(services: Services): AppStoreCore {
         days: await repository.listDays(),
         scrims: await repository.listScrims(),
         reviews: await repository.listReviews(),
+        sessions: await repository.listRankedSessions(),
+        notes: await repository.listNotes(),
         settings: await repository.getSettings(),
       };
       publish();
@@ -202,6 +217,54 @@ export function createAppStore(services: Services): AppStoreCore {
           repository.saveReviews([review]),
         );
       }
+    },
+    addSession(date) {
+      const session = emptyRankedSession(newId(), date);
+      apply({ sessions: [...current().sessions, session] }, () =>
+        repository.saveRankedSessions([session]),
+      );
+      return session;
+    },
+    updateSession(session) {
+      apply(
+        {
+          sessions: upsertBy(
+            current().sessions,
+            session,
+            (other) => other.id === session.id,
+          ),
+        },
+        () => repository.saveRankedSessions([session]),
+      );
+    },
+    deleteSession(id) {
+      apply(
+        {
+          sessions: current().sessions.filter((session) => session.id !== id),
+        },
+        () => repository.deleteRankedSession(id),
+      );
+    },
+    addNote(title = "") {
+      const note = emptyNote(newId(), title);
+      apply({ notes: [...current().notes, note] }, () =>
+        repository.saveNotes([note]),
+      );
+      return note;
+    },
+    updateNote({ id, title, bodyMd }) {
+      // El editor guarda con retraso: una nota borrada no debe volver.
+      if (!current().notes.some((other) => other.id === id)) return;
+      const note: Note = { id, title, bodyMd, links: extractLinks(bodyMd) };
+      apply(
+        { notes: upsertBy(current().notes, note, (other) => other.id === id) },
+        () => repository.saveNotes([note]),
+      );
+    },
+    deleteNote(id) {
+      apply({ notes: current().notes.filter((note) => note.id !== id) }, () =>
+        repository.deleteNote(id),
+      );
     },
     setSetting(key, value) {
       apply({ settings: { ...current().settings, [key]: value } }, () =>

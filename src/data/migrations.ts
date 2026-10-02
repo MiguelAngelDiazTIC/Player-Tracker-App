@@ -66,6 +66,32 @@ export const MIGRATIONS: readonly Migration[] = [
       )`,
     ],
   },
+  {
+    version: 3,
+    name: "Partidas de ranked y notas",
+    statements: [
+      `CREATE TABLE IF NOT EXISTS ranked_sessions (
+        id TEXT PRIMARY KEY,
+        date TEXT NOT NULL,
+        map TEXT NOT NULL DEFAULT '',
+        agent TEXT NOT NULL DEFAULT '',
+        result TEXT,
+        kills INTEGER,
+        deaths INTEGER,
+        score INTEGER,
+        rounds INTEGER,
+        source TEXT NOT NULL DEFAULT 'manual',
+        external_match_id TEXT UNIQUE
+      )`,
+      `CREATE INDEX IF NOT EXISTS ranked_sessions_date ON ranked_sessions (date)`,
+      `CREATE TABLE IF NOT EXISTS notes (
+        id TEXT PRIMARY KEY,
+        title TEXT NOT NULL DEFAULT '',
+        body_md TEXT NOT NULL DEFAULT '',
+        links TEXT NOT NULL DEFAULT '[]'
+      )`,
+    ],
+  },
 ];
 
 /** Aplica las migraciones pendientes y devuelve las versiones aplicadas. */

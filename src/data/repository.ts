@@ -6,6 +6,8 @@ import {
   type FieldValue,
   type Thresholds,
 } from "../domain/fields";
+import type { Note } from "../domain/notes";
+import type { RankedSession } from "../domain/ranked";
 import type { WeeklyReview } from "../domain/review";
 import type { ScrimKind, ScrimMatch, ScrimResult } from "../domain/scrims";
 import type { SqlDriver, SqlValue } from "./driver";
@@ -46,6 +48,20 @@ interface ScrimRow {
   notes: string;
 }
 
+interface RankedRow {
+  id: string;
+  date: string;
+  map: string;
+  agent: string;
+  result: string | null;
+  kills: number | null;
+  deaths: number | null;
+  score: number | null;
+  rounds: number | null;
+  source: string;
+  external_match_id: string | null;
+}
+
 /** Filas por sentencia en las inserciones múltiples. */
 const CHUNK_SIZE = 100;
 
@@ -65,6 +81,12 @@ export interface Repository {
   listReviews(): Promise<WeeklyReview[]>;
   saveReviews(reviews: readonly WeeklyReview[]): Promise<void>;
   deleteReview(weekStart: string): Promise<void>;
+  listRankedSessions(): Promise<RankedSession[]>;
+  saveRankedSessions(sessions: readonly RankedSession[]): Promise<void>;
+  deleteRankedSession(id: string): Promise<void>;
+  listNotes(): Promise<Note[]>;
+  saveNotes(notes: readonly Note[]): Promise<void>;
+  deleteNote(id: string): Promise<void>;
   getSettings(): Promise<Settings>;
   setSetting(key: string, value: unknown): Promise<void>;
 }
@@ -271,6 +293,95 @@ export function createRepository(driver: SqlDriver): Repository {
       await driver.execute("DELETE FROM weekly_reviews WHERE week_start = ?", [
         weekStart,
       ]);
+    },
+
+    async listRankedSessions() {
+      const rows = await driver.select<RankedRow>(
+        "SELECT * FROM ranked_sessions ORDER BY date, rowid",
+      );
+      return rows.map((row) => ({
+        id: row.id,
+        date: row.date,
+        map: row.map,
+        agent: row.agent,
+        result: row.result as ScrimResult | null,
+        kills: row.kills,
+        deaths: row.deaths,
+        score: row.score,
+        rounds: row.rounds,
+        source: row.source as RankedSession["source"],
+        externalMatchId: row.external_match_id,
+      }));
+    },
+
+    async saveRankedSessions(sessions) {
+      await upsertMany(
+        "ranked_sessions",
+        [
+          "id",
+          "date",
+          "map",
+          "agent",
+          "result",
+          "kills",
+          "deaths",
+          "score",
+          "rounds",
+          "source",
+          "external_match_id",
+        ],
+        "id",
+        sessions.map((session) => [
+          session.id,
+          session.date,
+          session.map,
+          session.agent,
+          session.result,
+          session.kills,
+          session.deaths,
+          session.score,
+          session.rounds,
+          session.source,
+          session.externalMatchId,
+        ]),
+      );
+    },
+
+    async deleteRankedSession(id) {
+      await driver.execute("DELETE FROM ranked_sessions WHERE id = ?", [id]);
+    },
+
+    async listNotes() {
+      const rows = await driver.select<{
+        id: string;
+        title: string;
+        body_md: string;
+        links: string;
+      }>("SELECT * FROM notes ORDER BY rowid");
+      return rows.map((row) => ({
+        id: row.id,
+        title: row.title,
+        bodyMd: row.body_md,
+        links: JSON.parse(row.links) as string[],
+      }));
+    },
+
+    async saveNotes(notes) {
+      await upsertMany(
+        "notes",
+        ["id", "title", "body_md", "links"],
+        "id",
+        notes.map((note) => [
+          note.id,
+          note.title,
+          note.bodyMd,
+          JSON.stringify(note.links),
+        ]),
+      );
+    },
+
+    async deleteNote(id) {
+      await driver.execute("DELETE FROM notes WHERE id = ?", [id]);
     },
 
     async getSettings() {

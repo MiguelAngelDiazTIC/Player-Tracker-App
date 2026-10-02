@@ -78,8 +78,8 @@ export async function buildExport(
     days: await repository.listDays(),
     scrimMatches: await repository.listScrims(),
     weeklyReviews: await repository.listReviews(),
-    rankedSessions: [],
-    notes: [],
+    rankedSessions: await repository.listRankedSessions(),
+    notes: await repository.listNotes(),
     settings,
     attachments: files,
   };
@@ -142,6 +142,33 @@ export async function applyImport(
   );
   await repository.saveReviews(
     data.weeklyReviews.filter((review) => !reviewed.has(review.weekStart)),
+  );
+
+  // Partidas de ranked: se emparejan por id y por su id de HenrikDev, para
+  // no duplicar una partida sincronizada en las dos instalaciones.
+  const localSessions = await repository.listRankedSessions();
+  const sessionIds = new Set(localSessions.map((session) => session.id));
+  const idByExternal = new Map(
+    localSessions
+      .filter((session) => session.externalMatchId !== null)
+      .map((session) => [session.externalMatchId, session.id]),
+  );
+  const sessions = data.rankedSessions.flatMap((session) => {
+    const localId =
+      idByExternal.get(session.externalMatchId) ??
+      (sessionIds.has(session.id) ? session.id : undefined);
+    if (localId === undefined) return [session];
+    return strategy === "keep" ? [] : [{ ...session, id: localId }];
+  });
+  await repository.saveRankedSessions(sessions);
+
+  const noteIds = new Set(
+    strategy === "keep"
+      ? (await repository.listNotes()).map((note) => note.id)
+      : [],
+  );
+  await repository.saveNotes(
+    data.notes.filter((note) => !noteIds.has(note.id)),
   );
 
   for (const [key, value] of Object.entries(data.settings)) {
