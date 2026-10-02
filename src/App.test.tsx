@@ -83,7 +83,7 @@ const rowDates = () =>
   screen.getAllByRole("rowheader").map((cell) => cell.textContent);
 
 describe("estructura", () => {
-  it("muestra las seis secciones y abre en la Tabla", async () => {
+  it("muestra las siete secciones y abre en la Tabla", async () => {
     await renderApp(false);
 
     const nav = screen.getByRole("navigation", { name: "Secciones" });
@@ -96,6 +96,7 @@ describe("estructura", () => {
       "Scrims y 10mans",
       "Calendario",
       "Dashboard",
+      "Insights",
       "Revisión semanal",
       "Ajustes",
     ]);
@@ -317,7 +318,7 @@ describe("página del día", () => {
       ),
     );
     await user.type(
-      screen.getByLabelText("Feelings del día"),
+      screen.getByRole("textbox", { name: "Feelings del día" }),
       "Fino, pero con algo de #tilt",
     );
     await user.click(screen.getByRole("button", { name: "Volver a la Tabla" }));
@@ -836,5 +837,132 @@ describe("Revisión semanal", () => {
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
       "jueves, 24 de septiembre de 2026",
     );
+  });
+});
+
+describe("Insights", () => {
+  // El 26/09 es el último día de la hoja: hay sueño de "hoy" y avisos activos.
+  beforeEach(() => {
+    vi.setSystemTime(new Date(2026, 8, 26, 12, 0));
+  });
+
+  it("puntúa la preparación del día y explica de dónde sale", async () => {
+    const { user } = await renderApp();
+    await goTo(user, "Insights");
+
+    const card = screen.getByRole("region", { name: "Preparación de hoy" });
+    expect(card).toHaveTextContent("91de 100");
+    expect(card).toHaveTextContent("Día para grindear");
+    expect(card).toHaveTextContent("7 de 9 cumplidos en los 3 días anteriores");
+    expect(
+      within(card).getByRole("meter", { name: "Hábitos: 78 de 100" }),
+    ).toBeInTheDocument();
+  });
+
+  it("avisa de la saturación y lleva a los días que la disparan", async () => {
+    const { user } = await renderApp();
+    await goTo(user, "Insights");
+
+    expect(screen.getByRole("status")).toHaveTextContent(
+      "#saturado 2 veces en una semana, del 23/09/2026 al 24/09/2026",
+    );
+    await user.click(
+      screen.getByRole("button", {
+        name: "Ver los días del aviso: #saturado 2 veces en una semana",
+      }),
+    );
+
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
+      "Tabla",
+    );
+    expect(rowDates()).toEqual(["24/09/2026", "23/09/2026"]);
+    expect(
+      screen.getByText(/Solo se muestran los 2 días de/),
+    ).toHaveTextContent("#saturado 2 veces en una semana");
+
+    await user.click(
+      screen.getByRole("button", { name: "Ver todos los días" }),
+    );
+    expect(rowDates()).toHaveLength(13);
+  });
+
+  it("compara el rendimiento con y sin cada hábito, avisando de pocos datos", async () => {
+    const { user } = await renderApp();
+    await goTo(user, "Insights");
+
+    const nutrition = screen.getByRole("article", { name: "Nutrición" });
+    expect(nutrition).toHaveTextContent("Pocos datos");
+    expect(nutrition).toHaveTextContent("Sí1.2012 días");
+    expect(nutrition).toHaveTextContent("No1.201 día");
+    expect(nutrition).toHaveTextContent("Sin diferencia en K/D.");
+
+    const gym = screen.getByRole("article", { name: "Gimnasio" });
+    expect(gym).toHaveTextContent("Hecho1.298 días");
+    expect(gym).toHaveTextContent("Descanso o no hecho1.065 días");
+    expect(gym).toHaveTextContent("+0.23 de K/D con «Hecho».");
+
+    await user.click(
+      within(nutrition).getByRole("button", {
+        name: "Ver los días de Nutrición: No",
+      }),
+    );
+    expect(rowDates()).toEqual(["25/09/2026"]);
+  });
+
+  it("parte el sueño por su objetivo y cambia de métrica", async () => {
+    const { user } = await renderApp();
+    await goTo(user, "Insights");
+
+    const sleep = screen.getByRole("article", { name: "Sleep score" });
+    expect(sleep).toHaveTextContent("80 o más1.199 días");
+    expect(sleep).toHaveTextContent("Menos de 801.233 días");
+
+    await user.selectOptions(
+      screen.getByLabelText("Rendimiento medido en"),
+      "acs",
+    );
+    expect(
+      screen.getByRole("article", { name: "Sleep score" }),
+    ).toHaveTextContent("Menos de 80236.73 días");
+  });
+
+  it("relaciona las etiquetas con el rendimiento", async () => {
+    const { user } = await renderApp();
+    await goTo(user, "Insights");
+
+    const table = screen.getByRole("table", { name: /Etiquetas/ });
+    const [, saturated, autopilot] = within(table).getAllByRole("row");
+    expect(saturated).toHaveTextContent("#saturado21.151.21");
+    expect(autopilot).toHaveTextContent("#autopilot10.92");
+
+    await user.click(
+      within(table).getByRole("button", {
+        name: "Ver los días con #autopilot",
+      }),
+    );
+    expect(rowDates()).toEqual(["16/09/2026"]);
+  });
+
+  it("deja cambiar las reglas de saturación y las guarda", async () => {
+    const { services, user } = await renderApp();
+    await goTo(user, "Insights");
+
+    const streakDays = screen.getByLabelText("Días seguidos");
+    await user.clear(streakDays);
+    await user.type(streakDays, "2{Enter}");
+
+    expect(
+      screen.getByText(
+        "2 días seguidos con más de 8 rankeds, del 17/09/2026 al 18/09/2026",
+      ),
+    ).toBeInTheDocument();
+    await waitFor(async () => {
+      expect(await services.repository.getSettings()).toEqual({
+        "saturation.rules": {
+          streak: { fieldKey: "rankeds", days: 2, moreThan: 8 },
+          tag: { tag: "saturado", times: 2 },
+        },
+      });
+    });
   });
 });

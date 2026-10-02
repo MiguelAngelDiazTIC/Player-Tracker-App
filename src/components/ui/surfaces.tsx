@@ -1,5 +1,5 @@
 import { CircleAlert, CircleCheck, Info, TriangleAlert } from "lucide-react";
-import type { ReactNode } from "react";
+import { useId, type ReactNode } from "react";
 import { cx } from "../../lib/cx";
 
 interface CardProps {
@@ -12,14 +12,20 @@ interface CardProps {
 
 /** Tarjeta bento de cristal. */
 export function Card({ title, actions, className, children }: CardProps) {
+  const titleId = useId();
   return (
     <section
+      // Con título, la tarjeta es una región con nombre para lectores de pantalla.
+      aria-labelledby={title ? titleId : undefined}
       className={cx("glass flex flex-col gap-4 rounded-md p-4", className)}
     >
       {title || actions ? (
         <div className="flex items-center justify-between gap-2">
           {title ? (
-            <h2 className="text-surface/70 font-mono text-xs tracking-wide uppercase">
+            <h2
+              id={titleId}
+              className="text-surface/70 font-mono text-xs tracking-wide uppercase"
+            >
               {title}
             </h2>
           ) : null}

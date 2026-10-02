@@ -123,6 +123,18 @@ Las reglas viven en [src/domain/stats.ts](../src/domain/stats.ts) y son las mism
 - **Dashboard**: compara los últimos 7 o 30 días (acabando hoy) con el periodo anterior de la misma longitud.
 - **Revisión semanal**: las tres conclusiones se guardan en la tabla `weekly_reviews` (`week_start`, `conclusions`), creada por la migración 2.
 
+### Insights (fase 3)
+
+Tienen su propia sección en la barra lateral, entre Dashboard y Revisión semanal. Las reglas están en [src/domain/insights.ts](../src/domain/insights.ts):
+
+- **Métricas de rendimiento**: los campos numéricos coloreados respecto a la media del jugador (K/D y ACS en la plantilla). El usuario elige cuál mirar.
+- **Comparaciones**: media de la métrica en dos grupos de días. Por hábito (hecho frente a no hecho; en un `tristate`, el descanso va con "no hecho"), con todos los hábitos cumplidos frente a alguno sin cumplir, por objetivo (campos con umbral fijo, como el sueño: llega o no llega al umbral verde) y por volumen (campos que se suman: por encima o no de su mediana). Solo cuentan los días que tienen el factor y la métrica.
+- **Pocos datos**: aviso cuando algún grupo tiene menos de 10 días.
+- **Saturación**: reglas guardadas en el ajuste `saturation.rules` y editables en la propia vista. Por defecto, 5 días naturales seguidos con más de 8 rankeds, o `#saturado` 2 veces en 7 días. Un aviso está activo si su último día es de anteayer en adelante; los demás quedan como historial.
+- **Etiquetas**: días con cada etiqueta y media de la métrica esos días frente al resto.
+- **Preparación de hoy** (0 a 100): 40 % el descanso de hoy (lo cerca que queda cada campo con objetivo de su umbral verde), 30 % los hábitos cumplidos en los 3 días anteriores y 30 % la carga de esos días (100 si no supera lo habitual, 0 si llega al límite de la regla de saturación). Las partes sin datos no cuentan y el resto se reparte su peso. Desde 75, "día para grindear"; desde 50, "día normal"; por debajo, "día de pocas partidas".
+- **Comprobar un insight**: cada uno tiene un botón "Ver días" que abre la Tabla mostrando solo los días en los que se basa.
+
 ### Importar la hoja
 
 - La columna de 10mans/scrims de la hoja solo tiene un número por día. Al importarla se crean partidas vacías en `scrim_matches` (tipo `10mans`, nota "Importada de la hoja") hasta igualar ese número, para que el recuento del día coincida y el usuario pueda rellenarlas después.
@@ -132,7 +144,7 @@ Las reglas viven en [src/domain/stats.ts](../src/domain/stats.ts) y son las mism
 
 Trabaja una fase cada vez. Al acabar cada fase: pruebas en verde y un commit por bloque lógico en su propia rama. El usuario decidió el 02/10/2026 encadenar las fases sin parar a probar entre una y otra: las pruebas con datos reales y los cambios se harán cuando haya una versión 1.0. Los criterios "Terminada cuando" que dependen del uso real quedan para entonces.
 
-Estado: fases 0, 1 y 2 implementadas.
+Estado: fases 0, 1, 2 y 3 implementadas.
 
 ### Fase 0: cimientos
 

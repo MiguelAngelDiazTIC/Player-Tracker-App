@@ -135,7 +135,7 @@ export function DashboardView() {
         </p>
       </div>
 
-      <div className="flex min-h-0 flex-1 flex-col gap-4 overflow-auto">
+      <div className="flex min-h-0 flex-1 flex-col gap-4 relative overflow-auto">
         <section
           aria-labelledby="dashboard-daily"
           className="flex flex-col gap-2"

@@ -86,8 +86,22 @@ describe("filterDays", () => {
       range: { from: "2026-09-20", to: null },
       tag: "saturado",
       search: "tilt",
+      selection: null,
     });
     expect(result.map((item) => item.date)).toEqual(["2026-09-24"]);
+  });
+});
+
+describe("selección de días", () => {
+  it("deja solo los días elegidos", () => {
+    const result = filterDays(days, {
+      ...NO_FILTER,
+      selection: { label: "prueba", dates: ["2026-09-14", "2026-10-01"] },
+    });
+    expect(result.map((item) => item.date)).toEqual([
+      "2026-09-14",
+      "2026-10-01",
+    ]);
   });
 });
 

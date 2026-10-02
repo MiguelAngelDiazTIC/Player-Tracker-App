@@ -161,7 +161,7 @@ export function CalendarioView({ onOpenDay }: CalendarioViewProps) {
         </Labeled>
       </div>
 
-      <div className="glass-solid flex min-h-0 flex-1 flex-col gap-4 overflow-auto rounded-md p-4">
+      <div className="glass-solid flex min-h-0 flex-1 flex-col gap-4 relative overflow-auto rounded-md p-4">
         <table className="w-full table-fixed border-separate border-spacing-2">
           <caption className="sr-only">
             {metric.label} en {monthLabel(month)}

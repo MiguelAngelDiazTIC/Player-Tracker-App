@@ -190,7 +190,7 @@ export function SheetImportPanel() {
         <h3 id="sheet-columns" className="font-semibold">
           1. Columnas
         </h3>
-        <div className="glass-solid overflow-auto rounded-md">
+        <div className="glass-solid relative overflow-auto rounded-md">
           <table className="w-full border-separate border-spacing-0 text-sm">
             <thead>
               <tr>
@@ -325,7 +325,7 @@ export function SheetImportPanel() {
         ) : null}
 
         {result.days.length > 0 ? (
-          <div className="glass-solid overflow-auto rounded-md">
+          <div className="glass-solid relative overflow-auto rounded-md">
             <table className="w-full border-separate border-spacing-0 text-sm">
               <caption className="sr-only">
                 Vista previa de los primeros días

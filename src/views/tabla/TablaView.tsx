@@ -15,7 +15,7 @@ import { ariaSort } from "../../components/sort";
 import { SortButton } from "../../components/SortButton";
 import { Button } from "../../components/ui/Button";
 import { Labeled, Select, TextInput } from "../../components/ui/fields";
-import { Chip } from "../../components/ui/surfaces";
+import { Chip, Notice } from "../../components/ui/surfaces";
 import { formatDate, todayIso } from "../../domain/dates";
 import type { Day } from "../../domain/day";
 import {
@@ -257,6 +257,23 @@ export function TablaView({
         </Labeled>
       </div>
 
+      {state.filter.selection ? (
+        <Notice>
+          <div className="flex flex-wrap items-center gap-2">
+            <p className="min-w-0 flex-1">
+              Solo se muestran los {state.filter.selection.dates.length} días de{" "}
+              <strong>{state.filter.selection.label}</strong>.
+            </p>
+            <Button
+              variant="ghost"
+              onClick={() => setFilter({ selection: null })}
+            >
+              Ver todos los días
+            </Button>
+          </div>
+        </Notice>
+      ) : null}
+
       {days.length === 0 ? (
         <div className="glass flex flex-1 flex-col items-center justify-center gap-4 rounded-md p-4 text-center">
           <p className="text-surface/70 max-w-md">
@@ -266,8 +283,8 @@ export function TablaView({
           <Button onClick={onOpenSettings}>Importar mi hoja</Button>
         </div>
       ) : (
-        <div className="flex min-h-0 flex-1 flex-col gap-4 overflow-auto">
-          <div className="glass-solid max-h-[60vh] shrink-0 overflow-auto rounded-md">
+        <div className="flex min-h-0 flex-1 flex-col gap-4 relative overflow-auto">
+          <div className="glass-solid max-h-[60vh] shrink-0 relative overflow-auto rounded-md">
             <table className="w-full border-separate border-spacing-0 text-sm">
               <caption className="sr-only">
                 Registro diario: una fila por día

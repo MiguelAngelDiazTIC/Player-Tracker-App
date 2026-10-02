@@ -28,6 +28,7 @@ export interface AppActions {
   saveFields(fields: readonly FieldDefinition[]): void;
   /** Guarda la revisión de una semana; si queda vacía, la borra. */
   saveReview(review: WeeklyReview): void;
+  setSetting(key: string, value: unknown): void;
   /** Vuelve a leer todo de la base de datos (tras una importación). */
   reload(): Promise<void>;
   dismissError(): void;
@@ -201,6 +202,11 @@ export function createAppStore(services: Services): AppStoreCore {
           repository.saveReviews([review]),
         );
       }
+    },
+    setSetting(key, value) {
+      apply({ settings: { ...current().settings, [key]: value } }, () =>
+        repository.setSetting(key, value),
+      );
     },
     reload,
     dismissError() {
