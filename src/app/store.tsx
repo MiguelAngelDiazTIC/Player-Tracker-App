@@ -40,7 +40,7 @@ export function StoreProvider({ services, children }: StoreProviderProps) {
 
   if (!store) {
     return (
-      <p role={error ? "alert" : "status"} className="text-surface/70 p-4">
+      <p role={error ? "alert" : "status"} className="text-ink/70 p-4">
         {error ?? "Cargando tus datos…"}
       </p>
     );
