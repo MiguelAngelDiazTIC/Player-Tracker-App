@@ -9,6 +9,7 @@ import {
 import { useMemo, useState } from "react";
 import { useStore } from "../../app/store";
 import { ChoiceCell, ValueInput } from "../../components/cells";
+import { FieldChart } from "../../components/charts/FieldChart";
 import { STATUS_TINT } from "../../components/choices";
 import { ariaSort } from "../../components/sort";
 import { SortButton } from "../../components/SortButton";
@@ -117,13 +118,16 @@ export function TablaView({
     [activeFields, days],
   );
   const tags = useMemo(() => allTags(days), [days]);
-  const rows = useMemo<DayRow[]>(() => {
-    const counts = countScrimsByDate(scrims);
-    return filterDays(days, state.filter).map((day) => ({
-      day,
-      scrims: counts[day.date] ?? 0,
-    }));
-  }, [days, scrims, state.filter]);
+  const counts = useMemo(() => countScrimsByDate(scrims), [scrims]);
+  // Los días que pasan los filtros: los mismos para la tabla y sus gráficas.
+  const shownDays = useMemo(
+    () => filterDays(days, state.filter),
+    [days, state.filter],
+  );
+  const rows = useMemo<DayRow[]>(
+    () => shownDays.map((day) => ({ day, scrims: counts[day.date] ?? 0 })),
+    [shownDays, counts],
+  );
 
   const table = useTable({
     features,
@@ -262,8 +266,8 @@ export function TablaView({
           <Button onClick={onOpenSettings}>Importar mi hoja</Button>
         </div>
       ) : (
-        <>
-          <div className="glass-solid min-h-0 flex-1 overflow-auto rounded-md">
+        <div className="flex min-h-0 flex-1 flex-col gap-4 overflow-auto">
+          <div className="glass-solid max-h-[60vh] shrink-0 overflow-auto rounded-md">
             <table className="w-full border-separate border-spacing-0 text-sm">
               <caption className="sr-only">
                 Registro diario: una fila por día
@@ -434,7 +438,21 @@ export function TablaView({
               ? `${days.length} ${days.length === 1 ? "día" : "días"}`
               : `${rows.length} de ${days.length} días`}
           </p>
-        </>
+          <section
+            aria-label="Gráficas del registro diario"
+            className="grid shrink-0 grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-3"
+          >
+            {activeFields.map((field) => (
+              <FieldChart
+                key={field.id}
+                field={field}
+                days={shownDays}
+                allDays={days}
+                scrimCounts={counts}
+              />
+            ))}
+          </section>
+        </div>
       )}
     </div>
   );

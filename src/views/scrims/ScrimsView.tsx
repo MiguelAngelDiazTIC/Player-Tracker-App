@@ -10,6 +10,7 @@ import { Plus, Trash2 } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useStore } from "../../app/store";
 import { EditableText, type CellNav } from "../../components/cells";
+import { ScrimCharts } from "../../components/charts/ScrimCharts";
 import { ariaSort } from "../../components/sort";
 import { SortButton } from "../../components/SortButton";
 import { Button } from "../../components/ui/Button";
@@ -240,8 +241,8 @@ export function ScrimsView() {
           </p>
         </div>
       ) : (
-        <>
-          <div className="glass-solid min-h-0 flex-1 overflow-auto rounded-md">
+        <div className="flex min-h-0 flex-1 flex-col gap-4 overflow-auto">
+          <div className="glass-solid max-h-[60vh] shrink-0 overflow-auto rounded-md">
             <table className="w-full border-separate border-spacing-0 text-sm">
               <caption className="sr-only">
                 Scrims y 10mans: una fila por partida
@@ -455,7 +456,8 @@ export function ScrimsView() {
               ? `${scrims.length} ${scrims.length === 1 ? "partida" : "partidas"}`
               : `${rows.length} de ${scrims.length} partidas`}
           </p>
-        </>
+          <ScrimCharts matches={rows} />
+        </div>
       )}
 
       <datalist id="valorant-maps">
