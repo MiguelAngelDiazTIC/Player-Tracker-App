@@ -5,10 +5,11 @@ import { StoreProvider, useStore } from "./app/store";
 import { Sidebar } from "./components/Sidebar";
 import { Button } from "./components/ui/Button";
 import { Notice } from "./components/ui/surfaces";
-import { NO_FILTER } from "./domain/filters";
+import { NO_FILTER, type DaySelection } from "./domain/filters";
 import { AjustesView } from "./views/ajustes/AjustesView";
 import { CalendarioView } from "./views/calendario/CalendarioView";
 import { DashboardView } from "./views/dashboard/DashboardView";
+import { InsightsView } from "./views/insights/InsightsView";
 import { RevisionView } from "./views/revision/RevisionView";
 import { ScrimsView } from "./views/scrims/ScrimsView";
 import { DayPage } from "./views/tabla/DayPage";
@@ -33,6 +34,16 @@ function Shell() {
   function select(id: SectionId) {
     setActiveId(id);
     setOpenDate(null);
+  }
+
+  /** Enseña en la Tabla solo los días de un insight. */
+  function showDays(selection: DaySelection) {
+    setTabla({
+      preset: "all",
+      filter: { ...NO_FILTER, selection },
+      sorting: tabla.sorting,
+    });
+    select("tabla");
   }
 
   /** Abre la página de un día desde cualquier vista. */
@@ -65,6 +76,8 @@ function Shell() {
         return <CalendarioView onOpenDay={openDay} />;
       case "dashboard":
         return <DashboardView />;
+      case "insights":
+        return <InsightsView onShowDays={showDays} />;
       case "revision":
         return <RevisionView onOpenDay={openDay} />;
       case "ajustes":

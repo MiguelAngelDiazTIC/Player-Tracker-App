@@ -1,6 +1,7 @@
 import {
   CalendarDays,
   LayoutDashboard,
+  Lightbulb,
   NotebookPen,
   Settings,
   Swords,
@@ -39,6 +40,12 @@ export const SECTIONS = [
     label: "Dashboard",
     description: "Tendencias y rachas, con rankeds y scrims por separado.",
     icon: LayoutDashboard,
+  },
+  {
+    id: "insights",
+    label: "Insights",
+    description: "Qué hábitos te hacen jugar mejor, con tus números.",
+    icon: Lightbulb,
   },
   {
     id: "revision",
