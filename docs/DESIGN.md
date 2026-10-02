@@ -29,6 +29,7 @@ Los tokens están en el bloque `@theme` de [src/styles/index.css](../src/styles/
 | `shadow` | `#141414` | `#000000` | Sombras y velo de los diálogos |
 
 - **Dos modos, los mismos tokens**: el modo oscuro solo cambia los valores, en el bloque `[data-theme="dark"]` de `index.css`. Los componentes no saben en qué modo están: nada de clases `dark:` ni de colores por modo en un componente. El modo se elige en la barra lateral o en Ajustes (claro, oscuro o como el sistema), se guarda en el equipo y por defecto es claro.
+- **Cambio de modo**: fundido de toda la ventana en 400ms (transición de vista), para que el salto no sea brusco. Es solo opacidad, sin movimiento, así que se mantiene aunque el sistema pida menos movimiento.
 - **Por qué cambian el acento y los estados**: en oscuro tienen que leerse como texto e icono sobre cristal oscuro, así que se aclaran, y lo que va encima del acento pasa a ser oscuro (`on-accent`).
 
 - **Fondo**: degradado de `secondary` a `lime` pasando por `canvas`, fijo.
@@ -96,7 +97,7 @@ Español, de tú, conciso y directo. Los botones son verbos ("Añadir día", "Im
 - Texto `on-accent` fuera de un relleno `primary` o `chart`.
 - Clases `dark:` o colores distintos por modo dentro de un componente: el modo se resuelve en los tokens.
 - Colores, radios, sombras o desenfoques escritos a mano en un componente.
-- Animaciones decorativas. Solo hay transiciones de color en hover.
+- Animaciones decorativas. Solo hay transiciones de color en hover y el fundido al cambiar de modo.
 - Mezclar otra metáfora visual (sombras duras, relieves, degradados de neón).
 - Diálogos nativos (`alert`, `confirm`).
 

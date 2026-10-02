@@ -116,6 +116,13 @@
   }
 }
 
+/* Fundido al cambiar entre modo claro y oscuro (src/app/theme.ts). */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 400ms;
+  animation-timing-function: ease-in-out;
+}
+
 /* Cristal translúcido con desenfoque: barra lateral y tarjetas. */
 @utility glass {
   background-color: color-mix(in srgb, var(--color-surface) 58%, transparent);

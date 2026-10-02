@@ -48,14 +48,34 @@ export function applyTheme(choice: ThemeChoice = readThemeChoice()): void {
   document.documentElement.dataset.theme = resolveTheme(choice);
 }
 
+/**
+ * Cambia de tema con un fundido de toda la ventana, para que el salto de
+ * claro a oscuro no sea brusco. Es solo un cambio de opacidad, sin nada que
+ * se mueva, así que también vale cuando el sistema pide menos movimiento.
+ */
+function withFade(update: () => void): void {
+  if (typeof document.startViewTransition !== "function") {
+    update();
+    return;
+  }
+  document.startViewTransition(update);
+}
+
 export function setThemeChoice(choice: ThemeChoice): void {
+  // Lo que se ve ahora, antes de guardar la elección nueva.
+  const changes = resolveTheme(choice) !== resolveTheme(readThemeChoice());
   try {
     window.localStorage.setItem(STORAGE_KEY, choice);
   } catch {
     // Sin almacenamiento, el tema vale hasta cerrar la app.
   }
-  applyTheme(choice);
-  for (const listener of listeners) listener();
+  const update = () => {
+    applyTheme(choice);
+    for (const listener of listeners) listener();
+  };
+  // De "claro" a "como el sistema" puede no cambiar nada: sin fundido.
+  if (changes) withFade(update);
+  else update();
 }
 
 function subscribe(listener: () => void): () => void {
