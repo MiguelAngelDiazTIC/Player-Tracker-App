@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { daySchema } from "./day";
 import { fieldDefinitionSchema, isValidFieldValue } from "./fields";
+import { weeklyReviewSchema } from "./review";
 import { scrimMatchSchema } from "./scrims";
 
 export const EXPORT_FORMAT = "player-tracker";
@@ -25,6 +26,8 @@ export const exportSchema = z
     fieldDefinitions: z.array(fieldDefinitionSchema),
     days: z.array(daySchema),
     scrimMatches: z.array(scrimMatchSchema),
+    // Opcional: los archivos anteriores a la revisión semanal no la traen.
+    weeklyReviews: z.array(weeklyReviewSchema).default([]),
     // Las tablas de la fase 4 todavía no existen; se conserva lo que venga.
     rankedSessions: z.array(z.unknown()),
     notes: z.array(z.unknown()),

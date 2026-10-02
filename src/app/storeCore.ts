@@ -1,6 +1,7 @@
 import type { Settings } from "../data/repository";
 import { emptyDay, type Day } from "../domain/day";
 import type { FieldDefinition, FieldValue } from "../domain/fields";
+import { isEmptyReview, type WeeklyReview } from "../domain/review";
 import { emptyScrimMatch, type ScrimMatch } from "../domain/scrims";
 import { extractTags } from "../domain/tags";
 import { newId } from "../lib/id";
@@ -11,6 +12,7 @@ export interface AppData {
   /** Ordenados por fecha ascendente. */
   days: Day[];
   scrims: ScrimMatch[];
+  reviews: WeeklyReview[];
   settings: Settings;
 }
 
@@ -24,6 +26,8 @@ export interface AppActions {
   updateScrim(match: ScrimMatch): void;
   deleteScrim(id: string): void;
   saveFields(fields: readonly FieldDefinition[]): void;
+  /** Guarda la revisión de una semana; si queda vacía, la borra. */
+  saveReview(review: WeeklyReview): void;
   /** Vuelve a leer todo de la base de datos (tras una importación). */
   reload(): Promise<void>;
   dismissError(): void;
@@ -43,7 +47,13 @@ export interface AppStoreCore {
   flush(): Promise<void>;
 }
 
-const EMPTY: AppData = { fields: [], days: [], scrims: [], settings: {} };
+const EMPTY: AppData = {
+  fields: [],
+  days: [],
+  scrims: [],
+  reviews: [],
+  settings: {},
+};
 
 function upsertBy<T>(
   items: readonly T[],
@@ -108,6 +118,7 @@ export function createAppStore(services: Services): AppStoreCore {
         fields: await repository.listFields(),
         days: await repository.listDays(),
         scrims: await repository.listScrims(),
+        reviews: await repository.listReviews(),
         settings: await repository.getSettings(),
       };
       publish();
@@ -176,6 +187,20 @@ export function createAppStore(services: Services): AppStoreCore {
       apply({ fields: [...next].sort((a, b) => a.order - b.order) }, () =>
         repository.saveFields(fields),
       );
+    },
+    saveReview(review) {
+      const others = current().reviews.filter(
+        (other) => other.weekStart !== review.weekStart,
+      );
+      if (isEmptyReview(review)) {
+        apply({ reviews: others }, () =>
+          repository.deleteReview(review.weekStart),
+        );
+      } else {
+        apply({ reviews: [...others, review] }, () =>
+          repository.saveReviews([review]),
+        );
+      }
     },
     reload,
     dismissError() {

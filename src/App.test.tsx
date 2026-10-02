@@ -632,3 +632,209 @@ describe("Ajustes", () => {
     expect(tint("Rankeds, 20/09/2026")).toContain("bg-danger/25");
   });
 });
+
+describe("gráficas", () => {
+  const chartTitles = (section: string) =>
+    within(screen.getByRole("region", { name: section }))
+      .getAllByRole("heading", { level: 3 })
+      .map((heading) => heading.textContent);
+
+  it("hay una gráfica por cada columna con números o hábitos", async () => {
+    await renderApp();
+
+    expect(chartTitles("Gráficas del registro diario")).toEqual([
+      "Rankeds",
+      "10mans / scrims",
+      "DMs",
+      "Kovaaks",
+      "Gimnasio",
+      "Suplementación",
+      "Nutrición",
+      "Sleep score",
+      "Horas de sueño",
+      "K/D",
+      "ACS",
+    ]);
+  });
+
+  it("resumen cada gráfica y siguen los filtros de la tabla", async () => {
+    const { user } = await renderApp();
+    const summaryOf = (title: string) =>
+      screen.getByRole("heading", { level: 3, name: title }).parentElement
+        ?.textContent;
+
+    expect(summaryOf("Rankeds")).toBe("RankedsTotal 89");
+    expect(summaryOf("K/D")).toBe("K/DMedia 1.20");
+    expect(summaryOf("Horas de sueño")).toBe(
+      "Horas de sueñoMedia 7h10 · objetivo 7h",
+    );
+    expect(summaryOf("Nutrición")).toBe("Nutrición12 de 13 días");
+
+    await user.selectOptions(screen.getByLabelText("Etiqueta"), "saturado");
+    expect(summaryOf("Rankeds")).toBe("RankedsTotal 14");
+    expect(summaryOf("K/D")).toBe("K/DMedia 1.15");
+  });
+
+  it("el registro de scrims tiene las suyas", async () => {
+    const { user } = await renderApp();
+    await goTo(user, "Scrims y 10mans");
+
+    expect(chartTitles("Gráficas de scrims y 10mans")).toEqual([
+      "K/D por partida",
+      "ACS por partida",
+      "Resultados por mapa",
+    ]);
+  });
+});
+
+describe("Calendario", () => {
+  it("pinta el mes con la métrica elegida y abre un día", async () => {
+    const { user } = await renderApp();
+    await goTo(user, "Calendario");
+
+    expect(
+      screen.getByRole("heading", { level: 2, name: "octubre de 2026" }),
+    ).toBeInTheDocument();
+    expect(screen.getByText("Sin datos este mes")).toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: "Mes anterior" }));
+    expect(
+      screen.getByText("Media 1.20 · 13 días con dato"),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", {
+        name: "lunes, 21 de septiembre de 2026: K/D 1.72",
+      }),
+    ).toBeInTheDocument();
+
+    await user.selectOptions(screen.getByLabelText("Métrica"), "rankeds");
+    expect(screen.getByText("Total 89 · 13 días con dato")).toBeInTheDocument();
+
+    await user.selectOptions(screen.getByLabelText("Métrica"), "nutrition");
+    expect(
+      screen.getByText("92 % cumplido · 12 de 13 días"),
+    ).toBeInTheDocument();
+
+    await user.click(
+      screen.getByRole("button", {
+        name: "viernes, 25 de septiembre de 2026: Nutrición No",
+      }),
+    );
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
+      "viernes, 25 de septiembre de 2026",
+    );
+  });
+});
+
+describe("Dashboard", () => {
+  const tile = (label: string) => {
+    const element = screen.getByText(label).parentElement;
+    if (!element) throw new Error(`Falta la tarjeta ${label}`);
+    return element;
+  };
+
+  it("resume el periodo y lo compara con el anterior", async () => {
+    const { user } = await renderApp();
+    await goTo(user, "Dashboard");
+
+    // Últimos 7 días (26/09-02/10): solo el 26/09 tiene datos.
+    expect(tile("Rankeds")).toHaveTextContent("8Total del periodo");
+    expect(tile("Rankeds")).toHaveTextContent("−38que los 7 días anteriores");
+    expect(tile("K/D")).toHaveTextContent("1.20Media de 1 día");
+
+    await user.selectOptions(screen.getByLabelText("Periodo"), "30");
+    expect(tile("Rankeds")).toHaveTextContent("89Total del periodo");
+    expect(tile("Horas de sueño")).toHaveTextContent("7h10Media de 13 días");
+  });
+
+  it("muestra rachas y cumplimiento de hábitos", async () => {
+    const { user } = await renderApp();
+    await goTo(user, "Dashboard");
+    await user.selectOptions(screen.getByLabelText("Periodo"), "30");
+
+    expect(screen.getByText("Mejor racha: 11 días")).toBeInTheDocument();
+    expect(
+      screen.getByRole("meter", { name: "Cumplimiento de Nutrición" }),
+    ).toHaveAttribute("aria-valuenow", "92");
+  });
+
+  it("separa las cifras de scrims", async () => {
+    const { user } = await renderApp();
+    await goTo(user, "Dashboard");
+    await user.selectOptions(screen.getByLabelText("Periodo"), "30");
+
+    expect(tile("Partidas")).toHaveTextContent("18Total del periodo");
+    expect(tile("K/D en scrims")).toHaveTextContent("Sin datos en el periodo");
+  });
+});
+
+describe("Revisión semanal", () => {
+  it("resume la semana 14-20/09 como el cálculo a mano", async () => {
+    const { user } = await renderApp();
+    await goTo(user, "Revisión semanal");
+
+    expect(
+      screen.getByRole("heading", {
+        level: 2,
+        name: "Semana del 28/09/2026 al 04/10/2026",
+      }),
+    ).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "Semana anterior" }));
+    await user.click(screen.getByRole("button", { name: "Semana anterior" }));
+
+    const tile = (label: string) => screen.getByText(label).parentElement;
+    expect(
+      screen.getByRole("heading", { level: 3, name: /Resumen/ }),
+    ).toHaveTextContent("Resumen: 7 días registrados");
+    expect(tile("Rankeds")).toHaveTextContent("47Total de la semana");
+    expect(tile("Horas de sueño")).toHaveTextContent("7h19Media de 7 días");
+    expect(tile("K/D")).toHaveTextContent("1.15Media de 7 días");
+    expect(tile("Gimnasio")).toHaveTextContent("7 de 7");
+    expect(screen.getByText("#autopilot × 1")).toBeInTheDocument();
+  });
+
+  it("guarda las tres conclusiones de cada semana por separado", async () => {
+    const { services, user } = await renderApp();
+    await goTo(user, "Revisión semanal");
+
+    await user.type(
+      screen.getByLabelText("1. Qué ha funcionado esta semana"),
+      "Dormir más de 7h",
+    );
+    await user.type(
+      screen.getByLabelText("3. Qué cambio la semana que viene"),
+      "Menos rankeds seguidas",
+    );
+    await user.tab();
+
+    await user.click(screen.getByRole("button", { name: "Semana anterior" }));
+    expect(
+      screen.getByLabelText("1. Qué ha funcionado esta semana"),
+    ).toHaveValue("");
+    await user.click(screen.getByRole("button", { name: "Semana siguiente" }));
+    expect(
+      screen.getByLabelText("1. Qué ha funcionado esta semana"),
+    ).toHaveValue("Dormir más de 7h");
+
+    await waitFor(async () => {
+      expect(await services.repository.listReviews()).toEqual([
+        {
+          weekStart: "2026-09-28",
+          conclusions: ["Dormir más de 7h", "", "Menos rankeds seguidas"],
+        },
+      ]);
+    });
+  });
+
+  it("abre un día de la semana desde el resumen", async () => {
+    const { user } = await renderApp();
+    await goTo(user, "Revisión semanal");
+    await user.click(screen.getByRole("button", { name: "Semana anterior" }));
+
+    await user.click(screen.getByRole("button", { name: "24/09" }));
+
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
+      "jueves, 24 de septiembre de 2026",
+    );
+  });
+});

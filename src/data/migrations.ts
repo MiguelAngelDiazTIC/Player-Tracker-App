@@ -56,6 +56,16 @@ export const MIGRATIONS: readonly Migration[] = [
       )`,
     ],
   },
+  {
+    version: 2,
+    name: "Revisiones semanales",
+    statements: [
+      `CREATE TABLE IF NOT EXISTS weekly_reviews (
+        week_start TEXT PRIMARY KEY,
+        conclusions TEXT NOT NULL DEFAULT '[]'
+      )`,
+    ],
+  },
 ];
 
 /** Aplica las migraciones pendientes y devuelve las versiones aplicadas. */

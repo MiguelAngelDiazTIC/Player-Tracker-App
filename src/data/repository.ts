@@ -6,6 +6,7 @@ import {
   type FieldValue,
   type Thresholds,
 } from "../domain/fields";
+import type { WeeklyReview } from "../domain/review";
 import type { ScrimKind, ScrimMatch, ScrimResult } from "../domain/scrims";
 import type { SqlDriver, SqlValue } from "./driver";
 import { migrate } from "./migrations";
@@ -61,6 +62,9 @@ export interface Repository {
   listScrims(): Promise<ScrimMatch[]>;
   saveScrims(matches: readonly ScrimMatch[]): Promise<void>;
   deleteScrim(id: string): Promise<void>;
+  listReviews(): Promise<WeeklyReview[]>;
+  saveReviews(reviews: readonly WeeklyReview[]): Promise<void>;
+  deleteReview(weekStart: string): Promise<void>;
   getSettings(): Promise<Settings>;
   setSetting(key: string, value: unknown): Promise<void>;
 }
@@ -238,6 +242,35 @@ export function createRepository(driver: SqlDriver): Repository {
 
     async deleteScrim(id) {
       await driver.execute("DELETE FROM scrim_matches WHERE id = ?", [id]);
+    },
+
+    async listReviews() {
+      const rows = await driver.select<{
+        week_start: string;
+        conclusions: string;
+      }>("SELECT * FROM weekly_reviews ORDER BY week_start");
+      return rows.map((row) => ({
+        weekStart: row.week_start,
+        conclusions: JSON.parse(row.conclusions) as string[],
+      }));
+    },
+
+    async saveReviews(reviews) {
+      await upsertMany(
+        "weekly_reviews",
+        ["week_start", "conclusions"],
+        "week_start",
+        reviews.map((review) => [
+          review.weekStart,
+          JSON.stringify(review.conclusions),
+        ]),
+      );
+    },
+
+    async deleteReview(weekStart) {
+      await driver.execute("DELETE FROM weekly_reviews WHERE week_start = ?", [
+        weekStart,
+      ]);
     },
 
     async getSettings() {

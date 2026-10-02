@@ -20,6 +20,11 @@
   --color-canvas: #0c0a17;
   /* Canvas con un 12% de surface: el fondo opaco de tablas y diálogos. */
   --color-panel: #292733;
+  /*
+   * Color de las series en las gráficas: primary aclarado hasta dar 3:1
+   * sobre panel (validado con el comprobador de la skill dataviz).
+   */
+  --color-chart: #5c86ff;
 
   --font-sans:
     "Plus Jakarta Sans Variable", ui-sans-serif, system-ui, sans-serif;

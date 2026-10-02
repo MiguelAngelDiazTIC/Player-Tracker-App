@@ -77,6 +77,7 @@ export async function buildExport(
     fieldDefinitions: await repository.listFields(),
     days: await repository.listDays(),
     scrimMatches: await repository.listScrims(),
+    weeklyReviews: await repository.listReviews(),
     rankedSessions: [],
     notes: [],
     settings,
@@ -132,6 +133,16 @@ export async function applyImport(
 
   const scrims = data.scrimMatches.filter((match) => !skipIds.has(match.id));
   await repository.saveScrims(scrims);
+
+  // Las revisiones siguen la misma regla que los días de su semana.
+  const reviewed = new Set(
+    strategy === "keep"
+      ? (await repository.listReviews()).map((review) => review.weekStart)
+      : [],
+  );
+  await repository.saveReviews(
+    data.weeklyReviews.filter((review) => !reviewed.has(review.weekStart)),
+  );
 
   for (const [key, value] of Object.entries(data.settings)) {
     if (!SECRET_SETTING_KEYS.includes(key)) {
