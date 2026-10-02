@@ -43,18 +43,27 @@ export function inRange(date: string, range: DateRange): boolean {
   return true;
 }
 
+/** Un grupo de días con nombre, para enseñarlos en la Tabla. */
+export interface DaySelection {
+  label: string;
+  dates: readonly string[];
+}
+
 export interface DayFilter {
   range: DateRange;
   /** Solo días con esta `#etiqueta`. */
   tag: string | null;
   /** Texto que deben contener los feelings. */
   search: string;
+  /** Solo estos días: los que hay detrás de un insight. */
+  selection: DaySelection | null;
 }
 
 export const NO_FILTER: DayFilter = {
   range: OPEN_RANGE,
   tag: null,
   search: "",
+  selection: null,
 };
 
 function fold(text: string): string {
@@ -69,6 +78,8 @@ export function filterDays(days: readonly Day[], filter: DayFilter): Day[] {
   return days.filter(
     (day) =>
       inRange(day.date, filter.range) &&
+      (filter.selection === null ||
+        filter.selection.dates.includes(day.date)) &&
       (filter.tag === null || day.tags.includes(filter.tag)) &&
       (search === "" || fold(day.feelingsMd).includes(search)),
   );
