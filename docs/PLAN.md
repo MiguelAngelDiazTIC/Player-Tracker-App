@@ -142,7 +142,24 @@ Tienen su propia sección en la barra lateral, entre Dashboard y Revisión seman
 - **Notas** (sección propia): título y texto en Markdown. `[[Título]]` enlaza a otra nota (sin distinguir mayúsculas ni acentos) y `[[14/09/2026]]` o `[[2026-09-14]]` a un día. Los destinos se guardan en `notes.links`. Cada nota muestra a qué enlaza y quién la menciona (otras notas y los feelings de los días); la página del día muestra las notas que lo mencionan o que menciona.
 - **Objetivos**: lista en el ajuste `goals` (`id`, `title`, `deadline`, `done`), editable en el Dashboard, con los días que faltan. Al estar en los ajustes, viajan en la exportación.
 - La migración 3 crea `ranked_sessions` (con `external_match_id` único) y `notes`. Al importar un JSON, una partida con el mismo `external_match_id` que una local se trata como la misma, aunque su `id` sea otro.
-- **Pendiente**: la sincronización con HenrikDev. Antes de construirla hay que hacer la prueba aislada con la cuenta del usuario (clave, Riot ID y región).
+
+### Sincronización con HenrikDev (fase 4)
+
+Resultado de la prueba aislada del 02/10/2026 con la cuenta del jugador:
+
+- La clave gratuita permite 30 puntos por minuto, y cada petición a Riot que HenrikDev hace por detrás también cuenta. `GET /valorant/v4/matches` devuelve 10 partidas por llamada y gasta unos 11 puntos, así que traer un día de hace una semana costaría varios minutos de espera.
+- `GET /valorant/v1/stored-matches/{region}/{name}/{tag}` devuelve hasta 60 partidas por unos 2 puntos, con todo lo necesario: id, mapa, agente, kills, muertes, puntuación total y rondas de cada equipo. Sus cifras por día coinciden con las de `v4/matches` en los 9 días comparados, así que la app usa este endpoint en vez del que proponía el plan.
+- Las cifras coinciden con la hoja: el 26/09 da 8 rankeds, K/D 1.16 y ACS 202 (la hoja tiene 8, 1.2 y 202).
+- Las customs sí aparecen (`mode=custom`), pero la cuenta no tiene ninguna desde abril de 2026: los 10mans de septiembre que hay en la hoja no llegan por esta vía.
+
+Cómo funciona:
+
+- En Ajustes se guardan el Riot ID (`riot.id`), la región (`riot.region`) y la clave (`henrikdev.apiKey`, que nunca se exporta). "Probar conexión" pide la cuenta.
+- El botón "Sincronizar" de la página del día pide las rankeds y las customs de esa fecha, pasando páginas hasta dejar atrás el día. La fecha de una partida es la fecha local en la que empezó.
+- Cada ranked nueva se guarda en `ranked_sessions` con su `external_match_id`. Las que ya estaban no se tocan, para respetar lo corregido a mano; por eso repetir la sincronización no duplica.
+- Las customs nuevas van a `scrim_matches` como `10mans`, con id `henrikdev:<id de la partida>`. Los duelos de práctica (mapas "Skirmish") se descartan.
+- Tras sincronizar, el recuento, el K/D (kills totales entre muertes totales) y el ACS (puntuación total entre rondas totales) del día se escriben en los campos `rankeds`, `kd` y `acs`. Siguen siendo editables.
+- Las peticiones salen por `tauri-plugin-http`, con permiso solo para `https://api.henrikdev.xyz`, y únicamente al pulsar "Sincronizar" o "Probar conexión".
 
 ### Importar la hoja
 
@@ -153,7 +170,7 @@ Tienen su propia sección en la barra lateral, entre Dashboard y Revisión seman
 
 Trabaja una fase cada vez. Al acabar cada fase: pruebas en verde y un commit por bloque lógico en su propia rama. El usuario decidió el 02/10/2026 encadenar las fases sin parar a probar entre una y otra: las pruebas con datos reales y los cambios se harán cuando haya una versión 1.0. Los criterios "Terminada cuando" que dependen del uso real quedan para entonces.
 
-Estado: fases 0, 1, 2 y 3 implementadas. De la fase 4 están hechas las partidas de ranked, las notas y los objetivos; falta la sincronización con HenrikDev, que espera la prueba con la cuenta del usuario.
+Estado: las cinco fases (0 a 4) están implementadas. Queda la ronda de pruebas con datos reales y los cambios que salgan de ella, antes de la versión 1.0.
 
 ### Fase 0: cimientos
 
