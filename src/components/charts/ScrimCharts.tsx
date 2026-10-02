@@ -1,6 +1,4 @@
 import {
-  Bar,
-  BarChart,
   CartesianGrid,
   Line,
   LineChart,
@@ -21,8 +19,9 @@ import {
   type ScrimMatch,
 } from "../../domain/scrims";
 import { resultsByMap, scrimStats } from "../../domain/stats";
-import { ChartCard, ChartLegend } from "./ChartCard";
-import { AXIS_TICK, CHART, CHART_MARGIN, MAX_BAR_SIZE } from "./chartTheme";
+import { ResultsChart } from "./CategoryCharts";
+import { ChartCard } from "./ChartCard";
+import { AXIS_TICK, CHART, CHART_MARGIN } from "./chartTheme";
 import { ChartTooltip } from "./ChartTooltip";
 
 interface ScrimChartsProps {
@@ -156,99 +155,15 @@ export function ScrimCharts({ matches }: ScrimChartsProps) {
         format={(value) => formatStat("number", value)}
         average={stats.acs}
       />
-      <ChartCard
+      <ResultsChart
         title="Resultados por mapa"
         summary={
           decided === 0
             ? undefined
             : `${stats.wins}V ${stats.losses}D ${stats.draws}E · ${formatPercent(stats.winRate)}`
         }
-        description={`Victorias, derrotas y empates por mapa: ${maps
-          .map(
-            (entry) =>
-              `${entry.map} ${entry.wins} victorias, ${entry.losses} derrotas, ${entry.draws} empates`,
-          )
-          .join("; ")}`}
-        empty={maps.length === 0}
-        legend={
-          <ChartLegend
-            items={[
-              { label: "Victorias", swatch: "bg-success", shape: "rect" },
-              { label: "Empates", swatch: "bg-surface/40", shape: "rect" },
-              { label: "Derrotas", swatch: "bg-danger", shape: "rect" },
-            ]}
-          />
-        }
-      >
-        <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={maps} layout="vertical" margin={CHART_MARGIN}>
-            <CartesianGrid horizontal={false} stroke={CHART.grid} />
-            <XAxis
-              type="number"
-              allowDecimals={false}
-              tick={AXIS_TICK}
-              tickLine={false}
-              axisLine={{ stroke: CHART.grid }}
-            />
-            <YAxis
-              type="category"
-              dataKey="map"
-              tick={AXIS_TICK}
-              tickLine={false}
-              axisLine={false}
-              width={72}
-            />
-            <Tooltip
-              isAnimationActive={false}
-              cursor={{ fill: CHART.grid }}
-              content={({ active, payload }) => {
-                const entry = payload?.[0]?.payload as
-                  (typeof maps)[number] | undefined;
-                return active && entry ? (
-                  <ChartTooltip
-                    title={entry.map}
-                    rows={[
-                      {
-                        label: "Victorias",
-                        value: String(entry.wins),
-                        color: CHART.good,
-                      },
-                      {
-                        label: "Empates",
-                        value: String(entry.draws),
-                        color: CHART.neutral,
-                      },
-                      {
-                        label: "Derrotas",
-                        value: String(entry.losses),
-                        color: CHART.bad,
-                      },
-                    ]}
-                  />
-                ) : null;
-              }}
-            />
-            {(
-              [
-                ["wins", CHART.good],
-                ["draws", CHART.neutral],
-                ["losses", CHART.bad],
-              ] as const
-            ).map(([key, color]) => (
-              <Bar
-                key={key}
-                dataKey={key}
-                stackId="results"
-                fill={color}
-                stroke={CHART.surface}
-                strokeWidth={2}
-                maxBarSize={MAX_BAR_SIZE}
-                isAnimationActive={false}
-              />
-            ))}
-          </BarChart>
-        </ResponsiveContainer>
-      </ChartCard>
+        rows={maps.map(({ map, ...results }) => ({ name: map, ...results }))}
+      />
     </section>
   );
 }

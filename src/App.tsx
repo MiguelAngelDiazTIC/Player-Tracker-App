@@ -10,6 +10,8 @@ import { AjustesView } from "./views/ajustes/AjustesView";
 import { CalendarioView } from "./views/calendario/CalendarioView";
 import { DashboardView } from "./views/dashboard/DashboardView";
 import { InsightsView } from "./views/insights/InsightsView";
+import { NotasView } from "./views/notas/NotasView";
+import { RankedsView } from "./views/rankeds/RankedsView";
 import { RevisionView } from "./views/revision/RevisionView";
 import { ScrimsView } from "./views/scrims/ScrimsView";
 import { DayPage } from "./views/tabla/DayPage";
@@ -28,12 +30,27 @@ function Shell() {
   const [openDate, setOpenDate] = useState<string | null>(null);
   // Filtros y orden de la Tabla: se conservan al abrir un día y volver.
   const [tabla, setTabla] = useState<TablaState>(INITIAL_TABLA);
+  // Día cuyas partidas se enseñan al llegar a Rankeds desde su página.
+  const [rankedDate, setRankedDate] = useState<string | null>(null);
+  const [noteId, setNoteId] = useState<string | null>(null);
   const section = getSection(activeId);
   const showingDay = activeId === "tabla" && openDate !== null;
 
   function select(id: SectionId) {
     setActiveId(id);
     setOpenDate(null);
+    setRankedDate(null);
+  }
+
+  /** Abre el registro de rankeds mostrando solo las partidas de un día. */
+  function openRankeds(date: string) {
+    select("rankeds");
+    setRankedDate(date);
+  }
+
+  function openNote(id: string | null) {
+    select("notas");
+    setNoteId(id);
   }
 
   /** Enseña en la Tabla solo los días de un insight. */
@@ -61,6 +78,8 @@ function Shell() {
             onBack={() => setOpenDate(null)}
             onOpenDay={setOpenDate}
             onOpenScrims={() => select("scrims")}
+            onOpenRankeds={openRankeds}
+            onOpenNote={openNote}
           />
         ) : (
           <TablaView
@@ -69,6 +88,11 @@ function Shell() {
             onOpenDay={setOpenDate}
             onOpenSettings={() => select("ajustes")}
           />
+        );
+      case "rankeds":
+        // La clave reinicia el filtro al llegar desde otro día.
+        return (
+          <RankedsView key={rankedDate ?? "todas"} focusDate={rankedDate} />
         );
       case "scrims":
         return <ScrimsView />;
@@ -80,6 +104,14 @@ function Shell() {
         return <InsightsView onShowDays={showDays} />;
       case "revision":
         return <RevisionView onOpenDay={openDay} />;
+      case "notas":
+        return (
+          <NotasView
+            selectedId={noteId}
+            onSelect={setNoteId}
+            onOpenDay={openDay}
+          />
+        );
       case "ajustes":
         return <AjustesView />;
     }

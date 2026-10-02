@@ -4,8 +4,10 @@ import {
   Lightbulb,
   NotebookPen,
   Settings,
+  StickyNote,
   Swords,
   Table2,
+  Trophy,
   type LucideIcon,
 } from "lucide-react";
 
@@ -22,6 +24,12 @@ export const SECTIONS = [
     label: "Tabla",
     description: "El día en filas y columnas, como en tu hoja.",
     icon: Table2,
+  },
+  {
+    id: "rankeds",
+    label: "Rankeds",
+    description: "Cada partida, para ver en qué mapas y agentes rindes mejor.",
+    icon: Trophy,
   },
   {
     id: "scrims",
@@ -52,6 +60,12 @@ export const SECTIONS = [
     label: "Revisión semanal",
     description: "Resumen de la semana y tus 3 conclusiones.",
     icon: NotebookPen,
+  },
+  {
+    id: "notas",
+    label: "Notas",
+    description: "VODs, lineups, rivales y objetivos, enlazados con [[ ]].",
+    icon: StickyNote,
   },
   {
     id: "ajustes",

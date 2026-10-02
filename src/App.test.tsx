@@ -23,12 +23,14 @@ vi.mock("./views/tabla/FeelingsEditor", () => ({
   FeelingsEditor: ({
     markdown,
     onChange,
+    label = "Feelings del día",
   }: {
     markdown: string;
     onChange: (markdown: string, text: string) => void;
+    label?: string;
   }) => (
     <textarea
-      aria-label="Feelings del día"
+      aria-label={label}
       defaultValue={markdown}
       onBlur={(event) => onChange(event.target.value, event.target.value)}
     />
@@ -83,7 +85,7 @@ const rowDates = () =>
   screen.getAllByRole("rowheader").map((cell) => cell.textContent);
 
 describe("estructura", () => {
-  it("muestra las siete secciones y abre en la Tabla", async () => {
+  it("muestra las nueve secciones y abre en la Tabla", async () => {
     await renderApp(false);
 
     const nav = screen.getByRole("navigation", { name: "Secciones" });
@@ -93,11 +95,13 @@ describe("estructura", () => {
         .map((button) => button.textContent),
     ).toEqual([
       "Tabla",
+      "Rankeds",
       "Scrims y 10mans",
       "Calendario",
       "Dashboard",
       "Insights",
       "Revisión semanal",
+      "Notas",
       "Ajustes",
     ]);
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
@@ -118,7 +122,7 @@ describe("estructura", () => {
     await user.keyboard("{Enter}");
 
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
-      "Scrims y 10mans",
+      "Rankeds",
     );
   });
 
@@ -729,7 +733,9 @@ describe("Calendario", () => {
 
 describe("Dashboard", () => {
   const tile = (label: string) => {
-    const element = screen.getByText(label).parentElement;
+    const element = within(screen.getByRole("main")).getByText(
+      label,
+    ).parentElement;
     if (!element) throw new Error(`Falta la tarjeta ${label}`);
     return element;
   };
@@ -783,7 +789,8 @@ describe("Revisión semanal", () => {
     await user.click(screen.getByRole("button", { name: "Semana anterior" }));
     await user.click(screen.getByRole("button", { name: "Semana anterior" }));
 
-    const tile = (label: string) => screen.getByText(label).parentElement;
+    const tile = (label: string) =>
+      within(screen.getByRole("main")).getByText(label).parentElement;
     expect(
       screen.getByRole("heading", { level: 3, name: /Resumen/ }),
     ).toHaveTextContent("Resumen: 7 días registrados");
@@ -964,5 +971,271 @@ describe("Insights", () => {
         },
       });
     });
+  });
+});
+
+describe("Rankeds", () => {
+  it("apunta una partida y calcula su K/D y su ACS", async () => {
+    const { services, user } = await renderApp();
+    await goTo(user, "Rankeds");
+    await user.click(screen.getByRole("button", { name: "Añadir partida" }));
+
+    const cell = (label: string) =>
+      screen.getByLabelText(`${label}, partida del 02/10/2026`);
+    await user.type(cell("Mapa"), "Ascent");
+    await user.type(cell("Kills"), "20");
+    await user.type(cell("Muertes"), "10");
+
+    // El ACS necesita las rondas para guardar la puntuación total.
+    await user.type(cell("ACS"), "260{Enter}");
+    expect(screen.getByRole("alert")).toHaveTextContent(
+      "Pon antes las rondas de la partida",
+    );
+    await user.keyboard("{Escape}");
+    await user.type(cell("Rondas"), "20");
+    await user.type(cell("ACS"), "260");
+    await user.tab();
+
+    expect(screen.getByTitle("Kills entre muertes")).toHaveTextContent("2.00");
+    expect(screen.getByRole("status")).toHaveTextContent(
+      "1 partida · K/D 2.00 · ACS 260",
+    );
+    await waitFor(async () => {
+      expect(await services.repository.listRankedSessions()).toMatchObject([
+        {
+          date: "2026-10-02",
+          map: "Ascent",
+          kills: 20,
+          deaths: 10,
+          rounds: 20,
+          score: 5200,
+          source: "manual",
+        },
+      ]);
+    });
+  });
+
+  it("conserva el ACS al corregir las rondas", async () => {
+    const { services, user } = await renderApp();
+    await goTo(user, "Rankeds");
+    await user.click(screen.getByRole("button", { name: "Añadir partida" }));
+
+    const cell = (label: string) =>
+      screen.getByLabelText(`${label}, partida del 02/10/2026`);
+    await user.type(cell("Rondas"), "20");
+    await user.type(cell("ACS"), "250");
+    await user.clear(cell("Rondas"));
+    await user.type(cell("Rondas"), "24");
+    await user.tab();
+
+    expect(cell("ACS")).toHaveValue("250");
+    await waitFor(async () => {
+      const [session] = await services.repository.listRankedSessions();
+      expect(session).toMatchObject({ rounds: 24, score: 6000 });
+    });
+  });
+
+  it("desde un día, muestra solo sus partidas y pasa las cifras al día", async () => {
+    const { services, user } = await renderApp();
+    await services.repository.saveRankedSessions([
+      {
+        id: "a",
+        date: "2026-09-20",
+        map: "Ascent",
+        agent: "Jett",
+        result: "win",
+        kills: 20,
+        deaths: 10,
+        score: 5200,
+        rounds: 20,
+        source: "manual",
+        externalMatchId: null,
+      },
+      {
+        id: "b",
+        date: "2026-09-20",
+        map: "Bind",
+        agent: "Raze",
+        result: "loss",
+        kills: 10,
+        deaths: 20,
+        score: 3600,
+        rounds: 24,
+        source: "manual",
+        externalMatchId: null,
+      },
+      {
+        id: "c",
+        date: "2026-09-21",
+        map: "Ascent",
+        agent: "Jett",
+        result: "win",
+        kills: 5,
+        deaths: 5,
+        score: 1000,
+        rounds: 10,
+        source: "manual",
+        externalMatchId: null,
+      },
+    ]);
+    document.body.innerHTML = "";
+    render(<App services={services} />);
+    await screen.findByRole("navigation", { name: "Secciones" });
+
+    await user.click(screen.getByRole("button", { name: "20/09/2026" }));
+    const card = screen.getByRole("region", { name: "Partidas de ranked" });
+    expect(card).toHaveTextContent("Partidas2K/D1.00ACS200");
+
+    await user.click(
+      within(card).getByRole("button", { name: "Usar estas cifras en el día" }),
+    );
+    expect(screen.getByLabelText("Rankeds")).toHaveValue("2");
+    expect(screen.getByLabelText("K/D")).toHaveValue("1.00");
+    expect(screen.getByLabelText("ACS")).toHaveValue("200");
+
+    await user.click(
+      within(card).getByRole("button", { name: "Ver partidas" }),
+    );
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
+      "Rankeds",
+    );
+    expect(screen.getByRole("status")).toHaveTextContent("2 de 3 partidas");
+  });
+});
+
+describe("Notas", () => {
+  it("crea notas, las enlaza con [[ ]] y muestra quién las menciona", async () => {
+    const { services, user } = await renderApp();
+    await goTo(user, "Notas");
+
+    await user.click(screen.getByRole("button", { name: "Nueva nota" }));
+    await user.type(
+      screen.getByLabelText("Título de la nota"),
+      "Team Ñu{Enter}",
+    );
+    await user.click(screen.getByLabelText("Texto de la nota"));
+    await user.paste("Repasar [[Lineups Ascent]] antes del [[20/09/2026]]");
+    await user.tab();
+
+    const links = screen.getByRole("region", { name: "Enlaza a" });
+    expect(
+      within(links).getByRole("button", { name: "Día 20/09/2026" }),
+    ).toBeInTheDocument();
+    await user.click(
+      within(links).getByRole("button", {
+        name: "Crear la nota «Lineups Ascent»",
+      }),
+    );
+
+    // La nota nueva ya tiene título y sabe quién la menciona.
+    expect(screen.getByLabelText("Título de la nota")).toHaveValue(
+      "Lineups Ascent",
+    );
+    const mentions = screen.getByRole("region", { name: "La mencionan" });
+    await user.click(within(mentions).getByRole("button", { name: "Team Ñu" }));
+    expect(screen.getByLabelText("Título de la nota")).toHaveValue("Team Ñu");
+
+    await waitFor(async () => {
+      const notes = await services.repository.listNotes();
+      expect(notes.map((note) => [note.title, note.links])).toEqual([
+        ["Team Ñu", ["Lineups Ascent", "20/09/2026"]],
+        ["Lineups Ascent", []],
+      ]);
+    });
+  });
+
+  it("desde un día se ven las notas que lo mencionan, y al revés", async () => {
+    const { user } = await renderApp();
+    await goTo(user, "Notas");
+    await user.click(screen.getByRole("button", { name: "Nueva nota" }));
+    await user.type(
+      screen.getByLabelText("Título de la nota"),
+      "VOD scrim{Enter}",
+    );
+    await user.click(screen.getByLabelText("Texto de la nota"));
+    await user.paste("Del [[20/09/2026]]");
+    await user.tab();
+
+    await user.click(screen.getByRole("button", { name: "Día 20/09/2026" }));
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
+      "domingo, 20 de septiembre de 2026",
+    );
+    const linked = screen.getByRole("region", { name: "Notas enlazadas" });
+    await user.click(within(linked).getByRole("button", { name: "VOD scrim" }));
+
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
+      "Notas",
+    );
+    expect(screen.getByLabelText("Título de la nota")).toHaveValue("VOD scrim");
+  });
+
+  it("busca y elimina notas tras confirmarlo", async () => {
+    const { services, user } = await renderApp();
+    await goTo(user, "Notas");
+    for (const title of ["Lineups Ascent", "Rival: Team Ñu"]) {
+      await user.click(screen.getByRole("button", { name: "Nueva nota" }));
+      await user.type(
+        screen.getByLabelText("Título de la nota"),
+        `${title}{Enter}`,
+      );
+    }
+
+    await user.type(screen.getByLabelText("Buscar"), "team nu");
+    const list = screen.getByRole("region", { name: "Tus notas" });
+    expect(
+      within(list)
+        .getAllByRole("listitem")
+        .map((item) => item.textContent),
+    ).toEqual(["Rival: Team Ñu"]);
+
+    await user.click(screen.getByRole("button", { name: "Eliminar nota" }));
+    await user.click(
+      within(screen.getByRole("dialog")).getByRole("button", {
+        name: "Eliminar nota",
+      }),
+    );
+    await waitFor(async () => {
+      const notes = await services.repository.listNotes();
+      expect(notes.map((note) => note.title)).toEqual(["Lineups Ascent"]);
+    });
+  });
+});
+
+describe("Objetivos", () => {
+  it("se añaden, se cumplen y se guardan con los ajustes", async () => {
+    const { services, user } = await renderApp();
+    await goTo(user, "Dashboard");
+    const card = screen.getByRole("region", { name: "Objetivos" });
+
+    await user.type(
+      within(card).getByLabelText("Nuevo objetivo"),
+      "Llegar a Radiant",
+    );
+    await user.type(within(card).getByLabelText("Fecha límite"), "2026-12-31");
+    await user.click(
+      within(card).getByRole("button", { name: "Añadir objetivo" }),
+    );
+
+    expect(card).toHaveTextContent(
+      "Llegar a RadiantQuedan 90 días (31/12/2026)",
+    );
+
+    await user.click(
+      within(card).getByRole("checkbox", { name: /Llegar a Radiant/ }),
+    );
+    expect(card).toHaveTextContent("Fecha límite: 31/12/2026");
+    await waitFor(async () => {
+      const settings = await services.repository.getSettings();
+      expect(settings.goals).toMatchObject([
+        { title: "Llegar a Radiant", deadline: "2026-12-31", done: true },
+      ]);
+    });
+
+    await user.click(
+      within(card).getByRole("button", {
+        name: "Eliminar el objetivo Llegar a Radiant",
+      }),
+    );
+    expect(card).toHaveTextContent("Aún no hay objetivos");
   });
 });

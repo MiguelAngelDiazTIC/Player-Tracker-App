@@ -2,6 +2,7 @@ import { Flame } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useStore } from "../../app/store";
 import { StatTile, type Delta } from "../../components/charts/StatTile";
+import { GoalsCard } from "./GoalsCard";
 import { Labeled, Select } from "../../components/ui/fields";
 import { Card } from "../../components/ui/surfaces";
 import { todayIso } from "../../domain/dates";
@@ -136,6 +137,8 @@ export function DashboardView() {
       </div>
 
       <div className="flex min-h-0 flex-1 flex-col gap-4 relative overflow-auto">
+        <GoalsCard />
+
         <section
           aria-labelledby="dashboard-daily"
           className="flex flex-col gap-2"
