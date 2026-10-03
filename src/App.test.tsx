@@ -1708,3 +1708,147 @@ describe("copias automáticas", () => {
     );
   });
 });
+
+describe("tutorial del primer arranque", () => {
+  /** La app en un equipo que aún no ha visto el tutorial. */
+  async function renderFirstRun(seeded = false) {
+    const services = await createTestServices({ tutorialSeen: false });
+    if (seeded) await seedSheet(services);
+    const user = userEvent.setup();
+    render(<App services={services} />);
+    await screen.findByRole("navigation", { name: "Secciones" });
+    return { services, user };
+  }
+
+  const next = (user: ReturnType<typeof userEvent.setup>, name = "Siguiente") =>
+    user.click(screen.getByRole("button", { name }));
+
+  it("aparece con la carpeta vacía y el foco en «Empezar»", async () => {
+    await renderFirstRun();
+
+    const dialog = screen.getByRole("dialog", {
+      name: "Te doy la bienvenida a MikaLog",
+    });
+    expect(dialog).toHaveTextContent("Paso 1 de 4");
+    expect(screen.getByRole("button", { name: "Empezar" })).toHaveFocus();
+  });
+
+  it("no aparece si la carpeta ya tiene días ni si ya se vio", async () => {
+    await renderFirstRun(true);
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    document.body.innerHTML = "";
+
+    await renderApp(false);
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  });
+
+  it("se puede saltar, y no vuelve a salir", async () => {
+    const { services, user } = await renderFirstRun();
+
+    await user.click(screen.getByRole("button", { name: "Saltar tutorial" }));
+
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    expect(services.platform.tutorialSeen).toBe(true);
+    expect(await services.repository.listDays()).toEqual([]);
+  });
+
+  it("de principio a fin, acaba en la página del día de hoy", async () => {
+    const { services, user } = await renderFirstRun();
+
+    await next(user, "Empezar");
+    const start = screen.getByRole("dialog", {
+      name: "¿Cómo quieres empezar?",
+    });
+    expect(
+      within(start).getByRole("radio", { name: /Empezar de cero/ }),
+    ).toBeChecked();
+
+    await next(user);
+    const sync = screen.getByRole("dialog", {
+      name: "Sincronizar tus rankeds (opcional)",
+    });
+    expect(within(sync).getByLabelText("Riot ID")).toBeInTheDocument();
+    await next(user, "Atrás");
+    expect(
+      screen.getByRole("dialog", { name: "¿Cómo quieres empezar?" }),
+    ).toBeInTheDocument();
+    await next(user);
+
+    await next(user);
+    const titles = [];
+    for (let stop = 0; stop < 6; stop += 1) {
+      const balloon = screen.getByRole("dialog");
+      expect(balloon).toHaveTextContent(`${stop + 1} de 6`);
+      titles.push(within(balloon).getByRole("heading").textContent);
+      // El recorrido también avanza con la flecha derecha.
+      if (stop < 5) await user.keyboard("{ArrowRight}");
+    }
+    expect(titles).toEqual([
+      "Tabla",
+      "La página del día",
+      "Scrims y 10mans",
+      "Dashboard",
+      "Insights",
+      "Ajustes",
+    ]);
+    expect(screen.getByRole("button", { name: "Terminar" })).toHaveFocus();
+
+    await next(user, "Terminar");
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
+      "viernes, 2 de octubre de 2026",
+    );
+    expect(services.platform.tutorialSeen).toBe(true);
+    await waitFor(async () => {
+      expect(await services.repository.listDays()).toHaveLength(1);
+    });
+  });
+
+  it("si eliges importar la hoja, acaba en Ajustes", async () => {
+    const { services, user } = await renderFirstRun();
+
+    await next(user, "Empezar");
+    await user.click(screen.getByRole("radio", { name: /Importar mi hoja/ }));
+    await next(user);
+    await next(user);
+    for (let stop = 0; stop < 5; stop += 1) await next(user);
+    await next(user, "Terminar");
+
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
+      "Ajustes",
+    );
+    expect(
+      screen.getByRole("region", { name: "Importar mi hoja" }),
+    ).toBeInTheDocument();
+    expect(await services.repository.listDays()).toEqual([]);
+  });
+
+  it("Escape sale del recorrido sin crear nada", async () => {
+    const { services, user } = await renderFirstRun();
+    await next(user, "Empezar");
+    await next(user);
+    await next(user);
+    expect(screen.getByRole("dialog", { name: "Tabla" })).toBeInTheDocument();
+
+    await user.keyboard("{Escape}");
+
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    expect(services.platform.tutorialSeen).toBe(true);
+    expect(await services.repository.listDays()).toEqual([]);
+  });
+
+  it("se repite desde Ajustes", async () => {
+    const { user } = await renderApp();
+    await goTo(user, "Ajustes");
+
+    await user.click(screen.getByRole("button", { name: "Ver el tutorial" }));
+
+    expect(
+      screen.getByRole("dialog", { name: "Te doy la bienvenida a MikaLog" }),
+    ).toBeInTheDocument();
+    // Detrás queda la Tabla, que es lo que señala el recorrido.
+    expect(
+      screen.getByRole("heading", { level: 1, hidden: true }),
+    ).toHaveTextContent("Tabla");
+  });
+});

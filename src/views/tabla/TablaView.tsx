@@ -171,6 +171,7 @@ export function TablaView({
         </Labeled>
         <Button
           variant="primary"
+          data-tour="add-day"
           onClick={() => {
             if (!exists) createDay(newDate);
             onOpenDay(newDate);

@@ -40,6 +40,10 @@ export interface Platform {
   backupFolder: BackupFolder;
   /** Copia `tracker.db` a `backups/` y devuelve la ruta de la copia. */
   backupDatabase(): Promise<string>;
+  /** `true` si el tutorial ya se vio en este equipo. */
+  tutorialSeen: boolean;
+  /** Recuerda en este equipo que el tutorial ya se vio. */
+  markTutorialSeen(): Promise<void>;
   pickFolder(title: string): Promise<string | null>;
   folderHasData(folder: string): Promise<boolean>;
   /**

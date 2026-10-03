@@ -265,6 +265,13 @@ Se muestra la primera vez, justo después de elegir la carpeta de datos, y solo 
 - Pruebas de interfaz con la app entera: aparece con una carpeta vacía, no aparece con datos, saltar funciona y Ajustes lo repite.
 - **Terminada cuando**: una persona que no conoce la app la instala, sigue el tutorial y rellena su primer día sin ayuda.
 
+Cómo quedó hecho:
+
+- `src/views/tutorial/Tutorial.tsx`: tres pasos en un diálogo (bienvenida, cómo empezar, sincronización con el mismo panel de Ajustes) y un recorrido de seis globos. Los globos buscan su elemento por el atributo `data-tour` (`nav-<sección>` en la barra lateral y `add-day` en el botón de añadir día).
+- La opción de «cómo empezar» se recuerda y se ejecuta al terminar el recorrido: importar la hoja y cargar una copia llevan a Ajustes; empezar de cero crea el día de hoy y abre su página. Saltar o salir no hace nada de eso.
+- `config.json` guarda `tutorialSeen` junto a `dataFolder`; `Platform` lo expone como `tutorialSeen` y `markTutorialSeen()`. El archivo ya no se reescribe en cada arranque si no cambia nada: una escritura cortada a medias lo dejaba vacío y la app volvía a preguntar por la carpeta.
+- Ajustes > «Primeros pasos» > «Ver el tutorial» lo repite.
+
 #### 5.4 Instalador y versión 1.0
 
 Ya existe: `npm run tauri build` genera un instalador NSIS en español y el CI lo sube como artefacto en cada push. Falta dejarlo listo para instalar y actualizar.

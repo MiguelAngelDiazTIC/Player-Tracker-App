@@ -37,32 +37,49 @@ async function configPath(): Promise<string> {
   return join(await appConfigDir(), CONFIG_FILE);
 }
 
-/** Carpeta de datos elegida en un arranque anterior, si la hay. */
-export async function readConfiguredFolder(): Promise<string | null> {
+/** Lo que la app recuerda de este equipo, fuera de la carpeta de datos. */
+interface AppConfig {
+  dataFolder?: string;
+  tutorialSeen?: boolean;
+}
+
+async function readConfig(): Promise<AppConfig> {
   const path = await configPath();
-  if (!(await exists(path))) return null;
+  if (!(await exists(path))) return {};
   try {
-    const config: unknown = JSON.parse(await readTextFile(path));
-    if (
-      typeof config === "object" &&
-      config !== null &&
-      "dataFolder" in config
-    ) {
-      return typeof config.dataFolder === "string" ? config.dataFolder : null;
+    const raw: unknown = JSON.parse(await readTextFile(path));
+    if (typeof raw !== "object" || raw === null) return {};
+    const config: AppConfig = {};
+    if ("dataFolder" in raw && typeof raw.dataFolder === "string") {
+      config.dataFolder = raw.dataFolder;
     }
-    return null;
+    if ("tutorialSeen" in raw && raw.tutorialSeen === true) {
+      config.tutorialSeen = true;
+    }
+    return config;
   } catch {
-    return null;
+    return {};
   }
 }
 
-async function writeConfiguredFolder(folder: string): Promise<void> {
+/** Cambia parte de la configuración sin perder el resto. */
+async function writeConfig(change: AppConfig): Promise<void> {
+  const current = await readConfig();
+  const config = { ...current, ...change };
+  // Sin cambios no se toca el archivo: una escritura cortada a medias (un
+  // apagón, la app cerrada a la fuerza) lo dejaría vacío.
+  if (JSON.stringify(config) === JSON.stringify(current)) return;
   await mkdir(await appConfigDir(), { recursive: true });
-  await writeTextFile(
-    await configPath(),
-    JSON.stringify({ dataFolder: folder }, null, 2),
-  );
+  await writeTextFile(await configPath(), JSON.stringify(config, null, 2));
 }
+
+/** Carpeta de datos elegida en un arranque anterior, si la hay. */
+export async function readConfiguredFolder(): Promise<string | null> {
+  return (await readConfig()).dataFolder ?? null;
+}
+
+const writeConfiguredFolder = (folder: string) =>
+  writeConfig({ dataFolder: folder });
 
 export async function suggestDataFolder(): Promise<string> {
   return join(await documentDir(), APP_NAME);
@@ -189,6 +206,7 @@ export async function openDataFolder(folder: string): Promise<Services> {
   const repository = createRepository(driver);
   await repository.init();
   await writeConfiguredFolder(folder);
+  const { tutorialSeen = false } = await readConfig();
 
   /**
    * Copia coherente de la base de datos en otro archivo. SQLite trabaja con
@@ -251,6 +269,12 @@ export async function openDataFolder(folder: string): Promise<Services> {
       const target = await join(backups, `tracker-${timestamp(new Date())}.db`);
       await copyDatabase(target);
       return target;
+    },
+
+    tutorialSeen,
+    async markTutorialSeen() {
+      await writeConfig({ tutorialSeen: true });
+      platform.tutorialSeen = true;
     },
 
     pickFolder,

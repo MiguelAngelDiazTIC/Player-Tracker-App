@@ -5,6 +5,7 @@ import { StoreProvider, useStore } from "./app/store";
 import { Sidebar } from "./components/Sidebar";
 import { Button } from "./components/ui/Button";
 import { Notice } from "./components/ui/surfaces";
+import { todayIso } from "./domain/dates";
 import { NO_FILTER, type DaySelection } from "./domain/filters";
 import { AjustesView } from "./views/ajustes/AjustesView";
 import { CalendarioView } from "./views/calendario/CalendarioView";
@@ -16,6 +17,7 @@ import { RevisionView } from "./views/revision/RevisionView";
 import { ScrimsView } from "./views/scrims/ScrimsView";
 import { DayPage } from "./views/tabla/DayPage";
 import { TablaView, type TablaState } from "./views/tabla/TablaView";
+import { Tutorial, type StartChoice } from "./views/tutorial/Tutorial";
 
 const INITIAL_TABLA: TablaState = {
   preset: "all",
@@ -24,7 +26,11 @@ const INITIAL_TABLA: TablaState = {
 };
 
 function Shell() {
-  const { error, dismissError } = useStore();
+  const { error, dismissError, days, createDay, services } = useStore();
+  // El tutorial sale solo la primera vez, y solo si aún no hay ningún día.
+  const [tutorial, setTutorial] = useState(
+    () => !services.platform.tutorialSeen && days.length === 0,
+  );
   const [activeId, setActiveId] = useState<SectionId>(DEFAULT_SECTION_ID);
   // Día abierto como página dentro de la Tabla.
   const [openDate, setOpenDate] = useState<string | null>(null);
@@ -67,6 +73,34 @@ function Shell() {
   function openDay(date: string) {
     setActiveId("tabla");
     setOpenDate(date);
+  }
+
+  /** Repite el tutorial desde Ajustes; el recorrido señala cosas de la Tabla. */
+  function showTutorial() {
+    select("tabla");
+    setTutorial(true);
+  }
+
+  function closeTutorial(start: StartChoice | null) {
+    setTutorial(false);
+    // Si no se pudiera guardar, el tutorial volvería a salir: no es grave.
+    void services.platform.markTutorialSeen().catch(() => undefined);
+    if (start === "scratch") {
+      const today = todayIso();
+      createDay(today);
+      openDay(today);
+    } else if (start !== null) {
+      select("ajustes");
+      if (start === "sheet") {
+        // Cuando Ajustes ya esté pintado, baja hasta el importador de la hoja.
+        setTimeout(() => {
+          const panel = document.getElementById("importar-hoja");
+          if (panel && "scrollIntoView" in panel) {
+            panel.scrollIntoView({ block: "start" });
+          }
+        }, 0);
+      }
+    }
   }
 
   function renderSection() {
@@ -114,7 +148,7 @@ function Shell() {
           />
         );
       case "ajustes":
-        return <AjustesView />;
+        return <AjustesView onShowTutorial={showTutorial} />;
     }
   }
 
@@ -143,6 +177,8 @@ function Shell() {
 
         {renderSection()}
       </main>
+
+      {tutorial ? <Tutorial onClose={closeTutorial} /> : null}
     </div>
   );
 }

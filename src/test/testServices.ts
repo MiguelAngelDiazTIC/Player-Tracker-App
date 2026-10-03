@@ -31,7 +31,12 @@ export interface TestServices extends Services {
 }
 
 /** Servicios en memoria: SQLite de `node:sqlite` y un sistema sin diálogos. */
-export async function createTestServices(): Promise<TestServices> {
+export async function createTestServices({
+  tutorialSeen = true,
+}: {
+  /** Las pruebas arrancan con el tutorial ya visto, salvo las suyas. */
+  tutorialSeen?: boolean;
+} = {}): Promise<TestServices> {
   const repository = createRepository(createMemoryDriver());
   await repository.init();
 
@@ -95,6 +100,10 @@ export async function createTestServices(): Promise<TestServices> {
     async backupDatabase() {
       test.backups += 1;
       return `C:/datos-de-prueba/backups/tracker-${test.backups}.db`;
+    },
+    tutorialSeen,
+    async markTutorialSeen() {
+      platform.tutorialSeen = true;
     },
     async pickFolder() {
       return null;
