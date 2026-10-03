@@ -170,7 +170,7 @@ Cómo funciona:
 
 Trabaja una fase cada vez. Al acabar cada fase: pruebas en verde y un commit por bloque lógico en su propia rama. El usuario decidió el 02/10/2026 encadenar las fases sin parar a probar entre una y otra: las pruebas con datos reales y los cambios se harán cuando haya una versión 1.0. Los criterios "Terminada cuando" que dependen del uso real quedan para entonces.
 
-Estado (03/10/2026): las cinco fases (0 a 4) están implementadas. Antes de la versión 1.0 quedan la fase 5 (nombre y logo, exportación a Excel, tutorial e instalador) y la ronda de pruebas con datos reales y los cambios que salgan de ella.
+Estado (03/10/2026): las fases 0 a 5 están implementadas. Antes de publicar la versión 1.0 queda la ronda de pruebas con datos reales y los cambios que salgan de ella.
 
 ### Fase 0: cimientos
 
@@ -285,6 +285,7 @@ Ya existe: `npm run tauri build` genera un instalador NSIS en español y el CI l
 - **Actualizar**: se instala la versión nueva encima de la anterior y los datos se conservan. Sin actualizador automático en la 1.0, porque comprobar versiones es una llamada a internet que las reglas de trabajo no permiten; si el usuario lo quiere, `tauri-plugin-updater` con un botón "Buscar actualizaciones" que solo se usa al pulsarlo.
 - **Firma de código**: el instalador va sin firmar, así que Windows SmartScreen avisa la primera vez ("Windows protegió tu PC" > "Más información" > "Ejecutar de todas formas"). Se explica en el README. Firmarlo cuesta dinero (por ejemplo Azure Trusted Signing, de pago mensual) y solo compensa si la app se reparte a otras personas.
 - README: sección "Instalar" con el enlace a la última Release y el aviso de SmartScreen.
+- Cómo quedó hecho: la versión es `1.0.0` en `package.json` (de ahí la lee `tauri.conf.json`) y en `Cargo.toml`; las imágenes del instalador se generan con `scripts/installer-images.ps1` en `src-tauri/installer/`; el aviso de que desinstalar no borra los datos es un gancho de NSIS (`src-tauri/installer/hooks.nsh`), que no sale al actualizar; `.github/workflows/release.yml` publica la Release al subir una etiqueta `v*` y falla si la etiqueta no coincide con `package.json`.
 - **Terminada cuando**: en un Windows limpio, el `.exe` de la Release instala la app sin pedir administrador, la abre con el tutorial, instalar la versión siguiente encima conserva los datos y desinstalar no borra la carpeta de datos.
 
 ## Reglas de trabajo

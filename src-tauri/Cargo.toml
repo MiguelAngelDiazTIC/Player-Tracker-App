@@ -1,6 +1,6 @@
 [package]
 name = "player-tracker"
-version = "0.1.0"
+version = "1.0.0"
 description = "Diario de escritorio para jugadores de Valorant"
 authors = ["Miguel Ángel Díaz"]
 edition = "2021"
