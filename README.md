@@ -17,6 +17,17 @@ Para **actualizar**, instala la versión nueva encima: tus datos se conservan. *
 
 La app no se conecta a internet: todo se queda en tu ordenador.
 
+## Licencia y avisos
+
+Copyright (C) 2026 Miguel Ángel Díaz Gutiérrez (MikaEl).
+
+- **Licencia**: software libre bajo la [GPL-3.0 o posterior](LICENSE). Puedes usarlo, estudiarlo, modificarlo y compartirlo; si repartes una versión modificada, debe tener la misma licencia. Sin garantía de ningún tipo.
+- **Créditos**: toda copia o versión modificada debe conservar en su pantalla «Acerca de» la atribución al autor original y el enlace a este repositorio. El nombre «MikaLog» y su logo no entran en la licencia. Los detalles están en [NOTICE.md](NOTICE.md).
+- **Privacidad**: MikaLog no recoge ni envía ningún dato. Todo lo que apuntas se queda en la carpeta de datos de tu ordenador.
+- **Riot Games**: MikaLog no está avalado por Riot Games ni refleja sus opiniones. Valorant y Riot Games son marcas de Riot Games, Inc.
+- **Software de terceros**: sus licencias están en [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).
+- **Contacto**: miguelangeldiaztic@gmail.com o las [incidencias](https://github.com/MiguelAngelDiazTIC/Player-Tracker-App/issues).
+
 ## Desarrollo
 
 Hecha con Tauri 2, React, TypeScript, Vite y Tailwind CSS. En Windows hacen falta Node 24, Rust (rustup) y las Build Tools de C++ de Visual Studio.
@@ -42,6 +53,8 @@ npm run tauri dev
 3. El workflow «Publicar versión» pasa las pruebas, compila el instalador y crea la Release con el `.exe`.
 
 Las imágenes del instalador salen del icono con `pwsh scripts/installer-images.ps1`.
+
+Al añadir, quitar o actualizar una dependencia, lanza `npm run notices` y sube el `THIRD-PARTY-NOTICES.md` que genera. El CI falla si no está al día o si entra una licencia incompatible con la GPL-3.0.
 
 ### Datos de ejemplo
 
