@@ -1647,3 +1647,77 @@ describe("tutorial del primer arranque", () => {
     ).toHaveTextContent("Tabla");
   });
 });
+
+describe("Acerca de", () => {
+  async function openAbout() {
+    const rendered = await renderApp(false);
+    await goTo(rendered.user, "Ajustes");
+    const panel = within(
+      screen.getByRole("region", { name: "Acerca de MikaLog" }),
+    );
+    return { ...rendered, panel };
+  }
+
+  it("muestra la versión, el autor, los avisos y el contacto", async () => {
+    const { panel } = await openAbout();
+
+    expect(panel.getByText(/versión \d+\.\d+\.\d+/)).toBeInTheDocument();
+    expect(
+      panel.getByText("Copyright © 2026 Miguel Ángel Díaz Gutiérrez (MikaEl)"),
+    ).toBeInTheDocument();
+    expect(panel.getByText(/Software libre bajo la GPL-3.0/)).toHaveTextContent(
+      "conservar estos créditos",
+    );
+    expect(
+      panel.getByText(/no recoge ni envía ningún dato/),
+    ).toBeInTheDocument();
+    expect(
+      panel.getByText(/no está avalado por Riot Games/),
+    ).toBeInTheDocument();
+    expect(panel.getByText("miguelangeldiaztic@gmail.com")).toBeInTheDocument();
+    expect(
+      panel.getByText(
+        "https://github.com/MiguelAngelDiazTIC/Player-Tracker-App",
+      ),
+    ).toBeInTheDocument();
+  });
+
+  it("abre el texto completo de la licencia y lo cierra", async () => {
+    const { user, panel } = await openAbout();
+
+    await user.click(panel.getByRole("button", { name: "Ver la licencia" }));
+    const dialog = await screen.findByRole("dialog", {
+      name: "Licencia (GPL-3.0-or-later)",
+    });
+    expect(
+      await within(dialog).findByText(/GNU GENERAL PUBLIC LICENSE/),
+    ).toHaveTextContent("Version 3, 29 June 2007");
+
+    await user.click(within(dialog).getByRole("button", { name: "Cerrar" }));
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  });
+
+  it("abre las licencias de terceros", async () => {
+    const { user, panel } = await openAbout();
+
+    await user.click(
+      panel.getByRole("button", { name: "Licencias de terceros" }),
+    );
+    const dialog = await screen.findByRole("dialog", {
+      name: "Licencias de terceros",
+    });
+    const text = await within(dialog).findByText(/MikaLog se reparte con/);
+    expect(text).toHaveTextContent("react-dom");
+    expect(text).toHaveTextContent("(Rust)");
+  });
+
+  it("la bienvenida del tutorial dice que los datos no salen del ordenador", async () => {
+    const services = await createTestServices({ tutorialSeen: false });
+    render(<App services={services} />);
+
+    const dialog = await screen.findByRole("dialog", {
+      name: "Te doy la bienvenida a MikaLog",
+    });
+    expect(dialog).toHaveTextContent("Tus datos no salen de tu ordenador.");
+  });
+});

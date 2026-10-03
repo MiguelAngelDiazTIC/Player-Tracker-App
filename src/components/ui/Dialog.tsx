@@ -1,4 +1,5 @@
 import { useEffect, useId, useRef, type ReactNode } from "react";
+import { createPortal } from "react-dom";
 import { cx } from "../../lib/cx";
 
 interface DialogProps {
@@ -65,7 +66,9 @@ export function Dialog({
     }
   }
 
-  return (
+  // En el `body`: dentro de una tarjeta de cristal, el desenfoque haría que
+  // el velo ocupara solo la tarjeta y no toda la ventana.
+  return createPortal(
     <div className="bg-shadow/40 fixed inset-0 z-50 flex items-center justify-center p-4">
       <div
         ref={panelRef}
@@ -86,6 +89,7 @@ export function Dialog({
         </div>
         <div className="flex flex-wrap justify-end gap-2">{actions}</div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }

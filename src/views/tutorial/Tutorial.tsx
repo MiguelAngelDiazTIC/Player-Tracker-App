@@ -1,6 +1,7 @@
 import { CalendarPlus, FileJson, FileSpreadsheet } from "lucide-react";
 import { useId, useLayoutEffect, useRef, useState } from "react";
 import { APP_LOGO_URL, APP_NAME } from "../../app/brand";
+import { PRIVACY_SHORT } from "../../app/legal";
 import { Button } from "../../components/ui/Button";
 import { Dialog } from "../../components/ui/Dialog";
 import { cx } from "../../lib/cx";
@@ -279,7 +280,7 @@ export function Tutorial({ onClose }: TutorialProps) {
           <p>
             Tu registro diario de Valorant: partidas, hábitos, sueño y cómo te
             has sentido, en un solo sitio y guardado en tu ordenador. En un par
-            de minutos te enseño cómo empezar.
+            de minutos te enseño cómo empezar. {PRIVACY_SHORT}
           </p>
         </div>
       </Dialog>

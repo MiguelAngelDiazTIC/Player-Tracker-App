@@ -1,3 +1,4 @@
+import { AboutPanel } from "./AboutPanel";
 import { AppearancePanel } from "./AppearancePanel";
 import { AutoBackupPanel } from "./AutoBackupPanel";
 import { BackupPanel } from "./BackupPanel";
@@ -25,6 +26,9 @@ export function AjustesView({ onShowTutorial }: AjustesViewProps) {
       </div>
       <div className="lg:col-span-2">
         <FieldsPanel />
+      </div>
+      <div className="lg:col-span-2">
+        <AboutPanel />
       </div>
     </div>
   );
