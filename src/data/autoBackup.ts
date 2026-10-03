@@ -16,7 +16,7 @@ export interface BackupFolder {
 
 /**
  * Guarda una copia JSON completa con la fecha de hoy y borra las que sobran.
- * La copia es una exportación normal, así que no lleva la clave de HenrikDev.
+ * La copia es una exportación normal: los ajustes secretos no salen en ella.
  */
 export async function writeBackup(
   repository: Repository,

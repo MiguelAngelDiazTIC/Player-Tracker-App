@@ -9,7 +9,10 @@ import { scrimMatchSchema } from "./scrims";
 export const EXPORT_FORMAT = "player-tracker";
 export const EXPORT_VERSION = 1;
 
-/** Ajustes que nunca salen en el JSON (la clave de HenrikDev, fase 4). */
+/**
+ * Ajustes que nunca salen en el JSON. La sincronización con HenrikDev se quitó,
+ * pero una instalación que la usó aún puede tener su clave guardada.
+ */
 export const SECRET_SETTING_KEYS: readonly string[] = ["henrikdev.apiKey"];
 
 /** Imagen de `attachments/`, incrustada en base64 para que todo sea un archivo. */

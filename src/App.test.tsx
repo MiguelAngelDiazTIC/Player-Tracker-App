@@ -1241,204 +1241,6 @@ describe("Objetivos", () => {
   });
 });
 
-describe("Sincronización con HenrikDev", () => {
-  /** Partida con la forma de `stored-matches`, a mediodía UTC de una fecha. */
-  const stored = (
-    id: string,
-    date: string,
-    kills: number,
-    deaths: number,
-    score: number,
-    red: number,
-    blue: number,
-    map = "Lotus",
-  ) => ({
-    meta: {
-      id,
-      map: { name: map },
-      mode: "Competitive",
-      started_at: `${date}T12:00:00.000Z`,
-    },
-    stats: {
-      team: "Red",
-      character: { name: "Cypher" },
-      score,
-      kills,
-      deaths,
-    },
-    teams: { red, blue },
-  });
-  const page = (data: unknown[]) => ({
-    status: 200,
-    body: { status: 200, results: { after: 0 }, data },
-    retryAfterSeconds: null,
-  });
-
-  async function configure(services: TestServices) {
-    await services.repository.setSetting("riot.id", "Saiz#ARK");
-    await services.repository.setSetting("riot.region", "eu");
-    await services.repository.setSetting("henrikdev.apiKey", "clave-secreta");
-  }
-
-  async function renderConfigured() {
-    const services = await createTestServices();
-    await seedSheet(services);
-    await configure(services);
-    const user = userEvent.setup();
-    render(<App services={services} />);
-    await screen.findByRole("navigation", { name: "Secciones" });
-    return { services, user };
-  }
-
-  it("sin configurar, explica qué falta y lleva a Ajustes", async () => {
-    const { services, user } = await renderApp();
-    await user.click(screen.getByRole("button", { name: "20/09/2026" }));
-
-    await user.click(screen.getByRole("button", { name: "Sincronizar" }));
-
-    expect(screen.getByRole("status")).toHaveTextContent(
-      "Para sincronizar hacen falta tu Riot ID, tu región y una clave",
-    );
-    expect(services.httpCalls).toEqual([]);
-
-    await user.click(screen.getByRole("button", { name: "Ir a Ajustes" }));
-    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
-      "Ajustes",
-    );
-  });
-
-  it("trae las partidas del día, calcula K/D y ACS y no duplica al repetir", async () => {
-    const { services, user } = await renderConfigured();
-    const matches = [
-      stored("m3", "2026-09-27", 9, 9, 2000, 13, 7),
-      stored("m2", "2026-09-26", 20, 10, 5200, 13, 7),
-      stored("m1", "2026-09-26", 10, 15, 3600, 11, 13, "Haven"),
-      stored("m0", "2026-09-25", 30, 1, 9000, 13, 0),
-    ];
-    // Cada sincronización pide las rankeds y luego las customs.
-    services.httpResponses.push(
-      page(matches),
-      page([]),
-      page(matches),
-      page([]),
-    );
-
-    await user.click(screen.getByRole("button", { name: "26/09/2026" }));
-    await user.click(screen.getByRole("button", { name: "Sincronizar" }));
-
-    expect(
-      await screen.findByText(/2 rankeds encontradas, 2 nuevas/),
-    ).toBeInTheDocument();
-    // K/D = 30 kills / 25 muertes; ACS = 8800 de puntuación / 44 rondas.
-    expect(screen.getByLabelText("Rankeds")).toHaveValue("2");
-    expect(screen.getByLabelText("K/D")).toHaveValue("1.20");
-    expect(screen.getByLabelText("ACS")).toHaveValue("200");
-    expect(services.httpCalls[0]).toBe(
-      "https://api.henrikdev.xyz/valorant/v1/stored-matches/eu/Saiz/ARK?mode=competitive&size=60&page=1",
-    );
-
-    await user.click(screen.getByRole("button", { name: "Sincronizar" }));
-    expect(
-      await screen.findByText(/2 rankeds encontradas, 0 nuevas/),
-    ).toBeInTheDocument();
-
-    await waitFor(async () => {
-      const sessions = await services.repository.listRankedSessions();
-      expect(
-        sessions.map((session) => [
-          session.externalMatchId,
-          session.date,
-          session.map,
-          session.result,
-          session.source,
-        ]),
-      ).toEqual([
-        ["m1", "2026-09-26", "Haven", "loss", "henrikdev"],
-        ["m2", "2026-09-26", "Lotus", "win", "henrikdev"],
-      ]);
-    });
-  });
-
-  it("muestra el error de HenrikDev sin tocar los datos", async () => {
-    const { services, user } = await renderConfigured();
-    services.httpResponses.push({
-      status: 429,
-      body: null,
-      retryAfterSeconds: 30,
-    });
-
-    await user.click(screen.getByRole("button", { name: "26/09/2026" }));
-    await user.click(screen.getByRole("button", { name: "Sincronizar" }));
-
-    expect(await screen.findByRole("alert")).toHaveTextContent(
-      "Vuelve a intentarlo en 30 segundos",
-    );
-    expect(screen.getByLabelText("Rankeds")).toHaveValue("8");
-    expect(await services.repository.listRankedSessions()).toEqual([]);
-  });
-
-  it("guarda la configuración en Ajustes y prueba la conexión", async () => {
-    const { services, user } = await renderApp();
-    await goTo(user, "Ajustes");
-    const panel = screen.getByRole("region", {
-      name: "Sincronización con HenrikDev",
-    });
-    const testButton = within(panel).getByRole("button", {
-      name: "Probar conexión",
-    });
-    expect(testButton).toBeDisabled();
-
-    const riotId = within(panel).getByLabelText("Riot ID");
-    await user.type(riotId, "Saiz{Enter}");
-    expect(riotId).toBeInvalid();
-    await user.clear(riotId);
-    await user.type(riotId, "Saiz#ARK{Enter}");
-    await user.selectOptions(within(panel).getByLabelText("Región"), "eu");
-    await user.type(
-      within(panel).getByLabelText("Clave de HenrikDev"),
-      "clave-secreta",
-    );
-    await user.tab();
-
-    services.httpResponses.push({
-      status: 200,
-      body: { status: 200, data: { region: "eu", account_level: 917 } },
-      retryAfterSeconds: null,
-    });
-    await user.click(
-      within(panel).getByRole("button", { name: "Probar conexión" }),
-    );
-
-    expect(
-      await within(panel).findByText(
-        "Conexión correcta: Saiz#ARK, nivel 917, región eu.",
-      ),
-    ).toBeInTheDocument();
-    expect(services.httpCalls).toEqual([
-      "https://api.henrikdev.xyz/valorant/v2/account/Saiz/ARK",
-    ]);
-    await waitFor(async () => {
-      expect(await services.repository.getSettings()).toMatchObject({
-        "riot.id": "Saiz#ARK",
-        "riot.region": "eu",
-        "henrikdev.apiKey": "clave-secreta",
-      });
-    });
-  });
-
-  it("la clave no sale en la exportación", async () => {
-    const { services, user } = await renderConfigured();
-    await goTo(user, "Ajustes");
-
-    await user.click(screen.getByRole("button", { name: "Exportar JSON" }));
-    await screen.findByText(/Exportados 13 días/);
-
-    const [exported] = services.savedFiles;
-    expect(exported.text).toContain("Saiz#ARK");
-    expect(exported.text).not.toContain("clave-secreta");
-  });
-});
-
 describe("modo oscuro", () => {
   afterEach(() => {
     window.localStorage.clear();
@@ -1729,7 +1531,7 @@ describe("tutorial del primer arranque", () => {
     const dialog = screen.getByRole("dialog", {
       name: "Te doy la bienvenida a MikaLog",
     });
-    expect(dialog).toHaveTextContent("Paso 1 de 4");
+    expect(dialog).toHaveTextContent("Paso 1 de 3");
     expect(screen.getByRole("button", { name: "Empezar" })).toHaveFocus();
   });
 
@@ -1763,16 +1565,11 @@ describe("tutorial del primer arranque", () => {
       within(start).getByRole("radio", { name: /Empezar de cero/ }),
     ).toBeChecked();
 
-    await next(user);
-    const sync = screen.getByRole("dialog", {
-      name: "Sincronizar tus rankeds (opcional)",
-    });
-    expect(within(sync).getByLabelText("Riot ID")).toBeInTheDocument();
     await next(user, "Atrás");
     expect(
-      screen.getByRole("dialog", { name: "¿Cómo quieres empezar?" }),
+      screen.getByRole("dialog", { name: "Te doy la bienvenida a MikaLog" }),
     ).toBeInTheDocument();
-    await next(user);
+    await next(user, "Empezar");
 
     await next(user);
     const titles = [];
@@ -1810,7 +1607,6 @@ describe("tutorial del primer arranque", () => {
     await next(user, "Empezar");
     await user.click(screen.getByRole("radio", { name: /Importar mi hoja/ }));
     await next(user);
-    await next(user);
     for (let stop = 0; stop < 5; stop += 1) await next(user);
     await next(user, "Terminar");
 
@@ -1826,7 +1622,6 @@ describe("tutorial del primer arranque", () => {
   it("Escape sale del recorrido sin crear nada", async () => {
     const { services, user } = await renderFirstRun();
     await next(user, "Empezar");
-    await next(user);
     await next(user);
     expect(screen.getByRole("dialog", { name: "Tabla" })).toBeInTheDocument();
 

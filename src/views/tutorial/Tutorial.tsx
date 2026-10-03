@@ -4,7 +4,6 @@ import { APP_LOGO_URL, APP_NAME } from "../../app/brand";
 import { Button } from "../../components/ui/Button";
 import { Dialog } from "../../components/ui/Dialog";
 import { cx } from "../../lib/cx";
-import { SyncPanel } from "../ajustes/SyncPanel";
 
 /** Cómo quiere empezar el usuario; la app lo lleva ahí al acabar. */
 export type StartChoice = "sheet" | "json" | "scratch";
@@ -83,7 +82,7 @@ const TOUR: TourStop[] = [
   },
 ];
 
-const INTRO_STEPS = 3;
+const INTRO_STEPS = 2;
 const TOTAL_STEPS = INTRO_STEPS + 1;
 const GAP = 16;
 
@@ -215,11 +214,11 @@ interface TutorialProps {
 }
 
 /**
- * Tutorial del primer arranque: bienvenida, cómo empezar, sincronización
- * opcional y un recorrido por la app. Se puede saltar en cualquier paso.
+ * Tutorial del primer arranque: bienvenida, cómo empezar y un recorrido por
+ * la app. Se puede saltar en cualquier paso.
  */
 export function Tutorial({ onClose }: TutorialProps) {
-  // 0 a 2: pasos en un diálogo. Desde 3: paradas del recorrido.
+  // 0 y 1: pasos en un diálogo. Desde 2: paradas del recorrido.
   const [step, setStep] = useState(0);
   const [start, setStart] = useState<StartChoice>("scratch");
   const groupName = useId();
@@ -287,70 +286,51 @@ export function Tutorial({ onClose }: TutorialProps) {
     );
   }
 
-  if (step === 1) {
-    return (
-      <Dialog
-        key="start"
-        title="¿Cómo quieres empezar?"
-        onClose={() => onClose(null)}
-        actions={actions}
-        size="3xl"
-      >
-        {counter}
-        <fieldset>
-          <legend className="mb-2">
-            Elige una opción; al terminar el tutorial te llevo ahí.
-          </legend>
-          <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
-            {STARTS.map(({ value, title, text, icon: Icon }) => {
-              const checked = value === start;
-              return (
-                <label
-                  key={value}
-                  className={cx(
-                    "flex cursor-pointer flex-col gap-2 rounded-md border p-4",
-                    "has-focus-visible:outline-ink has-focus-visible:outline-2 has-focus-visible:outline-offset-2",
-                    checked
-                      ? "border-primary bg-primary/10"
-                      : "border-ink/10 bg-surface/60 hover:border-ink/30",
-                  )}
-                >
-                  <input
-                    type="radio"
-                    name={groupName}
-                    className="sr-only"
-                    checked={checked}
-                    onChange={() => setStart(value)}
-                  />
-                  <Icon
-                    aria-hidden="true"
-                    className={cx("size-6", checked && "text-primary")}
-                  />
-                  <span className="text-ink font-semibold">{title}</span>
-                  <span className="text-ink/70 text-xs">{text}</span>
-                </label>
-              );
-            })}
-          </div>
-        </fieldset>
-      </Dialog>
-    );
-  }
-
   return (
     <Dialog
-      key="sync"
-      title="Sincronizar tus rankeds (opcional)"
+      key="start"
+      title="¿Cómo quieres empezar?"
       onClose={() => onClose(null)}
       actions={actions}
       size="3xl"
     >
       {counter}
-      <p>
-        Puedes dejarlo para luego: está en Ajustes. Sin esto, el K/D y el ACS se
-        escriben a mano.
-      </p>
-      <SyncPanel />
+      <fieldset>
+        <legend className="mb-2">
+          Elige una opción; al terminar el tutorial te llevo ahí.
+        </legend>
+        <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
+          {STARTS.map(({ value, title, text, icon: Icon }) => {
+            const checked = value === start;
+            return (
+              <label
+                key={value}
+                className={cx(
+                  "flex cursor-pointer flex-col gap-2 rounded-md border p-4",
+                  "has-focus-visible:outline-ink has-focus-visible:outline-2 has-focus-visible:outline-offset-2",
+                  checked
+                    ? "border-primary bg-primary/10"
+                    : "border-ink/10 bg-surface/60 hover:border-ink/30",
+                )}
+              >
+                <input
+                  type="radio"
+                  name={groupName}
+                  className="sr-only"
+                  checked={checked}
+                  onChange={() => setStart(value)}
+                />
+                <Icon
+                  aria-hidden="true"
+                  className={cx("size-6", checked && "text-primary")}
+                />
+                <span className="text-ink font-semibold">{title}</span>
+                <span className="text-ink/70 text-xs">{text}</span>
+              </label>
+            );
+          })}
+        </div>
+      </fieldset>
     </Dialog>
   );
 }

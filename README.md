@@ -15,7 +15,7 @@ App de escritorio, al estilo de Notion u Obsidian, para que un jugador de Valora
 
 Para **actualizar**, instala la versión nueva encima: tus datos se conservan. **Desinstalar** tampoco los borra, porque la carpeta de datos está fuera de la carpeta de la app.
 
-La app no se conecta a internet salvo cuando pulsas «Sincronizar» o «Probar conexión» (HenrikDev).
+La app no se conecta a internet: todo se queda en tu ordenador.
 
 ## Desarrollo
 

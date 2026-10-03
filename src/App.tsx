@@ -114,7 +114,6 @@ function Shell() {
             onOpenScrims={() => select("scrims")}
             onOpenRankeds={openRankeds}
             onOpenNote={openNote}
-            onOpenSettings={() => select("ajustes")}
           />
         ) : (
           <TablaView

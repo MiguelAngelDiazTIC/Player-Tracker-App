@@ -83,7 +83,7 @@ export function AutoBackupPanel() {
       <p className="text-ink/70 text-sm">
         Al abrir la app, si toca, se guarda una copia completa en JSON dentro de
         la carpeta «copias» de tu carpeta de datos. Se conservan las{" "}
-        {BACKUPS_TO_KEEP} más recientes y nunca llevan la clave de HenrikDev.
+        {BACKUPS_TO_KEEP} más recientes.
       </p>
       <div className="flex flex-wrap items-end gap-4">
         <Segmented
