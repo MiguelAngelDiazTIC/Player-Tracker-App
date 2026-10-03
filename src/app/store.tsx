@@ -7,6 +7,7 @@ import {
   useSyncExternalStore,
   type ReactNode,
 } from "react";
+import { todayIso } from "../domain/dates";
 import type { Services } from "./services";
 import { createAppStore, type AppActions, type AppData } from "./storeCore";
 
@@ -30,7 +31,7 @@ export function StoreProvider({ services, children }: StoreProviderProps) {
   );
 
   useEffect(() => {
-    void core.actions.reload();
+    void core.actions.reload().then(() => core.autoBackup(todayIso()));
   }, [core]);
 
   const store = useMemo<AppStore | null>(

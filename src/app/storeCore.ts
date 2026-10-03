@@ -1,4 +1,6 @@
+import { runAutoBackup } from "../data/autoBackup";
 import type { Settings } from "../data/repository";
+import { AUTO_BACKUP_SETTING, readAutoBackup } from "../domain/autoBackup";
 import { emptyDay, type Day } from "../domain/day";
 import type { FieldDefinition, FieldValue } from "../domain/fields";
 import { emptyNote, extractLinks, type Note } from "../domain/notes";
@@ -58,6 +60,8 @@ export interface AppStoreCore {
   actions: AppActions;
   getSnapshot(): StoreSnapshot;
   subscribe(listener: () => void): () => void;
+  /** Al abrir la app: hace la copia automática si toca. Solo una vez. */
+  autoBackup(today: string): Promise<void>;
   /** Espera a que se hayan escrito todos los cambios pendientes. */
   flush(): Promise<void>;
 }
@@ -91,7 +95,8 @@ function describe(cause: unknown): string {
  * manda la escritura a una fila, para que lleguen en orden a la base de datos.
  */
 export function createAppStore(services: Services): AppStoreCore {
-  const { repository } = services;
+  const { repository, platform } = services;
+  let backupChecked = false;
   let data: AppData | null = null;
   let snapshot: StoreSnapshot = { data: null, error: null };
   let queue: Promise<void> = Promise.resolve();
@@ -143,6 +148,23 @@ export function createAppStore(services: Services): AppStoreCore {
       publish();
     } catch (cause) {
       publish(`No se pudieron leer los datos: ${describe(cause)}`);
+    }
+  }
+
+  async function autoBackup(today: string) {
+    if (backupChecked) return;
+    backupChecked = true;
+    await queue;
+    try {
+      await runAutoBackup(
+        repository,
+        platform.attachments,
+        platform.backupFolder,
+        readAutoBackup(current().settings[AUTO_BACKUP_SETTING]),
+        today,
+      );
+    } catch (cause) {
+      publish(`No se pudo hacer la copia automática: ${describe(cause)}`);
     }
   }
 
@@ -294,6 +316,7 @@ export function createAppStore(services: Services): AppStoreCore {
 
   return {
     actions,
+    autoBackup,
     getSnapshot: () => snapshot,
     subscribe(listener) {
       listeners.add(listener);

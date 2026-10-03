@@ -74,7 +74,7 @@ export function DataFolderPanel() {
           <p className="font-mono break-all">{pending.folder}</p>
           <p>
             {pending.hasData
-              ? "Esa carpeta ya tiene datos de Player Tracker. La app se reiniciará y los abrirá; los de la carpeta actual se quedan donde están."
+              ? "Esa carpeta ya tiene datos de MikaLog. La app se reiniciará y los abrirá; los de la carpeta actual se quedan donde están."
               : "Tus datos actuales se copiarán a esa carpeta y la app se reiniciará usándola. La carpeta antigua no se borra."}
           </p>
         </Dialog>

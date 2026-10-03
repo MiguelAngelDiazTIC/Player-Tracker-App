@@ -143,6 +143,12 @@
   box-shadow: var(--shadow-glass);
 }
 
+/* Foco del recorrido guiado: oscurece todo menos el elemento señalado. */
+@utility tour-spotlight {
+  box-shadow: 0 0 0 9999px
+    color-mix(in srgb, var(--color-shadow) 45%, transparent);
+}
+
 /* Texto con formato del editor de feelings y de las notas. */
 @utility notes {
   outline: none;

@@ -8,12 +8,15 @@ import {
   readDir,
   readFile,
   readTextFile,
+  remove,
   writeFile,
   writeTextFile,
 } from "@tauri-apps/plugin-fs";
 import { fetch as httpFetch } from "@tauri-apps/plugin-http";
 import Database from "@tauri-apps/plugin-sql";
+import { APP_NAME } from "../app/brand";
 import type { PickedFile, Platform, Services } from "../app/services";
+import type { BackupFolder } from "../data/autoBackup";
 import type { AttachmentStore } from "../data/backup";
 import type { HttpClient } from "../data/henrikSync";
 import type { SqlDriver } from "../data/driver";
@@ -22,6 +25,8 @@ import { createRepository } from "../data/repository";
 const DATABASE_FILE = "tracker.db";
 const ATTACHMENTS_DIR = "attachments";
 const BACKUPS_DIR = "backups";
+/** Copias automáticas en JSON; `backups/` guarda las de `tracker.db`. */
+const COPIES_DIR = "copias";
 /**
  * La ruta de la carpeta de datos no puede vivir en `tracker.db` (está dentro
  * de esa carpeta), así que se guarda en la configuración de la app.
@@ -32,35 +37,52 @@ async function configPath(): Promise<string> {
   return join(await appConfigDir(), CONFIG_FILE);
 }
 
-/** Carpeta de datos elegida en un arranque anterior, si la hay. */
-export async function readConfiguredFolder(): Promise<string | null> {
+/** Lo que la app recuerda de este equipo, fuera de la carpeta de datos. */
+interface AppConfig {
+  dataFolder?: string;
+  tutorialSeen?: boolean;
+}
+
+async function readConfig(): Promise<AppConfig> {
   const path = await configPath();
-  if (!(await exists(path))) return null;
+  if (!(await exists(path))) return {};
   try {
-    const config: unknown = JSON.parse(await readTextFile(path));
-    if (
-      typeof config === "object" &&
-      config !== null &&
-      "dataFolder" in config
-    ) {
-      return typeof config.dataFolder === "string" ? config.dataFolder : null;
+    const raw: unknown = JSON.parse(await readTextFile(path));
+    if (typeof raw !== "object" || raw === null) return {};
+    const config: AppConfig = {};
+    if ("dataFolder" in raw && typeof raw.dataFolder === "string") {
+      config.dataFolder = raw.dataFolder;
     }
-    return null;
+    if ("tutorialSeen" in raw && raw.tutorialSeen === true) {
+      config.tutorialSeen = true;
+    }
+    return config;
   } catch {
-    return null;
+    return {};
   }
 }
 
-async function writeConfiguredFolder(folder: string): Promise<void> {
+/** Cambia parte de la configuración sin perder el resto. */
+async function writeConfig(change: AppConfig): Promise<void> {
+  const current = await readConfig();
+  const config = { ...current, ...change };
+  // Sin cambios no se toca el archivo: una escritura cortada a medias (un
+  // apagón, la app cerrada a la fuerza) lo dejaría vacío.
+  if (JSON.stringify(config) === JSON.stringify(current)) return;
   await mkdir(await appConfigDir(), { recursive: true });
-  await writeTextFile(
-    await configPath(),
-    JSON.stringify({ dataFolder: folder }, null, 2),
-  );
+  await writeTextFile(await configPath(), JSON.stringify(config, null, 2));
 }
 
+/** Carpeta de datos elegida en un arranque anterior, si la hay. */
+export async function readConfiguredFolder(): Promise<string | null> {
+  return (await readConfig()).dataFolder ?? null;
+}
+
+const writeConfiguredFolder = (folder: string) =>
+  writeConfig({ dataFolder: folder });
+
 export async function suggestDataFolder(): Promise<string> {
-  return join(await documentDir(), "Player Tracker");
+  return join(await documentDir(), APP_NAME);
 }
 
 export async function pickFolder(title: string): Promise<string | null> {
@@ -138,6 +160,27 @@ async function openDriver(databasePath: string): Promise<SqlDriver> {
   };
 }
 
+const FILE_KINDS: Record<string, string> = {
+  json: "JSON",
+  xlsx: "Excel",
+  csv: "CSV",
+};
+
+/** Diálogo de guardar, con el filtro que corresponde a la extensión. */
+async function askSavePath(
+  title: string,
+  defaultName: string,
+): Promise<string | null> {
+  const extension = defaultName.split(".").pop() ?? "";
+  return save({
+    title,
+    defaultPath: defaultName,
+    filters: [
+      { name: FILE_KINDS[extension] ?? extension, extensions: [extension] },
+    ],
+  });
+}
+
 function timestamp(now: Date): string {
   const pad = (value: number) => String(value).padStart(2, "0");
   return (
@@ -163,6 +206,7 @@ export async function openDataFolder(folder: string): Promise<Services> {
   const repository = createRepository(driver);
   await repository.init();
   await writeConfiguredFolder(folder);
+  const { tutorialSeen = false } = await readConfig();
 
   /**
    * Copia coherente de la base de datos en otro archivo. SQLite trabaja con
@@ -182,6 +226,18 @@ export async function openDataFolder(folder: string): Promise<Services> {
     },
   };
 
+  const copiesFolder = await join(folder, COPIES_DIR);
+  const backupFolder: BackupFolder = {
+    list: () => listFiles(copiesFolder),
+    async write(name, text) {
+      await mkdir(copiesFolder, { recursive: true });
+      await writeTextFile(await join(copiesFolder, name), text);
+    },
+    async remove(name) {
+      await remove(await join(copiesFolder, name));
+    },
+  };
+
   const platform: Platform = {
     dataFolder: folder,
     attachments,
@@ -192,15 +248,20 @@ export async function openDataFolder(folder: string): Promise<Services> {
     pickFile,
 
     async saveTextFile({ title, defaultName, text }) {
-      const path = await save({
-        title,
-        defaultPath: defaultName,
-        filters: [{ name: "JSON", extensions: ["json"] }],
-      });
+      const path = await askSavePath(title, defaultName);
       if (path === null) return null;
       await writeTextFile(path, text);
       return path;
     },
+
+    async saveFile({ title, defaultName, bytes }) {
+      const path = await askSavePath(title, defaultName);
+      if (path === null) return null;
+      await writeFile(path, bytes);
+      return path;
+    },
+
+    backupFolder,
 
     async backupDatabase() {
       const backups = await join(folder, BACKUPS_DIR);
@@ -208,6 +269,12 @@ export async function openDataFolder(folder: string): Promise<Services> {
       const target = await join(backups, `tracker-${timestamp(new Date())}.db`);
       await copyDatabase(target);
       return target;
+    },
+
+    tutorialSeen,
+    async markTutorialSeen() {
+      await writeConfig({ tutorialSeen: true });
+      platform.tutorialSeen = true;
     },
 
     pickFolder,

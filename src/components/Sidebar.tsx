@@ -1,4 +1,5 @@
-import { Crosshair, Moon, Sun } from "lucide-react";
+import { Moon, Sun } from "lucide-react";
+import { APP_LOGO_URL, APP_NAME } from "../app/brand";
 import { SECTIONS, type SectionId } from "../app/sections";
 import { useTheme } from "../app/theme";
 
@@ -15,11 +16,13 @@ export function Sidebar({ activeId, onSelect }: SidebarProps) {
   return (
     <aside className="glass flex w-60 shrink-0 flex-col gap-4 rounded-md p-4">
       <div className="flex items-center gap-2 px-2">
-        <span className="bg-surface text-primary shadow-pill flex size-9 shrink-0 items-center justify-center rounded-full">
-          <Crosshair aria-hidden="true" className="size-5" />
-        </span>
+        <img
+          src={APP_LOGO_URL}
+          alt=""
+          className="shadow-pill size-9 shrink-0 rounded-sm"
+        />
         <div>
-          <p className="font-bold tracking-wide uppercase">Player Tracker</p>
+          <p className="text-lg leading-tight font-bold">{APP_NAME}</p>
           <p className="text-ink/70 text-xs font-semibold tracking-wide uppercase">
             Road to Top 1
           </p>
@@ -35,6 +38,7 @@ export function Sidebar({ activeId, onSelect }: SidebarProps) {
                 <button
                   type="button"
                   aria-current={isActive ? "page" : undefined}
+                  data-tour={`nav-${id}`}
                   onClick={() => onSelect(id)}
                   className={`flex w-full items-center gap-2 rounded-full px-3 py-2 text-left text-sm font-medium ${
                     isActive

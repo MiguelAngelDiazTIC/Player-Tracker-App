@@ -9,6 +9,7 @@ import {
 import { useMemo, useState } from "react";
 import { useStore } from "../../app/store";
 import { ChoiceCell, ValueInput } from "../../components/cells";
+import { ExportButton } from "../../components/ExportButton";
 import { FieldChart } from "../../components/charts/FieldChart";
 import { STATUS_TINT } from "../../components/choices";
 import { ariaSort } from "../../components/sort";
@@ -34,6 +35,7 @@ import {
   type RangePreset,
 } from "../../domain/filters";
 import { countScrimsByDate } from "../../domain/scrims";
+import { daysSheet } from "../../domain/sheetExport";
 import { fieldAverages, fieldStatus } from "../../domain/thresholds";
 import { cx } from "../../lib/cx";
 
@@ -169,6 +171,7 @@ export function TablaView({
         </Labeled>
         <Button
           variant="primary"
+          data-tour="add-day"
           onClick={() => {
             if (!exists) createDay(newDate);
             onOpenDay(newDate);
@@ -255,6 +258,16 @@ export function TablaView({
             onChange={(event) => setFilter({ search: event.target.value })}
           />
         </Labeled>
+        <ExportButton
+          disabled={rows.length === 0}
+          sheet={() =>
+            daysSheet(
+              activeFields,
+              sortedRows.map((row) => row.original.day),
+              counts,
+            )
+          }
+        />
       </div>
 
       {state.filter.selection ? (

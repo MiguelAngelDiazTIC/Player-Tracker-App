@@ -1,4 +1,4 @@
-# Player Tracker: guía de diseño
+# MikaLog: guía de diseño
 
 Reglas de interfaz de la app, escritas con la skill `glassmorphism` de [bergside/awesome-design-skills](https://github.com/bergside/awesome-design-skills) (en Claude Code, `typeui-glassmorphism`). Carga la skill antes de tocar cualquier pantalla y aplica esta guía.
 
@@ -6,7 +6,7 @@ El aspecto sigue la referencia que dio el usuario el 02/10/2026 (un panel de cri
 
 ## Contexto y objetivos
 
-Player Tracker es una hoja de registro diario que se rellena en un minuto, así que la interfaz es una tabla legible sobre cristal claro, con los números como protagonistas. El cristal da profundidad a paneles y tarjetas; nunca le quita contraste al dato.
+MikaLog es una hoja de registro diario que se rellena en un minuto, así que la interfaz es una tabla legible sobre cristal claro, con los números como protagonistas. El cristal da profundidad a paneles y tarjetas; nunca le quita contraste al dato.
 
 ## Tokens y fundamentos
 
@@ -54,7 +54,9 @@ Todos los componentes interactivos deben tener los estados reposo, hover, `focus
 - **Color por umbral**: tinte de fondo `success/20`, `warning/25` o `danger/25`. El color nunca es la única señal: los hábitos llevan icono y los números se leen igual sin él.
 - **Etiqueta** (`Chip`): píldora de 12px con fondo `ink/5` y borde `ink/10`.
 - **Tarjeta bento** (`Card`): `glass`, `rounded-md`, relleno de 16px y título en etiqueta en mayúsculas.
-- **Diálogo** (`Dialog`): `glass-solid` sobre un velo `shadow/40`; atrapa el foco, se cierra con Escape y devuelve el foco a quien lo abrió. Las acciones destructivas piden confirmación aquí, nunca con un diálogo nativo.
+- **Diálogo** (`Dialog`): tres anchos (`md` para confirmar, `xl` y `3xl` para contenido con formularios). `glass-solid` sobre un velo `shadow/40`; atrapa el foco, se cierra con Escape y devuelve el foco a quien lo abrió. Las acciones destructivas piden confirmación aquí, nunca con un diálogo nativo.
+- **Menú de botón** (`ExportButton`): un botón `secondary` con `aria-haspopup="menu"` abre debajo un panel `glass-solid` con las opciones como píldoras de 36px. El foco entra en la primera opción; Escape o un clic fuera lo cierran y devuelven el foco al botón. El resultado (ruta guardada o error) sale en el mismo sitio como `Notice`.
+- **Globo del recorrido** (`Tutorial`): panel `glass-solid` de 320px junto al elemento que señala, que queda rodeado por un anillo `primary` mientras el resto se oscurece (`tour-spotlight`). Es un diálogo: el foco entra en «Siguiente» y no sale del globo; flechas izquierda y derecha cambian de parada y Escape sale. Sin animación.
 - **Aviso** (`Notice`): tinte suave del color de su tono con icono; los errores usan `role="alert"` y el resto `role="status"`.
 
 Casos límite: las etiquetas largas se cortan con puntos suspensivos y muestran el texto completo en `title`; las tablas se desplazan dentro de su panel, no la página; toda vista sin datos explica qué hacer a continuación.

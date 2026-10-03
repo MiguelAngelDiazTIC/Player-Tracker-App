@@ -7,8 +7,15 @@ interface DialogProps {
   children: ReactNode;
   /** Botones de acción, alineados al final. */
   actions: ReactNode;
-  className?: string;
+  /** Ancho máximo: estrecho para confirmar, ancho para contenido con formularios. */
+  size?: keyof typeof SIZES;
 }
+
+const SIZES = {
+  md: "max-w-md",
+  xl: "max-w-xl",
+  "3xl": "max-w-3xl",
+};
 
 const FOCUSABLE =
   'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
@@ -19,14 +26,18 @@ export function Dialog({
   onClose,
   children,
   actions,
-  className,
+  size = "md",
 }: DialogProps) {
   const titleId = useId();
   const panelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const previous = document.activeElement;
-    panelRef.current?.querySelector<HTMLElement>(FOCUSABLE)?.focus();
+    // El foco va al control marcado con `data-autofocus`; si no, al primero.
+    (
+      panelRef.current?.querySelector<HTMLElement>("[data-autofocus]") ??
+      panelRef.current?.querySelector<HTMLElement>(FOCUSABLE)
+    )?.focus();
     return () => {
       if (previous instanceof HTMLElement) previous.focus();
     };
@@ -63,8 +74,8 @@ export function Dialog({
         aria-labelledby={titleId}
         onKeyDown={handleKeyDown}
         className={cx(
-          "glass-solid flex max-h-full w-full max-w-md flex-col gap-4 relative overflow-auto rounded-md p-4",
-          className,
+          "glass-solid flex max-h-full w-full flex-col gap-4 relative overflow-auto rounded-md p-4",
+          SIZES[size],
         )}
       >
         <h2 id={titleId} className="text-lg font-bold">

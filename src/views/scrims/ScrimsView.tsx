@@ -10,6 +10,7 @@ import { Plus, Trash2 } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useStore } from "../../app/store";
 import { EditableText, type CellNav } from "../../components/cells";
+import { ExportButton } from "../../components/ExportButton";
 import { ScrimCharts } from "../../components/charts/ScrimCharts";
 import { ariaSort } from "../../components/sort";
 import { SortButton } from "../../components/SortButton";
@@ -44,6 +45,7 @@ import {
   type ScrimMatch,
   type ScrimResult,
 } from "../../domain/scrims";
+import { scrimsSheet } from "../../domain/sheetExport";
 
 const features = tableFeatures({
   rowSortingFeature,
@@ -230,6 +232,12 @@ export function ScrimsView() {
             ))}
           </Select>
         </Labeled>
+        <ExportButton
+          disabled={rows.length === 0}
+          sheet={() =>
+            scrimsSheet(table.getRowModel().rows.map((row) => row.original))
+          }
+        />
       </div>
 
       {scrims.length === 0 ? (

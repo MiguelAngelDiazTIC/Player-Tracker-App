@@ -170,7 +170,7 @@ Cómo funciona:
 
 Trabaja una fase cada vez. Al acabar cada fase: pruebas en verde y un commit por bloque lógico en su propia rama. El usuario decidió el 02/10/2026 encadenar las fases sin parar a probar entre una y otra: las pruebas con datos reales y los cambios se harán cuando haya una versión 1.0. Los criterios "Terminada cuando" que dependen del uso real quedan para entonces.
 
-Estado (03/10/2026): las cinco fases (0 a 4) están implementadas. Antes de la versión 1.0 quedan la fase 5 (nombre MikaLog y logo, exportación a Excel, tutorial e instalador) y la ronda de pruebas con datos reales y los cambios que salgan de ella.
+Estado (03/10/2026): las fases 0 a 5 están implementadas. Antes de publicar la versión 1.0 queda la ronda de pruebas con datos reales y los cambios que salgan de ella.
 
 ### Fase 0: cimientos
 
@@ -223,8 +223,8 @@ Ideas que el usuario pidió el 03/10/2026: nombre y logo, exportar la informaci�
 
 #### 5.1 Nombre y logo
 
-- **Nombre**: **MikaLog**, elegido por el usuario el 03/10/2026: su nick, MikaEl, y "log" de registro diario. Sin "Valorant", "Riot" ni nombres de rangos, que son marcas de Riot.
-- **Logo**: icono cuadrado con esquinas redondeadas, con el degradado del fondo (malva `#C9A4CB` a lima `#D8F5BC`) y encima una mira blanca cuyo centro es un check verde `#0A8158`: apuntar y cumplir hábitos en una sola marca. Debe leerse a 16 px; a ese tamaño se queda solo el anillo y el check.
+- **Nombre**: **MikaLog**, elegido por el usuario el 03/10/2026: su nick, MikaEl, y "log" de registro diario. Sin "Valorant", "Riot" ni nombres de rangos, que son marcas de Riot. Vive en `src/app/brand.ts` (`APP_NAME`); los archivos que la app propone al exportar empiezan por `mikalog-`.
+- **Logo**: el que eligió el usuario el 03/10/2026: cuadrado blanco con esquinas redondeadas y, en lila `#BB94FA`, una mira (anillo con cuatro marcas) cuyo centro es un check: apuntar y cumplir hábitos en una sola marca. Sustituye al primer logo, de degradado malva y lima con check verde.
 - Archivo maestro en `src-tauri/icons/logo.svg` (1024 × 1024). Los PNG, `icon.ico` e `icon.icns` se generan con `npx tauri icon src-tauri/icons/logo.svg`; no se editan a mano.
 - Dónde aparece el nombre: `productName` y título de la ventana en `tauri.conf.json`, `<title>` de `index.html`, cabecera de la barra lateral, pantalla de bienvenida y textos de Ajustes. El logo, en la barra lateral, la bienvenida, el icono de la ventana y el instalador.
 - **Lo que no cambia** al renombrar, para no romper instalaciones ni copias: el `identifier` (`com.playertracker.desktop`, de él depende dónde está `config.json`), el `"format": "player-tracker"` del JSON y las carpetas de datos que ya existen. Solo la carpeta propuesta en el primer arranque pasa a `Documentos/MikaLog`.
@@ -238,10 +238,18 @@ El JSON (fase 1) sigue siendo la copia completa para cambiar de ordenador. Esta 
 - **Ida y vuelta**: la hoja Días tiene el mismo formato que la hoja original, así que el importador de la fase 1 la vuelve a leer sin perder nada. Hay prueba de ello.
 - **CSV** como alternativa: un archivo por registro (UTF-8 con BOM y `;` como separador, para que Excel en español lo abra bien).
 - **Exportar lo que ves**: botón en la barra de la Tabla, Scrims y Rankeds que exporta las filas con los filtros y el rango de fechas actuales, en Excel o CSV.
-- **Copias automáticas**: al abrir la app, si la última copia tiene más de 7 días, se guarda un JSON completo en `<carpeta de datos>/copias/` y se conservan las 8 últimas. Se puede desactivar o cambiar la frecuencia en Ajustes. La copia nunca lleva la clave de HenrikDev.
+- **Copias automáticas**: al abrir la app, si la última copia tiene 7 días o más, se guarda un JSON completo en `<carpeta de datos>/copias/` y se conservan las 8 últimas. Se puede desactivar o cambiar la frecuencia en Ajustes. La copia nunca lleva la clave de HenrikDev.
 - La lógica de formato va en `src/domain/` (puro, con pruebas) y la escritura de archivos en `src/data/`.
 - Para después de la 1.0, si el usuario lo pide: la revisión semanal o el Dashboard como PDF o imagen para compartir.
 - **Terminada cuando**: el Excel exportado se abre en Excel y en Google Sheets con los mismos números que la app, y reimportarlo da los mismos días.
+
+Cómo quedó hecho:
+
+- `src/domain/sheetExport.ts` monta las hojas (filas de texto y números) y el CSV; `src/data/sheetWrite.ts` las pasa a bytes de Excel o CSV; `src/app/exportFiles.ts` pone el nombre (`mikalog-<registro>-<fecha>`) y abre el diálogo de guardar.
+- En Ajustes hay dos tarjetas: «Exportar a Excel o CSV» y «Copias automáticas» (activar, frecuencia, última copia y «Hacer una copia ahora»). El botón «Exportar lo que ves» (`ExportButton`) está en la Tabla, Scrims y Rankeds y respeta filtros y orden.
+- Las copias automáticas se llaman `copia-YYYY-MM-DD.json` y viven en `copias/`; `backups/` sigue siendo la carpeta de las copias de `tracker.db` previas a una importación. La configuración es el ajuste `backup.auto`. Si la copia falla, la app lo dice en el aviso de error general.
+- `Platform` gana `saveFile` (archivos binarios) y `backupFolder` (listar, escribir y borrar en `copias/`); por eso las capacidades de Tauri incluyen ahora `fs:allow-remove`.
+- Pendiente de la ronda de pruebas: abrir el Excel exportado en Excel y en Google Sheets, y pasar por el diálogo nativo de guardar (las pruebas automáticas llegan hasta los bytes del archivo).
 
 #### 5.3 Tutorial al instalar
 
@@ -257,6 +265,13 @@ Se muestra la primera vez, justo después de elegir la carpeta de datos, y solo 
 - Pruebas de interfaz con la app entera: aparece con una carpeta vacía, no aparece con datos, saltar funciona y Ajustes lo repite.
 - **Terminada cuando**: una persona que no conoce la app la instala, sigue el tutorial y rellena su primer día sin ayuda.
 
+Cómo quedó hecho:
+
+- `src/views/tutorial/Tutorial.tsx`: tres pasos en un diálogo (bienvenida, cómo empezar, sincronización con el mismo panel de Ajustes) y un recorrido de seis globos. Los globos buscan su elemento por el atributo `data-tour` (`nav-<sección>` en la barra lateral y `add-day` en el botón de añadir día).
+- La opción de «cómo empezar» se recuerda y se ejecuta al terminar el recorrido: importar la hoja y cargar una copia llevan a Ajustes; empezar de cero crea el día de hoy y abre su página. Saltar o salir no hace nada de eso.
+- `config.json` guarda `tutorialSeen` junto a `dataFolder`; `Platform` lo expone como `tutorialSeen` y `markTutorialSeen()`. El archivo ya no se reescribe en cada arranque si no cambia nada: una escritura cortada a medias lo dejaba vacío y la app volvía a preguntar por la carpeta.
+- Ajustes > «Primeros pasos» > «Ver el tutorial» lo repite.
+
 #### 5.4 Instalador y versión 1.0
 
 Ya existe: `npm run tauri build` genera un instalador NSIS en español y el CI lo sube como artefacto en cada push. Falta dejarlo listo para instalar y actualizar.
@@ -270,6 +285,7 @@ Ya existe: `npm run tauri build` genera un instalador NSIS en español y el CI l
 - **Actualizar**: se instala la versión nueva encima de la anterior y los datos se conservan. Sin actualizador automático en la 1.0, porque comprobar versiones es una llamada a internet que las reglas de trabajo no permiten; si el usuario lo quiere, `tauri-plugin-updater` con un botón "Buscar actualizaciones" que solo se usa al pulsarlo.
 - **Firma de código**: el instalador va sin firmar, así que Windows SmartScreen avisa la primera vez ("Windows protegió tu PC" > "Más información" > "Ejecutar de todas formas"). Se explica en el README. Firmarlo cuesta dinero (por ejemplo Azure Trusted Signing, de pago mensual) y solo compensa si la app se reparte a otras personas.
 - README: sección "Instalar" con el enlace a la última Release y el aviso de SmartScreen.
+- Cómo quedó hecho: la versión es `1.0.0` en `package.json` (de ahí la lee `tauri.conf.json`) y en `Cargo.toml`; las imágenes del instalador se generan con `scripts/installer-images.ps1` en `src-tauri/installer/`; el aviso de que desinstalar no borra los datos es un gancho de NSIS (`src-tauri/installer/hooks.nsh`), que no sale al actualizar; `.github/workflows/release.yml` publica la Release al subir una etiqueta `v*` y falla si la etiqueta no coincide con `package.json`.
 - **Terminada cuando**: en un Windows limpio, el `.exe` de la Release instala la app sin pedir administrador, la abre con el tutorial, instalar la versión siguiente encima conserva los datos y desinstalar no borra la carpeta de datos.
 
 ## Reglas de trabajo
