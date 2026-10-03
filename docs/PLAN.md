@@ -172,7 +172,7 @@ Cómo funciona:
 
 Trabaja una fase cada vez. Al acabar cada fase: pruebas en verde y un commit por bloque lógico en su propia rama. El usuario decidió el 02/10/2026 encadenar las fases sin parar a probar entre una y otra: las pruebas con datos reales y los cambios se harán cuando haya una versión 1.0. Los criterios "Terminada cuando" que dependen del uso real quedan para entonces.
 
-Estado (03/10/2026): las fases 0 a 5 están implementadas. Antes de publicar la versión 1.0 queda la ronda de pruebas con datos reales y los cambios que salgan de ella.
+Estado (03/10/2026): las fases 0 a 5 están implementadas. La fase 6 (licencia y avisos legales) también. Antes de publicar la versión 1.0 queda la ronda de pruebas con datos reales y los cambios que salgan de ella.
 
 ### Fase 0: cimientos
 
@@ -289,6 +289,53 @@ Ya existe: `npm run tauri build` genera un instalador NSIS en español y el CI l
 - README: sección "Instalar" con el enlace a la última Release y el aviso de SmartScreen.
 - Cómo quedó hecho: la versión es `1.0.0` en `package.json` (de ahí la lee `tauri.conf.json`) y en `Cargo.toml`; las imágenes del instalador se generan con `scripts/installer-images.ps1` en `src-tauri/installer/`; el aviso de que desinstalar no borra los datos es un gancho de NSIS (`src-tauri/installer/hooks.nsh`), que no sale al actualizar; `.github/workflows/release.yml` publica la Release al subir una etiqueta `v*` y falla si la etiqueta no coincide con `package.json`.
 - **Terminada cuando**: en un Windows limpio, el `.exe` de la Release instala la app sin pedir administrador, la abre con el tutorial, instalar la versión siguiente encima conserva los datos y desinstalar no borra la carpeta de datos.
+
+### Fase 6: licencia y avisos legales para publicar la 1.0
+
+El usuario decidió el 03/10/2026 publicar la app para cualquiera. El repositorio ya es público, pero no tiene licencia, así que hoy nadie puede usar ni copiar el código legalmente. Esta fase añade la licencia y los avisos, sin "términos y condiciones": la app es gratuita, no tiene cuentas ni pagos y no se conecta a internet, y la cláusula "sin garantía" de la licencia cubre lo que cubrirían.
+
+Decisiones cerradas:
+
+- **Licencia del código**: GPL-3.0-or-later (copyleft: quien reparta una versión modificada debe publicar su código con la misma licencia).
+- **Créditos obligatorios**: la GPL ya obliga a conservar los avisos de copyright. Además se añade un término adicional de los que permite su sección 7(b): toda versión, modificada o no, debe conservar en su pantalla "Acerca de" la atribución al autor original y el enlace al repositorio.
+- **Autor**: Miguel Ángel Díaz Gutiérrez (MikaEl). Aviso: `Copyright (C) 2026 Miguel Ángel Díaz Gutiérrez (MikaEl)`.
+- **Contacto**: `miguelangeldiaztic@gmail.com` y las incidencias de GitHub (`https://github.com/MiguelAngelDiazTIC/Player-Tracker-App/issues`).
+- **Nombre y logo**: quedan fuera de la licencia, con todos los derechos reservados. Otros pueden reutilizar el código, pero no publicar otra app llamada MikaLog ni con su logo.
+- Las licencias Creative Commons (CC BY y similares) no se usan: no están pensadas para software.
+
+#### 6.1 Licencia y avisos en el repositorio
+
+- `LICENSE`: el texto oficial de la GPL-3.0, sin cambios.
+- `NOTICE.md`: el aviso de copyright, el término adicional de atribución (sección 7(b)), la reserva del nombre y el logo, el aviso de Riot y la nota de privacidad. Es el texto del que salen los de la app.
+- `THIRD-PARTY-NOTICES.md`: licencias y avisos de copyright de lo que se distribuye con la app (paquetes de npm que entran en el instalador, las dos fuentes y los crates de Rust). Lo genera `scripts/third-party-notices.mjs` (`npm run notices`); no se edita a mano. El script falla si aparece una licencia que no esté en la lista de compatibles con GPL-3.0 (MIT, ISC, BSD, Apache-2.0, OFL-1.1, MPL-2.0, Zlib, Unicode, CC0, 0BSD), para enterarse al añadir una dependencia.
+- `package.json` y `Cargo.toml`: `license` = `GPL-3.0-or-later`, autor y repositorio. `tauri.conf.json`: `publisher` y `copyright`.
+- README: sección "Licencia y avisos" con un resumen de la licencia en dos frases, los créditos que hay que conservar, el aviso de Riot, la privacidad y el contacto.
+- **Terminada cuando**: GitHub reconoce la licencia del repositorio como GPL-3.0 y `npm run notices` no deja cambios sin confirmar.
+
+#### 6.2 "Acerca de" dentro de la app
+
+- Tarjeta nueva en Ajustes, "Acerca de MikaLog": logo, nombre, versión (leída de `package.json` al compilar), autor, y cuatro textos breves:
+  - **Licencia**: "Software libre bajo la GPL-3.0. Puedes usarlo, estudiarlo, modificarlo y compartirlo; si repartes una versión modificada, debe tener la misma licencia y conservar estos créditos. Sin garantía de ningún tipo."
+  - **Privacidad**: "MikaLog no recoge ni envía ningún dato. Todo lo que apuntas se queda en la carpeta de datos de tu ordenador."
+  - **Riot Games**: "MikaLog no está avalado por Riot Games ni refleja sus opiniones. Valorant y Riot Games son marcas de Riot Games, Inc."
+  - **Contacto**: el correo y las incidencias de GitHub, como texto que se puede copiar. No se abren enlaces desde la app: no tiene permiso para abrir el navegador y no se le añade.
+- Botones "Ver la licencia" y "Licencias de terceros": abren un diálogo con el texto completo, que se incluye en la app al compilar (`LICENSE` y `THIRD-PARTY-NOTICES.md`), con desplazamiento y cierre con Escape.
+- Bienvenida del tutorial: una línea más, "Tus datos no salen de tu ordenador". Sin casilla de aceptar.
+- Los textos viven en un solo módulo (`src/app/legal.ts`) para que la app, y las pruebas, usen los mismos.
+- Diseño según [DESIGN.md](DESIGN.md): tarjeta bento y `Dialog` ancho; el texto legal en la fuente mono a 12px.
+- Pruebas de interfaz: la tarjeta muestra la versión, el autor y los cuatro avisos; los dos diálogos abren el texto y se cierran; el tutorial muestra la línea de privacidad.
+- **Terminada cuando**: desde la app instalada se pueden leer la licencia, los créditos, el aviso de Riot y las licencias de terceros sin conexión.
+
+#### 6.3 Instalador y publicación
+
+- Instalador: página de licencia de NSIS (`licenseFile`) con el texto de la GPL, antes de elegir la carpeta. Editor y copyright visibles en las propiedades del `.exe` y en "Aplicaciones instaladas".
+- Release: las notas llevan, además de las generadas, el aviso de SmartScreen, el de Riot y el enlace a la licencia (`.github/release-notes.md`). El CI, en el trabajo del instalador, comprueba en cada push que `THIRD-PARTY-NOTICES.md` está al día, para enterarse antes de etiquetar.
+- Antes de etiquetar `v1.0.0`: ronda de pruebas del instalador (instalar, actualizar encima, desinstalar) y de la exportación, que sigue pendiente de la fase 5.
+- **Terminada cuando**: la Release `v1.0.0` está publicada con el instalador, y una persona ajena puede instalar la app, leer sus condiciones y saber a quién escribir.
+
+Cómo quedó hecho: los textos de la app están en `src/app/legal.ts` y la tarjeta en `src/views/ajustes/AboutPanel.tsx`; la licencia y las licencias de terceros se incluyen al compilar (`?raw`) y solo se cargan al abrir su diálogo. `THIRD-PARTY-NOTICES.md` lista 427 paquetes (110 de npm y 317 crates de Rust para Windows) y agrupa los textos de licencia repetidos. En `tauri.conf.json` están `publisher`, `copyright`, `license` y `licenseFile`.
+
+Pendiente de revisar por el usuario, porque no es algo que la app pueda garantizar: esto sigue las prácticas habituales de software libre y la política de Riot para proyectos de fans, pero no es asesoramiento legal. Si la app llegara a tener ingresos o a usar la API de Riot, habría que revisarlo.
 
 ## Reglas de trabajo
 

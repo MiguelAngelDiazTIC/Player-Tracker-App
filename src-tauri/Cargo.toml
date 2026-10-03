@@ -2,7 +2,9 @@
 name = "player-tracker"
 version = "1.0.0"
 description = "Diario de escritorio para jugadores de Valorant"
-authors = ["Miguel Ángel Díaz"]
+authors = ["Miguel Ángel Díaz Gutiérrez (MikaEl)"]
+license = "GPL-3.0-or-later"
+repository = "https://github.com/MiguelAngelDiazTIC/Player-Tracker-App"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html

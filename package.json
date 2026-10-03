@@ -1,6 +1,10 @@
 {
   "name": "player-tracker",
   "private": true,
+  "description": "Diario de escritorio para jugadores de Valorant",
+  "author": "Miguel Ángel Díaz Gutiérrez (MikaEl) <miguelangeldiaztic@gmail.com>",
+  "license": "GPL-3.0-or-later",
+  "repository": "github:MiguelAngelDiazTIC/Player-Tracker-App",
   "version": "1.0.0",
   "type": "module",
   "scripts": {
@@ -10,6 +14,7 @@
     "tauri": "tauri",
     "demo": "tauri dev --config src-tauri/tauri.demo.conf.json",
     "demo:data": "node scripts/demo-data.mjs",
+    "notices": "node scripts/third-party-notices.mjs",
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",

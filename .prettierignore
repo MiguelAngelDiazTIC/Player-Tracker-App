@@ -3,3 +3,4 @@ docs
 package-lock.json
 src-tauri/target
 src-tauri/gen
+THIRD-PARTY-NOTICES.md
