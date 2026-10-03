@@ -170,7 +170,7 @@ Cómo funciona:
 
 Trabaja una fase cada vez. Al acabar cada fase: pruebas en verde y un commit por bloque lógico en su propia rama. El usuario decidió el 02/10/2026 encadenar las fases sin parar a probar entre una y otra: las pruebas con datos reales y los cambios se harán cuando haya una versión 1.0. Los criterios "Terminada cuando" que dependen del uso real quedan para entonces.
 
-Estado (03/10/2026): las cinco fases (0 a 4) están implementadas. Antes de la versión 1.0 quedan la fase 5 (nombre y logo, exportación a Excel, tutorial e instalador) y la ronda de pruebas con datos reales y los cambios que salgan de ella.
+Estado (03/10/2026): las cinco fases (0 a 4) están implementadas. Antes de la versión 1.0 quedan la fase 5 (nombre MikaLog y logo, exportación a Excel, tutorial e instalador) y la ronda de pruebas con datos reales y los cambios que salgan de ella.
 
 ### Fase 0: cimientos
 
@@ -223,11 +223,11 @@ Ideas que el usuario pidió el 03/10/2026: nombre y logo, exportar la informaci�
 
 #### 5.1 Nombre y logo
 
-- **Nombre**: lo elige el usuario. Propuestas: **Grindlog** (recomendada: "el diario del grind", corta y fácil de recordar), **Top1 Log** (por "Road to Top 1", el título de su hoja), **Clutch Diary** o mantener **Player Tracker**. Sin "Valorant", "Riot" ni nombres de rangos, que son marcas de Riot.
+- **Nombre**: **MikaLog**, elegido por el usuario el 03/10/2026: su nick, MikaEl, y "log" de registro diario. Sin "Valorant", "Riot" ni nombres de rangos, que son marcas de Riot.
 - **Logo**: icono cuadrado con esquinas redondeadas, con el degradado del fondo (malva `#C9A4CB` a lima `#D8F5BC`) y encima una mira blanca cuyo centro es un check verde `#0A8158`: apuntar y cumplir hábitos en una sola marca. Debe leerse a 16 px; a ese tamaño se queda solo el anillo y el check.
 - Archivo maestro en `src-tauri/icons/logo.svg` (1024 × 1024). Los PNG, `icon.ico` e `icon.icns` se generan con `npx tauri icon src-tauri/icons/logo.svg`; no se editan a mano.
 - Dónde aparece el nombre: `productName` y título de la ventana en `tauri.conf.json`, `<title>` de `index.html`, cabecera de la barra lateral, pantalla de bienvenida y textos de Ajustes. El logo, en la barra lateral, la bienvenida, el icono de la ventana y el instalador.
-- **Lo que no cambia** al renombrar, para no romper instalaciones ni copias: el `identifier` (`com.playertracker.desktop`, de él depende dónde está `config.json`), el `"format": "player-tracker"` del JSON y las carpetas de datos que ya existen. Solo la carpeta propuesta en el primer arranque pasa a `Documentos/<nombre>`.
+- **Lo que no cambia** al renombrar, para no romper instalaciones ni copias: el `identifier` (`com.playertracker.desktop`, de él depende dónde está `config.json`), el `"format": "player-tracker"` del JSON y las carpetas de datos que ya existen. Solo la carpeta propuesta en el primer arranque pasa a `Documentos/MikaLog`.
 - **Terminada cuando**: el nombre y el logo se ven en la ventana, la barra de tareas y el instalador, y una instalación anterior abre sus datos sin preguntar de nuevo.
 
 #### 5.2 Exportar la información
