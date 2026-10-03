@@ -6,7 +6,6 @@ import { ExportPanel } from "./ExportPanel";
 import { FieldsPanel } from "./FieldsPanel";
 import { HelpPanel } from "./HelpPanel";
 import { SheetImportPanel } from "./SheetImportPanel";
-import { SyncPanel } from "./SyncPanel";
 
 interface AjustesViewProps {
   onShowTutorial: () => void;
@@ -21,9 +20,6 @@ export function AjustesView({ onShowTutorial }: AjustesViewProps) {
       <AutoBackupPanel />
       <AppearancePanel />
       <HelpPanel onShowTutorial={onShowTutorial} />
-      <div className="lg:col-span-2">
-        <SyncPanel />
-      </div>
       <div id="importar-hoja" className="lg:col-span-2">
         <SheetImportPanel />
       </div>

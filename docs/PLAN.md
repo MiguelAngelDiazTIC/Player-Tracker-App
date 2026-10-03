@@ -16,7 +16,7 @@ No las cambies sin preguntar al usuario.
 - **10mans y scrims** van en un registro aparte, una entrada por partida. Sus estadísticas no se mezclan con las de rankeds; la fila del día solo muestra el recuento.
 - **Una gráfica por estadística** debajo de cada tabla (la diaria y la de scrims), siguiendo los filtros y el rango de fechas de la tabla.
 - Estilo **glassmorphism** según la skill `glassmorphism` de [bergside/awesome-design-skills](https://github.com/bergside/awesome-design-skills) (archivos `skills/glassmorphism/SKILL.md` y `DESIGN.md`).
-- K/D y ACS automáticos solo mediante la API no oficial de [HenrikDev](https://docs.henrikdev.xyz). Tracker.gg y la API oficial de Riot no sirven (Tracker no da acceso a Valorant; Riot no aprueba apps personales). La entrada manual es siempre la base.
+- K/D y ACS automáticos: solo serían posibles con la API no oficial de [HenrikDev](https://docs.henrikdev.xyz). Se hizo en la fase 4 y se retiró el 03/10/2026 (ver "Sincronización con HenrikDev"). Tracker.gg y la API oficial de Riot no sirven (Tracker no da acceso a Valorant; Riot no aprueba apps personales). La entrada manual es siempre la base.
 - Interfaz en español.
 
 ## Tecnologías
@@ -143,7 +143,9 @@ Tienen su propia sección en la barra lateral, entre Dashboard y Revisión seman
 - **Objetivos**: lista en el ajuste `goals` (`id`, `title`, `deadline`, `done`), editable en el Dashboard, con los días que faltan. Al estar en los ajustes, viajan en la exportación.
 - La migración 3 crea `ranked_sessions` (con `external_match_id` único) y `notes`. Al importar un JSON, una partida con el mismo `external_match_id` que una local se trata como la misma, aunque su `id` sea otro.
 
-### Sincronización con HenrikDev (fase 4)
+### Sincronización con HenrikDev (fase 4, retirada)
+
+**Retirada el 03/10/2026** por decisión del usuario: pedir y guardar una clave era complicar la app de más por ahora. Se quitaron el panel de Ajustes, el botón "Sincronizar" del día, el paso del tutorial, `tauri-plugin-http` y su permiso; la app ya no hace ninguna llamada a internet. El K/D y el ACS se escriben a mano o salen de las partidas apuntadas en Rankeds. Se conserva lo que protege datos ya guardados: las partidas sincronizadas siguen marcadas como `henrikdev` y, si una instalación tenía la clave en sus ajustes, sigue sin exportarse. Lo que sigue describe cómo funcionaba, por si se retoma (el código está en el historial de git, hasta el PR #14).
 
 Resultado de la prueba aislada del 02/10/2026 con la cuenta del jugador:
 
@@ -257,7 +259,7 @@ Se muestra la primera vez, justo después de elegir la carpeta de datos, y solo 
 
 1. **Bienvenida**: logo, nombre y una frase de qué hace la app.
 2. **Cómo empezar**: tres opciones en tarjetas. Importar la hoja (abre el importador de Excel/CSV), cargar una copia JSON (abre la importación) o empezar de cero (crea el día de hoy).
-3. **Sincronización (opcional)**: Riot ID, región y clave de HenrikDev, con "Probar conexión". Se puede dejar para luego.
+3. ~~**Sincronización (opcional)**~~: retirado junto con la sincronización; el tutorial queda en bienvenida, cómo empezar y recorrido.
 4. **Recorrido guiado**: globos de cristal que señalan, uno a uno, la Tabla (rellenar el día), la página del día (feelings y #etiquetas), Scrims y 10mans, Dashboard, Insights y Ajustes > Exportar.
 
 - Hecho sin librerías: un componente propio de globos sobre los elementos reales, con el estilo de [DESIGN.md](DESIGN.md), usable con teclado (flechas, Esc para salir) y con el foco dentro del globo.
@@ -267,7 +269,7 @@ Se muestra la primera vez, justo después de elegir la carpeta de datos, y solo 
 
 Cómo quedó hecho:
 
-- `src/views/tutorial/Tutorial.tsx`: tres pasos en un diálogo (bienvenida, cómo empezar, sincronización con el mismo panel de Ajustes) y un recorrido de seis globos. Los globos buscan su elemento por el atributo `data-tour` (`nav-<sección>` en la barra lateral y `add-day` en el botón de añadir día).
+- `src/views/tutorial/Tutorial.tsx`: dos pasos en un diálogo (bienvenida y cómo empezar) y un recorrido de seis globos. Los globos buscan su elemento por el atributo `data-tour` (`nav-<sección>` en la barra lateral y `add-day` en el botón de añadir día).
 - La opción de «cómo empezar» se recuerda y se ejecuta al terminar el recorrido: importar la hoja y cargar una copia llevan a Ajustes; empezar de cero crea el día de hoy y abre su página. Saltar o salir no hace nada de eso.
 - `config.json` guarda `tutorialSeen` junto a `dataFolder`; `Platform` lo expone como `tutorialSeen` y `markTutorialSeen()`. El archivo ya no se reescribe en cada arranque si no cambia nada: una escritura cortada a medias lo dejaba vacío y la app volvía a preguntar por la carpeta.
 - Ajustes > «Primeros pasos» > «Ver el tutorial» lo repite.
@@ -291,6 +293,6 @@ Ya existe: `npm run tauri build` genera un instalador NSIS en español y el CI l
 ## Reglas de trabajo
 
 - TypeScript estricto, sin `any`. Lógica de cálculo en funciones puras con pruebas.
-- Nada de telemetría ni llamadas a internet salvo HenrikDev en la fase 4, y solo cuando el usuario pulsa "Sincronizar".
+- Nada de telemetría ni llamadas a internet. La única excepción que hubo, HenrikDev, se retiró el 03/10/2026.
 - Ante una decisión que cambie lo que el usuario ve o sus datos, pregunta antes.
 - Mantén este plan actualizado si algo cambia.

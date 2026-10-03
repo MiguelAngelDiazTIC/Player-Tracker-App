@@ -10,8 +10,8 @@ export function HelpPanel({ onShowTutorial }: HelpPanelProps) {
   return (
     <Card title="Primeros pasos">
       <p className="text-ink/70 text-sm">
-        El recorrido que viste al instalar la app: cómo empezar, la
-        sincronización y qué hay en cada sección.
+        El recorrido que viste al instalar la app: cómo empezar y qué hay en
+        cada sección.
       </p>
       <div>
         <Button onClick={onShowTutorial}>Ver el tutorial</Button>

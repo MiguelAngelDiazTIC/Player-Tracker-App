@@ -18,7 +18,7 @@ export const rankedSessionSchema = z.object({
   score: count,
   rounds: count,
   source: z.enum(RANKED_SOURCES),
-  /** Id de la partida en HenrikDev; evita duplicarla al sincronizar. */
+  /** Id de la partida en HenrikDev, de cuando la app sincronizaba. */
   externalMatchId: z.string().nullable(),
 });
 

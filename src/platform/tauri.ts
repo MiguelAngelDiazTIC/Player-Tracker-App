@@ -12,13 +12,11 @@ import {
   writeFile,
   writeTextFile,
 } from "@tauri-apps/plugin-fs";
-import { fetch as httpFetch } from "@tauri-apps/plugin-http";
 import Database from "@tauri-apps/plugin-sql";
 import { APP_NAME } from "../app/brand";
 import type { PickedFile, Platform, Services } from "../app/services";
 import type { BackupFolder } from "../data/autoBackup";
 import type { AttachmentStore } from "../data/backup";
-import type { HttpClient } from "../data/henrikSync";
 import type { SqlDriver } from "../data/driver";
 import { createRepository } from "../data/repository";
 
@@ -126,25 +124,6 @@ function pickFile({
   });
 }
 
-/**
- * Peticiones desde el lado nativo: el navegador las bloquearía por CORS. El
- * permiso de Tauri solo deja salir hacia api.henrikdev.xyz.
- */
-const http: HttpClient = {
-  async get(url, headers) {
-    const response = await httpFetch(url, { method: "GET", headers });
-    const wait = Number(
-      response.headers.get("retry-after") ??
-        response.headers.get("x-ratelimit-reset"),
-    );
-    return {
-      status: response.status,
-      body: await response.json().catch(() => null),
-      retryAfterSeconds: Number.isFinite(wait) && wait > 0 ? wait : null,
-    };
-  },
-};
-
 async function openDriver(databasePath: string): Promise<SqlDriver> {
   const database = await Database.load(`sqlite:${databasePath}`);
   return {
@@ -241,7 +220,6 @@ export async function openDataFolder(folder: string): Promise<Services> {
   const platform: Platform = {
     dataFolder: folder,
     attachments,
-    http,
     attachmentUrl: (name) =>
       convertFileSrc(`${attachmentsFolder}${sep()}${name}`),
 
