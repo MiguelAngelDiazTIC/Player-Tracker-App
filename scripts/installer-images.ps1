@@ -16,6 +16,17 @@ $mauve = [System.Drawing.ColorTranslator]::FromHtml("#C9A4CB")
 $lime = [System.Drawing.ColorTranslator]::FromHtml("#D8F5BC")
 $ink = [System.Drawing.ColorTranslator]::FromHtml("#141414")
 
+# Al reducir el icono, los bordes se mezclan con lo que hay "fuera" de la
+# imagen; reflejarla evita la linea oscura que saldria en el canto.
+$edges = [System.Drawing.Imaging.ImageAttributes]::new()
+$edges.SetWrapMode([System.Drawing.Drawing2D.WrapMode]::TileFlipXY)
+
+function Add-Icon {
+  param($Graphics, [int]$X, [int]$Y, [int]$Size)
+  $target = [System.Drawing.Rectangle]::new($X, $Y, $Size, $Size)
+  $Graphics.DrawImage($icon, $target, 0, 0, $icon.Width, $icon.Height, [System.Drawing.GraphicsUnit]::Pixel, $edges)
+}
+
 function New-InstallerImage {
   param(
     [int]$Width,
@@ -29,6 +40,7 @@ function New-InstallerImage {
   $graphics = [System.Drawing.Graphics]::FromImage($bitmap)
   $graphics.SmoothingMode = "AntiAlias"
   $graphics.InterpolationMode = "HighQualityBicubic"
+  $graphics.PixelOffsetMode = "Half"
   $graphics.TextRenderingHint = "AntiAliasGridFit"
   $area = [System.Drawing.Rectangle]::new(0, 0, $Width, $Height)
   $brush = [System.Drawing.Drawing2D.LinearGradientBrush]::new($area, $mauve, $lime, $Angle)
@@ -40,12 +52,12 @@ function New-InstallerImage {
 
 New-InstallerImage -Width 150 -Height 57 -Angle 0 -Name "header.bmp" -Draw {
   param($graphics)
-  $graphics.DrawImage($icon, 99, 8, 41, 41)
+  Add-Icon $graphics 99 8 41
 }
 
 New-InstallerImage -Width 164 -Height 314 -Angle 90 -Name "sidebar.bmp" -Draw {
   param($graphics)
-  $graphics.DrawImage($icon, 42, 84, 80, 80)
+  Add-Icon $graphics 42 84 80
   $font = [System.Drawing.Font]::new("Segoe UI", 15, [System.Drawing.FontStyle]::Bold)
   $format = [System.Drawing.StringFormat]::new()
   $format.Alignment = "Center"
@@ -54,5 +66,5 @@ New-InstallerImage -Width 164 -Height 314 -Angle 90 -Name "sidebar.bmp" -Draw {
   $font.Dispose(); $text.Dispose(); $format.Dispose()
 }
 
-$icon.Dispose()
+$edges.Dispose(); $icon.Dispose()
 Write-Output "Imagenes del instalador en $out"
