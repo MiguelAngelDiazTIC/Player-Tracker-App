@@ -170,7 +170,7 @@ Cómo funciona:
 
 Trabaja una fase cada vez. Al acabar cada fase: pruebas en verde y un commit por bloque lógico en su propia rama. El usuario decidió el 02/10/2026 encadenar las fases sin parar a probar entre una y otra: las pruebas con datos reales y los cambios se harán cuando haya una versión 1.0. Los criterios "Terminada cuando" que dependen del uso real quedan para entonces.
 
-Estado: las cinco fases (0 a 4) están implementadas. Queda la ronda de pruebas con datos reales y los cambios que salgan de ella, antes de la versión 1.0.
+Estado (03/10/2026): las cinco fases (0 a 4) están implementadas. Antes de la versión 1.0 quedan la fase 5 (nombre MikaLog y logo, exportación a Excel, tutorial e instalador) y la ronda de pruebas con datos reales y los cambios que salgan de ella.
 
 ### Fase 0: cimientos
 
@@ -216,6 +216,61 @@ Estado: las cinco fases (0 a 4) están implementadas. Queda la ronda de pruebas 
 - Sincronización: en Ajustes, Riot ID (`nombre#tag`), región y clave (guardada fuera del JSON exportable). Botón "Sincronizar" en el día: trae las partidas de esa fecha (endpoint `GET /valorant/v4/matches/{region}/{platform}/{name}/{tag}`, campos `stats.kills`, `stats.deaths`, `stats.score`, rondas y `started_at`), calcula K/D = kills / deaths y ACS = score / rondas, crea `ranked_sessions` sin duplicar (`external_match_id` único). Las customs van a `scrim_matches`. Todo editable a mano.
 - Sesiones de ranked por mapa y agente, notas sueltas con enlaces `[[ ]]` y backlinks, y objetivos.
 - **Terminada cuando**: sincronizar un día real da el mismo K/D y ACS que el juego y repetirlo no duplica partidas.
+
+### Fase 5: camino a la 1.0
+
+Ideas que el usuario pidió el 03/10/2026: nombre y logo, exportar la información, tutorial al instalar e instalador. Van en este orden, porque el tutorial y el instalador ya muestran el nombre y el logo. Cada bloque en su propia rama, como las fases anteriores.
+
+#### 5.1 Nombre y logo
+
+- **Nombre**: **MikaLog**, elegido por el usuario el 03/10/2026: su nick, MikaEl, y "log" de registro diario. Sin "Valorant", "Riot" ni nombres de rangos, que son marcas de Riot.
+- **Logo**: icono cuadrado con esquinas redondeadas, con el degradado del fondo (malva `#C9A4CB` a lima `#D8F5BC`) y encima una mira blanca cuyo centro es un check verde `#0A8158`: apuntar y cumplir hábitos en una sola marca. Debe leerse a 16 px; a ese tamaño se queda solo el anillo y el check.
+- Archivo maestro en `src-tauri/icons/logo.svg` (1024 × 1024). Los PNG, `icon.ico` e `icon.icns` se generan con `npx tauri icon src-tauri/icons/logo.svg`; no se editan a mano.
+- Dónde aparece el nombre: `productName` y título de la ventana en `tauri.conf.json`, `<title>` de `index.html`, cabecera de la barra lateral, pantalla de bienvenida y textos de Ajustes. El logo, en la barra lateral, la bienvenida, el icono de la ventana y el instalador.
+- **Lo que no cambia** al renombrar, para no romper instalaciones ni copias: el `identifier` (`com.playertracker.desktop`, de él depende dónde está `config.json`), el `"format": "player-tracker"` del JSON y las carpetas de datos que ya existen. Solo la carpeta propuesta en el primer arranque pasa a `Documentos/MikaLog`.
+- **Terminada cuando**: el nombre y el logo se ven en la ventana, la barra de tareas y el instalador, y una instalación anterior abre sus datos sin preguntar de nuevo.
+
+#### 5.2 Exportar la información
+
+El JSON (fase 1) sigue siendo la copia completa para cambiar de ordenador. Esta parte añade exportar para **mirar y compartir** los datos fuera de la app, y copias automáticas.
+
+- **Excel (.xlsx)** en Ajustes > Exportar, con SheetJS (ya está en el proyecto). Una hoja por registro: Días (columnas como la hoja del usuario: fecha `DD/MM/YYYY`, duraciones `7H19min`, gimnasio `Descanso`, checks como ✓ y ✗, celdas vacías sin dato), Scrims y 10mans, Rankeds y Revisiones semanales. Los feelings van como texto plano.
+- **Ida y vuelta**: la hoja Días tiene el mismo formato que la hoja original, así que el importador de la fase 1 la vuelve a leer sin perder nada. Hay prueba de ello.
+- **CSV** como alternativa: un archivo por registro (UTF-8 con BOM y `;` como separador, para que Excel en español lo abra bien).
+- **Exportar lo que ves**: botón en la barra de la Tabla, Scrims y Rankeds que exporta las filas con los filtros y el rango de fechas actuales, en Excel o CSV.
+- **Copias automáticas**: al abrir la app, si la última copia tiene más de 7 días, se guarda un JSON completo en `<carpeta de datos>/copias/` y se conservan las 8 últimas. Se puede desactivar o cambiar la frecuencia en Ajustes. La copia nunca lleva la clave de HenrikDev.
+- La lógica de formato va en `src/domain/` (puro, con pruebas) y la escritura de archivos en `src/data/`.
+- Para después de la 1.0, si el usuario lo pide: la revisión semanal o el Dashboard como PDF o imagen para compartir.
+- **Terminada cuando**: el Excel exportado se abre en Excel y en Google Sheets con los mismos números que la app, y reimportarlo da los mismos días.
+
+#### 5.3 Tutorial al instalar
+
+Se muestra la primera vez, justo después de elegir la carpeta de datos, y solo si la carpeta no tiene días. Se puede saltar en cualquier paso y repetir desde Ajustes > "Ver el tutorial".
+
+1. **Bienvenida**: logo, nombre y una frase de qué hace la app.
+2. **Cómo empezar**: tres opciones en tarjetas. Importar la hoja (abre el importador de Excel/CSV), cargar una copia JSON (abre la importación) o empezar de cero (crea el día de hoy).
+3. **Sincronización (opcional)**: Riot ID, región y clave de HenrikDev, con "Probar conexión". Se puede dejar para luego.
+4. **Recorrido guiado**: globos de cristal que señalan, uno a uno, la Tabla (rellenar el día), la página del día (feelings y #etiquetas), Scrims y 10mans, Dashboard, Insights y Ajustes > Exportar.
+
+- Hecho sin librerías: un componente propio de globos sobre los elementos reales, con el estilo de [DESIGN.md](DESIGN.md), usable con teclado (flechas, Esc para salir) y con el foco dentro del globo.
+- Que ya se ha visto se guarda en `config.json` (por equipo), no en la base de datos: una carpeta importada de otro ordenador no lo vuelve a mostrar, porque ya tiene días.
+- Pruebas de interfaz con la app entera: aparece con una carpeta vacía, no aparece con datos, saltar funciona y Ajustes lo repite.
+- **Terminada cuando**: una persona que no conoce la app la instala, sigue el tutorial y rellena su primer día sin ayuda.
+
+#### 5.4 Instalador y versión 1.0
+
+Ya existe: `npm run tauri build` genera un instalador NSIS en español y el CI lo sube como artefacto en cada push. Falta dejarlo listo para instalar y actualizar.
+
+- **Versión única**: `version` de `tauri.conf.json` apunta a `../package.json`, para no mantener dos números. La 1.0 sale como `1.0.0`.
+- **Instalación sin permisos de administrador**: `installMode: "currentUser"` (el valor por defecto de Tauri, que se deja escrito para que no cambie), con acceso directo en el menú Inicio y opción de acceso en el escritorio.
+- **Imágenes del instalador** con el logo y el degradado (cabecera 150 × 57 y lateral 164 × 314, en BMP), e icono del instalador.
+- **WebView2**: se mantiene el descargador por defecto (Windows 10 y 11 ya lo traen). El instalador sin conexión (`offlineInstaller`) solo si el usuario lo pide, porque añade unos 130 MB.
+- **Desinstalar no borra los datos**: la carpeta de datos está en Documentos, fuera de la carpeta de la app. Se dice en el último paso del desinstalador.
+- **Publicar versiones**: workflow nuevo que, al subir una etiqueta `v*` (por ejemplo `v1.0.0`), compila el instalador y crea una Release de GitHub con el `.exe` y las notas de la versión. El CI actual sigue igual.
+- **Actualizar**: se instala la versión nueva encima de la anterior y los datos se conservan. Sin actualizador automático en la 1.0, porque comprobar versiones es una llamada a internet que las reglas de trabajo no permiten; si el usuario lo quiere, `tauri-plugin-updater` con un botón "Buscar actualizaciones" que solo se usa al pulsarlo.
+- **Firma de código**: el instalador va sin firmar, así que Windows SmartScreen avisa la primera vez ("Windows protegió tu PC" > "Más información" > "Ejecutar de todas formas"). Se explica en el README. Firmarlo cuesta dinero (por ejemplo Azure Trusted Signing, de pago mensual) y solo compensa si la app se reparte a otras personas.
+- README: sección "Instalar" con el enlace a la última Release y el aviso de SmartScreen.
+- **Terminada cuando**: en un Windows limpio, el `.exe` de la Release instala la app sin pedir administrador, la abre con el tutorial, instalar la versión siguiente encima conserva los datos y desinstalar no borra la carpeta de datos.
 
 ## Reglas de trabajo
 
