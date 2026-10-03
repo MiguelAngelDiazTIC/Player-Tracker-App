@@ -20,6 +20,10 @@ export interface TestServices extends Services {
   filesToPick: PickedFile[];
   /** Textos "guardados" con el diálogo de exportar. */
   savedFiles: { name: string; text: string }[];
+  /** Archivos binarios (Excel, CSV) "guardados" con el diálogo. */
+  savedBinaries: { name: string; bytes: Uint8Array }[];
+  /** Contenido de la carpeta `copias/`, por nombre de archivo. */
+  copies: Map<string, string>;
   backups: number;
   /** Respuesta de HenrikDev para cada petición; por defecto, sin partidas. */
   httpResponses: HttpResponse[];
@@ -33,10 +37,18 @@ export async function createTestServices(): Promise<TestServices> {
 
   const test: Pick<
     TestServices,
-    "filesToPick" | "savedFiles" | "backups" | "httpResponses" | "httpCalls"
+    | "filesToPick"
+    | "savedFiles"
+    | "savedBinaries"
+    | "copies"
+    | "backups"
+    | "httpResponses"
+    | "httpCalls"
   > = {
     filesToPick: [],
     savedFiles: [],
+    savedBinaries: [],
+    copies: new Map(),
     backups: 0,
     httpResponses: [],
     httpCalls: [],
@@ -64,6 +76,21 @@ export async function createTestServices(): Promise<TestServices> {
     async saveTextFile({ defaultName, text }) {
       test.savedFiles.push({ name: defaultName, text });
       return `C:/exportado/${defaultName}`;
+    },
+    async saveFile({ defaultName, bytes }) {
+      test.savedBinaries.push({ name: defaultName, bytes });
+      return `C:/exportado/${defaultName}`;
+    },
+    backupFolder: {
+      async list() {
+        return [...test.copies.keys()];
+      },
+      async write(name, text) {
+        test.copies.set(name, text);
+      },
+      async remove(name) {
+        test.copies.delete(name);
+      },
     },
     async backupDatabase() {
       test.backups += 1;

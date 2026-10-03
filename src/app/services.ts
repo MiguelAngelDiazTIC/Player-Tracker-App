@@ -1,3 +1,4 @@
+import type { BackupFolder } from "../data/autoBackup";
 import type { AttachmentStore } from "../data/backup";
 import type { HttpClient } from "../data/henrikSync";
 import type { Repository } from "../data/repository";
@@ -29,6 +30,14 @@ export interface Platform {
     defaultName: string;
     text: string;
   }): Promise<string | null>;
+  /** Guarda un archivo (Excel, CSV) donde elija el usuario. */
+  saveFile(options: {
+    title: string;
+    defaultName: string;
+    bytes: Uint8Array;
+  }): Promise<string | null>;
+  /** Carpeta `copias/` de la carpeta de datos, con las copias automáticas. */
+  backupFolder: BackupFolder;
   /** Copia `tracker.db` a `backups/` y devuelve la ruta de la copia. */
   backupDatabase(): Promise<string>;
   pickFolder(title: string): Promise<string | null>;

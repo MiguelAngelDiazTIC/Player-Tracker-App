@@ -55,6 +55,7 @@ Todos los componentes interactivos deben tener los estados reposo, hover, `focus
 - **Etiqueta** (`Chip`): píldora de 12px con fondo `ink/5` y borde `ink/10`.
 - **Tarjeta bento** (`Card`): `glass`, `rounded-md`, relleno de 16px y título en etiqueta en mayúsculas.
 - **Diálogo** (`Dialog`): `glass-solid` sobre un velo `shadow/40`; atrapa el foco, se cierra con Escape y devuelve el foco a quien lo abrió. Las acciones destructivas piden confirmación aquí, nunca con un diálogo nativo.
+- **Menú de botón** (`ExportButton`): un botón `secondary` con `aria-haspopup="menu"` abre debajo un panel `glass-solid` con las opciones como píldoras de 36px. El foco entra en la primera opción; Escape o un clic fuera lo cierran y devuelven el foco al botón. El resultado (ruta guardada o error) sale en el mismo sitio como `Notice`.
 - **Aviso** (`Notice`): tinte suave del color de su tono con icono; los errores usan `role="alert"` y el resto `role="status"`.
 
 Casos límite: las etiquetas largas se cortan con puntos suspensivos y muestran el texto completo en `title`; las tablas se desplazan dentro de su panel, no la página; toda vista sin datos explica qué hacer a continuación.

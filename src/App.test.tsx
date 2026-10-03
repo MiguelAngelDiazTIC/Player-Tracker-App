@@ -1,6 +1,7 @@
 import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import * as XLSX from "xlsx";
 import App from "./App";
 import { applySheetImport } from "./data/sheetApply";
 import { DEFAULT_FIELDS } from "./domain/fields";
@@ -1535,5 +1536,175 @@ describe("fundido al cambiar de tema", () => {
     expect(start).not.toHaveBeenCalled();
     expect(document.documentElement.dataset.theme).toBe("light");
     expect(window.localStorage.getItem("player-tracker.theme")).toBe("system");
+  });
+});
+
+describe("exportar a Excel y CSV", () => {
+  const csvLines = (bytes: Uint8Array) =>
+    new TextDecoder("utf-8").decode(bytes).split("\r\n");
+
+  it("exporta todo a un Excel con una pestaña por registro", async () => {
+    const { services, user } = await renderApp();
+    await goTo(user, "Ajustes");
+
+    await user.click(
+      screen.getByRole("button", { name: "Exportar todo a Excel" }),
+    );
+    await screen.findByText("Guardado en C:/exportado/mikalog-2026-10-02.xlsx");
+
+    const [file] = services.savedBinaries;
+    expect(XLSX.read(file.bytes, { type: "array" }).SheetNames).toEqual([
+      "Días",
+      "Scrims y 10mans",
+      "Rankeds",
+      "Revisiones",
+    ]);
+    // La primera pestaña: cabecera y los 13 días.
+    expect(readSheetFile(file.bytes, file.name)).toHaveLength(14);
+  });
+
+  it("exporta un registro a CSV", async () => {
+    const { services, user } = await renderApp();
+    await goTo(user, "Ajustes");
+    const panel = within(
+      screen.getByRole("region", { name: "Exportar a Excel o CSV" }),
+    );
+
+    await user.selectOptions(
+      panel.getByLabelText("Registro"),
+      "Scrims y 10mans",
+    );
+    await user.click(panel.getByRole("button", { name: "Exportar CSV" }));
+    await panel.findByText(/Guardado en/);
+
+    const [file] = services.savedBinaries;
+    expect(file.name).toBe("mikalog-scrims-y-10mans-2026-10-02.csv");
+    // Cabecera y las 18 partidas.
+    expect(csvLines(file.bytes)).toHaveLength(19);
+  });
+
+  it("desde la Tabla exporta solo lo que se ve, en su orden", async () => {
+    const { services, user } = await renderApp();
+    await user.selectOptions(screen.getByLabelText("Etiqueta"), "saturado");
+
+    await user.click(
+      screen.getByRole("button", { name: "Exportar lo que ves" }),
+    );
+    await user.click(screen.getByRole("menuitem", { name: "CSV (.csv)" }));
+    await screen.findByText(
+      "Guardado en C:/exportado/mikalog-dias-2026-10-02.csv",
+    );
+
+    const lines = csvLines(services.savedBinaries[0].bytes);
+    expect(lines.map((line) => line.split(";")[0])).toEqual([
+      "Fecha",
+      "24/09/2026",
+      "23/09/2026",
+    ]);
+  });
+
+  it("el menú de exportar se cierra con Escape y devuelve el foco", async () => {
+    const { services, user } = await renderApp();
+    const button = screen.getByRole("button", { name: "Exportar lo que ves" });
+
+    await user.click(button);
+    expect(
+      screen.getByRole("menuitem", { name: "Excel (.xlsx)" }),
+    ).toHaveFocus();
+    await user.keyboard("{Escape}");
+
+    expect(screen.queryByRole("menu")).not.toBeInTheDocument();
+    expect(button).toHaveFocus();
+    expect(services.savedBinaries).toEqual([]);
+  });
+
+  it("los registros de scrims y rankeds también exportan a Excel", async () => {
+    const { services, user } = await renderApp();
+    await goTo(user, "Scrims y 10mans");
+    await user.click(
+      screen.getByRole("button", { name: "Exportar lo que ves" }),
+    );
+    await user.click(screen.getByRole("menuitem", { name: "Excel (.xlsx)" }));
+    await screen.findByText(/Guardado en/);
+
+    const [file] = services.savedBinaries;
+    expect(file.name).toBe("mikalog-scrims-y-10mans-2026-10-02.xlsx");
+    expect(readSheetFile(file.bytes, file.name)).toHaveLength(19);
+
+    // Sin partidas no hay nada que exportar.
+    await goTo(user, "Rankeds");
+    expect(
+      screen.getByRole("button", { name: "Exportar lo que ves" }),
+    ).toBeDisabled();
+  });
+});
+
+describe("copias automáticas", () => {
+  it("al abrir la app guarda una copia y Ajustes la enseña", async () => {
+    const { services, user } = await renderApp();
+    await waitFor(() =>
+      expect([...services.copies.keys()]).toEqual(["copia-2026-10-02.json"]),
+    );
+
+    await goTo(user, "Ajustes");
+    const panel = within(
+      screen.getByRole("region", { name: "Copias automáticas" }),
+    );
+    await panel.findByText("Última copia: 02/10/2026 · 1 copia guardada");
+  });
+
+  it("no repite la copia si la última es reciente", async () => {
+    const services = await createTestServices();
+    services.copies.set("copia-2026-09-28.json", "{}");
+    render(<App services={services} />);
+    const user = userEvent.setup();
+    await screen.findByRole("navigation", { name: "Secciones" });
+
+    await goTo(user, "Ajustes");
+    await screen.findByText("Última copia: 28/09/2026 · 1 copia guardada");
+    expect(services.copies.size).toBe(1);
+  });
+
+  it("se desactivan, y aun así se puede hacer una copia a mano", async () => {
+    const services = await createTestServices();
+    await services.repository.setSetting("backup.auto", {
+      enabled: false,
+      everyDays: 7,
+    });
+    render(<App services={services} />);
+    const user = userEvent.setup();
+    await screen.findByRole("navigation", { name: "Secciones" });
+
+    await goTo(user, "Ajustes");
+    const panel = within(
+      screen.getByRole("region", { name: "Copias automáticas" }),
+    );
+    await panel.findByText("Aún no hay ninguna copia.");
+    expect(panel.getByLabelText("Frecuencia")).toBeDisabled();
+    expect(services.copies.size).toBe(0);
+
+    await user.click(
+      panel.getByRole("button", { name: "Hacer una copia ahora" }),
+    );
+    await panel.findByText("Copia guardada: copia-2026-10-02.json");
+    await panel.findByText("Última copia: 02/10/2026 · 1 copia guardada");
+  });
+
+  it("guarda la frecuencia elegida", async () => {
+    const { services, user } = await renderApp(false);
+    await goTo(user, "Ajustes");
+    const panel = within(
+      screen.getByRole("region", { name: "Copias automáticas" }),
+    );
+
+    await user.selectOptions(panel.getByLabelText("Frecuencia"), "Cada día");
+    await user.click(panel.getByRole("radio", { name: "Desactivadas" }));
+
+    await waitFor(async () =>
+      expect((await services.repository.getSettings())["backup.auto"]).toEqual({
+        enabled: false,
+        everyDays: 1,
+      }),
+    );
   });
 });

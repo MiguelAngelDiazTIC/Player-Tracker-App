@@ -238,10 +238,18 @@ El JSON (fase 1) sigue siendo la copia completa para cambiar de ordenador. Esta 
 - **Ida y vuelta**: la hoja Días tiene el mismo formato que la hoja original, así que el importador de la fase 1 la vuelve a leer sin perder nada. Hay prueba de ello.
 - **CSV** como alternativa: un archivo por registro (UTF-8 con BOM y `;` como separador, para que Excel en español lo abra bien).
 - **Exportar lo que ves**: botón en la barra de la Tabla, Scrims y Rankeds que exporta las filas con los filtros y el rango de fechas actuales, en Excel o CSV.
-- **Copias automáticas**: al abrir la app, si la última copia tiene más de 7 días, se guarda un JSON completo en `<carpeta de datos>/copias/` y se conservan las 8 últimas. Se puede desactivar o cambiar la frecuencia en Ajustes. La copia nunca lleva la clave de HenrikDev.
+- **Copias automáticas**: al abrir la app, si la última copia tiene 7 días o más, se guarda un JSON completo en `<carpeta de datos>/copias/` y se conservan las 8 últimas. Se puede desactivar o cambiar la frecuencia en Ajustes. La copia nunca lleva la clave de HenrikDev.
 - La lógica de formato va en `src/domain/` (puro, con pruebas) y la escritura de archivos en `src/data/`.
 - Para después de la 1.0, si el usuario lo pide: la revisión semanal o el Dashboard como PDF o imagen para compartir.
 - **Terminada cuando**: el Excel exportado se abre en Excel y en Google Sheets con los mismos números que la app, y reimportarlo da los mismos días.
+
+Cómo quedó hecho:
+
+- `src/domain/sheetExport.ts` monta las hojas (filas de texto y números) y el CSV; `src/data/sheetWrite.ts` las pasa a bytes de Excel o CSV; `src/app/exportFiles.ts` pone el nombre (`mikalog-<registro>-<fecha>`) y abre el diálogo de guardar.
+- En Ajustes hay dos tarjetas: «Exportar a Excel o CSV» y «Copias automáticas» (activar, frecuencia, última copia y «Hacer una copia ahora»). El botón «Exportar lo que ves» (`ExportButton`) está en la Tabla, Scrims y Rankeds y respeta filtros y orden.
+- Las copias automáticas se llaman `copia-YYYY-MM-DD.json` y viven en `copias/`; `backups/` sigue siendo la carpeta de las copias de `tracker.db` previas a una importación. La configuración es el ajuste `backup.auto`. Si la copia falla, la app lo dice en el aviso de error general.
+- `Platform` gana `saveFile` (archivos binarios) y `backupFolder` (listar, escribir y borrar en `copias/`); por eso las capacidades de Tauri incluyen ahora `fs:allow-remove`.
+- Pendiente de la ronda de pruebas: abrir el Excel exportado en Excel y en Google Sheets, y pasar por el diálogo nativo de guardar (las pruebas automáticas llegan hasta los bytes del archivo).
 
 #### 5.3 Tutorial al instalar
 

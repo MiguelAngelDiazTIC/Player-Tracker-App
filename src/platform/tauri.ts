@@ -8,6 +8,7 @@ import {
   readDir,
   readFile,
   readTextFile,
+  remove,
   writeFile,
   writeTextFile,
 } from "@tauri-apps/plugin-fs";
@@ -15,6 +16,7 @@ import { fetch as httpFetch } from "@tauri-apps/plugin-http";
 import Database from "@tauri-apps/plugin-sql";
 import { APP_NAME } from "../app/brand";
 import type { PickedFile, Platform, Services } from "../app/services";
+import type { BackupFolder } from "../data/autoBackup";
 import type { AttachmentStore } from "../data/backup";
 import type { HttpClient } from "../data/henrikSync";
 import type { SqlDriver } from "../data/driver";
@@ -23,6 +25,8 @@ import { createRepository } from "../data/repository";
 const DATABASE_FILE = "tracker.db";
 const ATTACHMENTS_DIR = "attachments";
 const BACKUPS_DIR = "backups";
+/** Copias automáticas en JSON; `backups/` guarda las de `tracker.db`. */
+const COPIES_DIR = "copias";
 /**
  * La ruta de la carpeta de datos no puede vivir en `tracker.db` (está dentro
  * de esa carpeta), así que se guarda en la configuración de la app.
@@ -139,6 +143,27 @@ async function openDriver(databasePath: string): Promise<SqlDriver> {
   };
 }
 
+const FILE_KINDS: Record<string, string> = {
+  json: "JSON",
+  xlsx: "Excel",
+  csv: "CSV",
+};
+
+/** Diálogo de guardar, con el filtro que corresponde a la extensión. */
+async function askSavePath(
+  title: string,
+  defaultName: string,
+): Promise<string | null> {
+  const extension = defaultName.split(".").pop() ?? "";
+  return save({
+    title,
+    defaultPath: defaultName,
+    filters: [
+      { name: FILE_KINDS[extension] ?? extension, extensions: [extension] },
+    ],
+  });
+}
+
 function timestamp(now: Date): string {
   const pad = (value: number) => String(value).padStart(2, "0");
   return (
@@ -183,6 +208,18 @@ export async function openDataFolder(folder: string): Promise<Services> {
     },
   };
 
+  const copiesFolder = await join(folder, COPIES_DIR);
+  const backupFolder: BackupFolder = {
+    list: () => listFiles(copiesFolder),
+    async write(name, text) {
+      await mkdir(copiesFolder, { recursive: true });
+      await writeTextFile(await join(copiesFolder, name), text);
+    },
+    async remove(name) {
+      await remove(await join(copiesFolder, name));
+    },
+  };
+
   const platform: Platform = {
     dataFolder: folder,
     attachments,
@@ -193,15 +230,20 @@ export async function openDataFolder(folder: string): Promise<Services> {
     pickFile,
 
     async saveTextFile({ title, defaultName, text }) {
-      const path = await save({
-        title,
-        defaultPath: defaultName,
-        filters: [{ name: "JSON", extensions: ["json"] }],
-      });
+      const path = await askSavePath(title, defaultName);
       if (path === null) return null;
       await writeTextFile(path, text);
       return path;
     },
+
+    async saveFile({ title, defaultName, bytes }) {
+      const path = await askSavePath(title, defaultName);
+      if (path === null) return null;
+      await writeFile(path, bytes);
+      return path;
+    },
+
+    backupFolder,
 
     async backupDatabase() {
       const backups = await join(folder, BACKUPS_DIR);

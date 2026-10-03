@@ -8,7 +8,9 @@ import {
 } from "@tanstack/react-table";
 import { Plus, Trash2 } from "lucide-react";
 import { useMemo, useState } from "react";
+import { rankedsSheet } from "../../domain/sheetExport";
 import { useStore } from "../../app/store";
+import { ExportButton } from "../../components/ExportButton";
 import { EditableText, type CellNav } from "../../components/cells";
 import {
   ResultsChart,
@@ -223,6 +225,12 @@ export function RankedsView({ focusDate = null }: RankedsViewProps) {
             </Labeled>
           </>
         ) : null}
+        <ExportButton
+          disabled={rows.length === 0}
+          sheet={() =>
+            rankedsSheet(table.getRowModel().rows.map((row) => row.original))
+          }
+        />
       </div>
 
       {sessions.length === 0 ? (
