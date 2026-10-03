@@ -172,7 +172,7 @@ Cómo funciona:
 
 Trabaja una fase cada vez. Al acabar cada fase: pruebas en verde y un commit por bloque lógico en su propia rama. El usuario decidió el 02/10/2026 encadenar las fases sin parar a probar entre una y otra: las pruebas con datos reales y los cambios se harán cuando haya una versión 1.0. Los criterios "Terminada cuando" que dependen del uso real quedan para entonces.
 
-Estado (03/10/2026): las fases 0 a 5 están implementadas. Antes de publicar la versión 1.0 quedan la fase 6 (licencia y avisos legales) y la ronda de pruebas con datos reales y los cambios que salgan de ella.
+Estado (03/10/2026): las fases 0 a 5 están implementadas. La fase 6 (licencia y avisos legales) también. Antes de publicar la versión 1.0 queda la ronda de pruebas con datos reales y los cambios que salgan de ella.
 
 ### Fase 0: cimientos
 
@@ -329,9 +329,11 @@ Decisiones cerradas:
 #### 6.3 Instalador y publicación
 
 - Instalador: página de licencia de NSIS (`licenseFile`) con el texto de la GPL, antes de elegir la carpeta. Editor y copyright visibles en las propiedades del `.exe` y en "Aplicaciones instaladas".
-- Release: las notas llevan, además de las generadas, el aviso de SmartScreen, el de Riot y el enlace a la licencia. El workflow comprueba que `THIRD-PARTY-NOTICES.md` está al día.
+- Release: las notas llevan, además de las generadas, el aviso de SmartScreen, el de Riot y el enlace a la licencia (`.github/release-notes.md`). El CI, en el trabajo del instalador, comprueba en cada push que `THIRD-PARTY-NOTICES.md` está al día, para enterarse antes de etiquetar.
 - Antes de etiquetar `v1.0.0`: ronda de pruebas del instalador (instalar, actualizar encima, desinstalar) y de la exportación, que sigue pendiente de la fase 5.
 - **Terminada cuando**: la Release `v1.0.0` está publicada con el instalador, y una persona ajena puede instalar la app, leer sus condiciones y saber a quién escribir.
+
+Cómo quedó hecho: los textos de la app están en `src/app/legal.ts` y la tarjeta en `src/views/ajustes/AboutPanel.tsx`; la licencia y las licencias de terceros se incluyen al compilar (`?raw`) y solo se cargan al abrir su diálogo. `THIRD-PARTY-NOTICES.md` lista 427 paquetes (110 de npm y 317 crates de Rust para Windows) y agrupa los textos de licencia repetidos. En `tauri.conf.json` están `publisher`, `copyright`, `license` y `licenseFile`.
 
 Pendiente de revisar por el usuario, porque no es algo que la app pueda garantizar: esto sigue las prácticas habituales de software libre y la política de Riot para proyectos de fans, pero no es asesoramiento legal. Si la app llegara a tener ingresos o a usar la API de Riot, habría que revisarlo.
 

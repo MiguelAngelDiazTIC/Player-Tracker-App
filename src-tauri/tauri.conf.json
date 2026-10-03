@@ -30,6 +30,10 @@
   },
   "bundle": {
     "active": true,
+    "publisher": "Miguel Ángel Díaz Gutiérrez (MikaEl)",
+    "copyright": "Copyright (C) 2026 Miguel Ángel Díaz Gutiérrez (MikaEl)",
+    "license": "GPL-3.0-or-later",
+    "licenseFile": "../LICENSE",
     "targets": ["nsis"],
     "icon": [
       "icons/32x32.png",
