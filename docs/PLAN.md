@@ -224,7 +224,7 @@ Ideas que el usuario pidió el 03/10/2026: nombre y logo, exportar la informaci�
 #### 5.1 Nombre y logo
 
 - **Nombre**: **MikaLog**, elegido por el usuario el 03/10/2026. Vive en `src/app/brand.ts` (`APP_NAME`); los archivos que la app propone al exportar empiezan por `mikalog-`.
-- **Logo**: icono cuadrado con esquinas redondeadas, con el degradado del fondo (malva `#C9A4CB` a lima `#D8F5BC`) y encima una mira cuyo centro es un check verde `#0A8158`: apuntar y cumplir hábitos en una sola marca. La mira son cuatro marcas blancas y un disco blanco con un anillo verde; una mira solo blanca no se distinguía sobre el degradado claro. Se lee a 16 px: a ese tamaño quedan el disco y el check.
+- **Logo**: el que eligió el usuario el 03/10/2026: cuadrado blanco con esquinas redondeadas y, en lila `#BB94FA`, una mira (anillo con cuatro marcas) cuyo centro es un check: apuntar y cumplir hábitos en una sola marca. Sustituye al primer logo, de degradado malva y lima con check verde.
 - Archivo maestro en `src-tauri/icons/logo.svg` (1024 × 1024). Los PNG, `icon.ico` e `icon.icns` se generan con `npx tauri icon src-tauri/icons/logo.svg`; no se editan a mano.
 - Dónde aparece el nombre: `productName` y título de la ventana en `tauri.conf.json`, `<title>` de `index.html`, cabecera de la barra lateral, pantalla de bienvenida y textos de Ajustes. El logo, en la barra lateral, la bienvenida, el icono de la ventana y el instalador.
 - **Lo que no cambia** al renombrar, para no romper instalaciones ni copias: el `identifier` (`com.playertracker.desktop`, de él depende dónde está `config.json`), el `"format": "player-tracker"` del JSON y las carpetas de datos que ya existen. Solo la carpeta propuesta en el primer arranque pasa a `Documentos/<nombre>`.
