@@ -1,4 +1,4 @@
-# Player-Tracker-App
+# MikaLog (repositorio Player-Tracker-App)
 
 App de escritorio (Tauri 2 + React + TypeScript + SQLite) para que un jugador de Valorant se registre cada día.
 

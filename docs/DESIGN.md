@@ -1,4 +1,4 @@
-# Player Tracker: guía de diseño
+# MikaLog: guía de diseño
 
 Reglas de interfaz de la app, escritas con la skill `glassmorphism` de [bergside/awesome-design-skills](https://github.com/bergside/awesome-design-skills) (en Claude Code, `typeui-glassmorphism`). Carga la skill antes de tocar cualquier pantalla y aplica esta guía.
 
@@ -6,7 +6,7 @@ El aspecto sigue la referencia que dio el usuario el 02/10/2026 (un panel de cri
 
 ## Contexto y objetivos
 
-Player Tracker es una hoja de registro diario que se rellena en un minuto, así que la interfaz es una tabla legible sobre cristal claro, con los números como protagonistas. El cristal da profundidad a paneles y tarjetas; nunca le quita contraste al dato.
+MikaLog es una hoja de registro diario que se rellena en un minuto, así que la interfaz es una tabla legible sobre cristal claro, con los números como protagonistas. El cristal da profundidad a paneles y tarjetas; nunca le quita contraste al dato.
 
 ## Tokens y fundamentos
 

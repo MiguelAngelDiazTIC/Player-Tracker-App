@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { APP_FILE_PREFIX, APP_NAME } from "../../app/brand";
 import { useStore } from "../../app/store";
 import { Button } from "../../components/ui/Button";
 import { Dialog } from "../../components/ui/Dialog";
@@ -60,7 +61,7 @@ export function BackupPanel() {
       const data = await buildExport(repository, platform.attachments);
       const path = await platform.saveTextFile({
         title: "Exportar datos",
-        defaultName: `player-tracker-${todayIso()}.json`,
+        defaultName: `${APP_FILE_PREFIX}-${todayIso()}.json`,
         text: JSON.stringify(data, null, 2),
       });
       if (path) {
@@ -84,7 +85,7 @@ export function BackupPanel() {
         const hidden = result.errors.length - MAX_ERRORS_SHOWN;
         setMessage({
           tone: "danger",
-          text: `${file.name} no es una exportación válida de Player Tracker. No se ha cambiado nada.`,
+          text: `${file.name} no es una exportación válida de ${APP_NAME}. No se ha cambiado nada.`,
           details: [
             ...result.errors.slice(0, MAX_ERRORS_SHOWN),
             ...(hidden > 0 ? [`…y ${hidden} más`] : []),

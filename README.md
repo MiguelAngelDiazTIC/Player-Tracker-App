@@ -1,4 +1,4 @@
-# Player-Tracker-App
+# MikaLog
 
 App de escritorio, al estilo de Notion u Obsidian, para que un jugador de Valorant se trackee a sí mismo: partidas, hábitos, sueño, K/D, ACS y cómo se ha sentido cada día.
 

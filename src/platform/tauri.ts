@@ -13,6 +13,7 @@ import {
 } from "@tauri-apps/plugin-fs";
 import { fetch as httpFetch } from "@tauri-apps/plugin-http";
 import Database from "@tauri-apps/plugin-sql";
+import { APP_NAME } from "../app/brand";
 import type { PickedFile, Platform, Services } from "../app/services";
 import type { AttachmentStore } from "../data/backup";
 import type { HttpClient } from "../data/henrikSync";
@@ -60,7 +61,7 @@ async function writeConfiguredFolder(folder: string): Promise<void> {
 }
 
 export async function suggestDataFolder(): Promise<string> {
-  return join(await documentDir(), "Player Tracker");
+  return join(await documentDir(), APP_NAME);
 }
 
 export async function pickFolder(title: string): Promise<string | null> {

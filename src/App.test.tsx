@@ -518,7 +518,7 @@ describe("Ajustes", () => {
     );
     await screen.findByText(/Exportados 13 días y 18 partidas/);
     const [exported] = origin.services.savedFiles;
-    expect(exported.name).toBe("player-tracker-2026-10-02.json");
+    expect(exported.name).toBe("mikalog-2026-10-02.json");
     document.body.innerHTML = "";
 
     const target = await renderApp(false);
@@ -561,7 +561,7 @@ describe("Ajustes", () => {
     await user.click(screen.getByRole("button", { name: "Importar JSON…" }));
 
     expect(await screen.findByRole("alert")).toHaveTextContent(
-      "otro.json no es una exportación válida de Player Tracker",
+      "otro.json no es una exportación válida de MikaLog",
     );
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     expect(services.backups).toBe(0);
