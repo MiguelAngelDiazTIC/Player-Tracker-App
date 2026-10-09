@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Maqueta de la sincronización · MikaLog</title>
+    <link rel="icon" href="logo.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main>
+      <header>
+        <img src="logo.svg" alt="" />
+        <h1>Riot account sync: user flow</h1>
+      </header>
+      <nav class="card">
+        <a href="./">Inicio</a>
+        <a href="privacidad.html">Privacidad</a>
+        <a href="maqueta.html">Maqueta</a>
+      </nav>
+
+      <section class="card">
+        <p>
+          Mockup of how a player links their own Riot account in MikaLog and
+          fills in their day from their own match history. Example data only.
+          The rest of the app already exists and is released; the screenshot
+          below is the current daily table, filled in by hand.
+          <br /><span class="caption"
+            >Maqueta de cómo un jugador conecta su propia cuenta de Riot y
+            rellena su día con su historial. Datos de ejemplo.</span
+          >
+        </p>
+        <img
+          class="shot"
+          src="captura-tabla.png"
+          alt="MikaLog daily table with one row per day: games, habits, sleep, K/D and ACS"
+        />
+      </section>
+
+      <section class="card">
+        <span class="step">Step 1 · Opt in</span>
+        <p>
+          Sync is off until the player opts in from Settings. The card explains
+          what is read and shows Riot's required notice before any sign-in.
+        </p>
+        <div class="screen">
+          <h3>Settings › Riot account</h3>
+          <p>
+            Link your Riot account to fill in your own ranked games, K/D, ACS,
+            agents and maps. MikaLog only reads your own match history, only
+            when you press Sync, and keeps it on this computer.
+          </p>
+          <p class="caption">
+            Linking your account makes your player data public, as required by
+            Riot Games. MikaLog does not show your data to anyone else.
+          </p>
+          <span class="pill primary">Connect with Riot</span>
+          <a class="pill" href="privacidad.html">Privacy policy</a>
+        </div>
+      </section>
+
+      <section class="card">
+        <span class="step">Step 2 · Riot Sign On</span>
+        <p>
+          The app opens the player's browser on
+          <code>mikalog-sync.miguelangeldiaztic.workers.dev/rso/login</code>,
+          which redirects to Riot's official sign-in page (scopes
+          <code>openid offline_access</code>). MikaLog never sees the password.
+          After consent, Riot returns to <code>/rso/callback</code>; the server
+          exchanges the code, reads <code>/riot/account/v1/accounts/me</code>
+          and hands the result back to the app once.
+        </p>
+        <div class="screen">
+          <h3>Browser</h3>
+          <p>Riot Games sign-in page (official, hosted by Riot)</p>
+          <p class="caption">→ "You can go back to MikaLog now."</p>
+        </div>
+      </section>
+
+      <section class="card">
+        <span class="step">Step 3 · Linked</span>
+        <div class="screen">
+          <h3>Settings › Riot account</h3>
+          <p>Linked as <strong>Player#EUW</strong> · region EU</p>
+          <span class="pill">Disconnect</span>
+          <p class="caption">
+            Disconnect deletes the token from this computer. Access can also be
+            revoked from the Riot account settings.
+          </p>
+        </div>
+      </section>
+
+      <section class="card">
+        <span class="step">Step 4 · Sync a day</span>
+        <p>
+          On a day's page the player presses Sync. The server reads the player's
+          own matchlist (<code>VAL-MATCH-V1</code>), the competitive matches of
+          that date, and agent and map names (<code>VAL-CONTENT-V1</code>), and
+          returns only the player's own line of each match.
+        </p>
+        <div class="screen wide">
+          <h3>Thursday 08/10/2026 · <span class="pill primary">Sync</span></h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Map</th>
+                <th>Agent</th>
+                <th>Result</th>
+                <th>K</th>
+                <th>D</th>
+                <th>ACS</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Ascent</td>
+                <td>Jett</td>
+                <td>Win 13–9</td>
+                <td class="num">22</td>
+                <td class="num">16</td>
+                <td class="num">261</td>
+              </tr>
+              <tr>
+                <td>Lotus</td>
+                <td>Jett</td>
+                <td>Loss 10–13</td>
+                <td class="num">17</td>
+                <td class="num">18</td>
+                <td class="num">214</td>
+              </tr>
+              <tr>
+                <td>Haven</td>
+                <td>Raze</td>
+                <td>Win 13–7</td>
+                <td class="num">19</td>
+                <td class="num">13</td>
+                <td class="num">248</td>
+              </tr>
+              <tr>
+                <td>Ascent</td>
+                <td>Jett</td>
+                <td>Loss 11–13</td>
+                <td class="num">16</td>
+                <td class="num">17</td>
+                <td class="num">201</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="card">
+        <span class="step">Step 5 · The day is filled in</span>
+        <p>
+          The day's row gets the totals, computed like the game does (total
+          kills over total deaths, total score over total rounds). Everything
+          stays editable, and re-syncing never duplicates matches.
+        </p>
+        <div class="screen wide">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Ranked</th>
+                <th>K/D</th>
+                <th>ACS</th>
+                <th>Agents</th>
+                <th>Maps</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="num">08/10/2026</td>
+                <td class="num">4</td>
+                <td class="num">1.16</td>
+                <td class="num">230</td>
+                <td>Jett ×3, Raze ×1</td>
+                <td>Ascent ×2, Lotus, Haven</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="caption">
+          Not included: other players' stats, scouting, live in-game data,
+          overlays, MMR estimates, ads or payments.
+        </p>
+      </section>
+
+      <footer class="card">
+        <small>
+          MikaLog isn't endorsed by Riot Games and doesn't reflect the views or
+          opinions of Riot Games or anyone officially involved in producing or
+          managing Riot Games properties. Riot Games, and all associated
+          properties are trademarks or registered trademarks of Riot Games, Inc.
+        </small>
+      </footer>
+    </main>
+  </body>
+</html>

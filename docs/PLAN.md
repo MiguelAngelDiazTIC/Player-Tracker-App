@@ -408,7 +408,7 @@ Se construye antes que el servidor y con datos de ejemplo, para que la app y la 
 
 Pequeño, sin base de datos de usuarios y en el mismo repositorio (`server/`, TypeScript, licencia GPL, con sus pruebas).
 
-- **Dónde**: Cloudflare Workers (el plan gratuito sobra para esto) con un almacén KV solo para datos de vida corta. La clave de producción y el cliente de RSO se guardan como secretos del Worker, nunca en el repositorio. Coste cero: el subdominio gratuito `workers.dev` (por ejemplo `mikalog-sync.<cuenta>.workers.dev`) para el servidor y las URL de RSO, y GitHub Pages para la web del producto y la política de privacidad. Un dominio propio (unos 10 € al año) solo si Riot lo pide al revisar.
+- **Dónde**: Cloudflare Workers (el plan gratuito sobra para esto) con un almacén KV solo para datos de vida corta. La clave de producción y el cliente de RSO se guardan como secretos del Worker, nunca en el repositorio. Coste cero: el subdominio gratuito `workers.dev` (`https://mikalog-sync.miguelangeldiaztic.workers.dev`, reservado el 09/10/2026 con un Worker de ejemplo que la 7.3 sustituye) para el servidor y las URL de RSO, y GitHub Pages para la web del producto y la política de privacidad. Un dominio propio (unos 10 € al año) solo si Riot lo pide al revisar.
 - **Inicio de sesión**:
   1. La app crea un `state` aleatorio y abre el navegador en `GET /rso/login?state=…`, que redirige a la página de inicio de sesión de Riot.
   2. Riot vuelve a `GET /rso/callback`. El servidor cambia el código por los tokens con el secreto, pide `accounts/me` y guarda en KV, durante 5 minutos y bajo ese `state`, el `puuid`, el Riot ID y el token de refresco. Muestra "Ya puedes volver a MikaLog".
@@ -429,6 +429,8 @@ Pequeño, sin base de datos de usuarios y en el mismo repositorio (`server/`, Ty
 - **Terminada cuando**: Saiz conecta su cuenta, sincroniza un día y la app da el mismo K/D, ACS, agentes y mapas que su historial del juego, y repetirlo no duplica partidas.
 
 #### 7.5 Solicitud a Riot (la hace el usuario)
+
+La web del producto y la política de privacidad están en `site/` (HTML estático, en español e inglés) y se publican con `.github/workflows/pages.yml` en `https://miguelangeldiaztic.github.io/Player-Tracker-App/` (privacidad en `privacidad.html` y maqueta del flujo para Riot en `maqueta.html`). Si cambia el flujo de la sincronización, la política se actualiza a la vez.
 
 1. Crear en el [portal de desarrolladores](https://developer.riotgames.com/) el producto **MikaLog** (VALORANT, uso: herramienta de entrenamiento para ver tu propio historial y estadísticas). Descripción: app de escritorio gratuita y de código abierto (enlace al repositorio y a la Release), RSO con consentimiento, servidor propio que guarda la clave, sin anuncios ni pagos, sin datos de otros jugadores, sin superposiciones en partida ni MMR.
 2. Adjuntar la maqueta o vídeo del flujo (7.2 y 7.4 con datos de ejemplo), la política de privacidad y la mención de que un jugador profesional ya la usa.

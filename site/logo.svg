@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <!-- Logo de MikaLog: cuadrado blanco con una mira lila cuyo centro es un check. -->
+  <rect width="1024" height="1024" rx="230" fill="#FEFEFE" />
+  <g fill="none" stroke="#BB94FA" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="512" cy="512" r="256" stroke-width="41" />
+    <!-- Huecos del anillo alrededor de las cuatro marcas. -->
+    <g stroke="#FEFEFE" stroke-width="77" stroke-linecap="butt">
+      <path d="M512 215V809" />
+      <path d="M215 512H809" />
+    </g>
+    <g stroke-width="41">
+      <path d="M512 186V326" />
+      <path d="M512 698V838" />
+      <path d="M186 512H326" />
+      <path d="M698 512H838" />
+    </g>
+    <path d="M420 500L484 564L616 436" stroke-width="64" />
+  </g>
+</svg>

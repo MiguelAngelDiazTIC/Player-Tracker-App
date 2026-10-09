@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Privacidad · MikaLog</title>
+    <link rel="icon" href="logo.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main>
+      <header>
+        <img src="logo.svg" alt="" />
+        <h1>Política de privacidad</h1>
+      </header>
+      <nav class="card">
+        <a href="./">Inicio</a>
+        <a href="privacidad.html">Privacidad</a>
+        <a href="maqueta.html">Maqueta</a>
+        <a href="#english">English</a>
+      </nav>
+
+      <section class="card">
+        <p class="muted">En vigor desde el 9 de octubre de 2026.</p>
+        <h2>Lo que apuntas en la app</h2>
+        <p>
+          Todo lo que escribes en MikaLog (días, hábitos, sueño, partidas,
+          notas) se guarda solo en la carpeta de datos de tu ordenador. MikaLog
+          no tiene cuentas, no recoge estadísticas de uso y no envía esos datos
+          a nadie.
+        </p>
+
+        <h2>Si conectas tu cuenta de Riot (opcional)</h2>
+        <ul>
+          <li>
+            Inicias sesión en la página oficial de Riot Games. MikaLog nunca ve
+            tu contraseña.
+          </li>
+          <li>
+            Riot comparte con MikaLog el identificador de tu cuenta (PUUID) y tu
+            Riot ID. Tu ordenador guarda un token de acceso en el almacén de
+            credenciales de Windows; no va en tus copias ni en las
+            exportaciones.
+          </li>
+          <li>
+            Solo cuando pulsas «Sincronizar», la app envía ese token y la fecha
+            al servidor de MikaLog
+            (<code>mikalog-sync.miguelangeldiaztic.workers.dev</code>, alojado
+            en Cloudflare). El servidor pide a Riot tus partidas de esa fecha y
+            devuelve a tu ordenador mapa, agente, resultado, kills, muertes,
+            puntuación y rondas de cada una.
+          </li>
+          <li>
+            El servidor no guarda tu cuenta, tu token ni tus estadísticas. Solo
+            conserva unos minutos los datos del inicio de sesión hasta que la
+            app los recoge, y puede guardar en caché los datos de una partida
+            (que ya publica Riot) para no pedirla dos veces.
+          </li>
+          <li>
+            Tus estadísticas no se muestran a otros jugadores. Aun así, Riot
+            pide avisar de que vincular tu cuenta hace públicos tus datos de
+            jugador.
+          </li>
+          <li>
+            Cloudflare puede registrar datos técnicos de las peticiones, como la
+            dirección IP, según su propia
+            <a href="https://www.cloudflare.com/privacypolicy/"
+              >política de privacidad</a
+            >.
+          </li>
+        </ul>
+
+        <h2>Desconectar</h2>
+        <p>
+          En Ajustes &gt; «Cuenta de Riot» &gt; «Desconectar» se borra el token
+          de tu ordenador. También puedes retirar el acceso de MikaLog desde la
+          configuración de tu cuenta de Riot. Las partidas ya sincronizadas
+          siguen en tu carpeta de datos y puedes borrarlas desde la app.
+        </p>
+
+        <h2>Lo que no hace</h2>
+        <p>
+          MikaLog no vende datos, no muestra anuncios, no cobra y no lee datos
+          de otros jugadores.
+        </p>
+
+        <h2>Contacto</h2>
+        <p>
+          Miguel Ángel Díaz Gutiérrez (MikaEl) · miguelangeldiaztic@gmail.com ·
+          <a
+            href="https://github.com/MiguelAngelDiazTIC/Player-Tracker-App/issues"
+            >incidencias en GitHub</a
+          >
+        </p>
+      </section>
+
+      <section class="card" id="english" lang="en">
+        <h2>English</h2>
+        <p class="muted">Effective 9 October 2026.</p>
+        <p>
+          <strong>Your logs.</strong> Everything you enter in MikaLog stays in
+          the data folder on your computer. MikaLog has no accounts, collects no
+          usage analytics and sends that data nowhere.
+        </p>
+        <p>
+          <strong>Optional Riot account link.</strong> You sign in on Riot
+          Games' official page; MikaLog never sees your password. Riot shares
+          your account identifier (PUUID) and Riot ID. Your computer keeps an
+          access token in the Windows Credential Manager, never in backups or
+          exports. Only when you press "Sync" does the app send that token and a
+          date to the MikaLog server
+          (mikalog-sync.miguelangeldiaztic.workers.dev, hosted on Cloudflare),
+          which asks Riot for your matches on that date and returns map, agent,
+          result, kills, deaths, score and rounds for each one. The server does
+          not store your account, token or stats; it keeps sign-in data for a
+          few minutes until the app collects it, and may cache match data that
+          Riot already publishes. Your stats are not shown to other players; as
+          Riot requires, note that linking your account makes your player data
+          public. Cloudflare may log technical request data such as IP addresses
+          under its own privacy policy.
+        </p>
+        <p>
+          <strong>Unlinking.</strong> Settings &gt; "Riot account" &gt;
+          "Disconnect" deletes the token from your computer. You can also revoke
+          MikaLog's access from your Riot account settings.
+        </p>
+        <p>
+          <strong>What it doesn't do.</strong> No selling of data, no ads, no
+          payments, no other players' data.
+        </p>
+        <p>
+          <strong>Contact.</strong> miguelangeldiaztic@gmail.com or GitHub
+          issues.
+        </p>
+      </section>
+
+      <footer class="card">
+        <small>
+          MikaLog isn't endorsed by Riot Games and doesn't reflect the views or
+          opinions of Riot Games or anyone officially involved in producing or
+          managing Riot Games properties. Riot Games, and all associated
+          properties are trademarks or registered trademarks of Riot Games, Inc.
+        </small>
+      </footer>
+    </main>
+  </body>
+</html>
