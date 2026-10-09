@@ -417,7 +417,7 @@ Pequeño, sin base de datos de usuarios y en el mismo repositorio (`server/`, Ty
 
 #### 7.5 Solicitud a Riot (la hace el usuario)
 
-La web del producto y la política de privacidad están en `site/` (HTML estático, en español e inglés) y se publican con `.github/workflows/pages.yml` en `https://miguelangeldiaztic.github.io/Player-Tracker-App/` (privacidad en `privacidad.html`). Si cambia el flujo de la sincronización, la política se actualiza a la vez.
+La web del producto y la política de privacidad están en `site/` (HTML estático, en español e inglés) y se publican con `.github/workflows/pages.yml` en `https://miguelangeldiaztic.github.io/Player-Tracker-App/` (privacidad en `privacidad.html` y maqueta del flujo para Riot en `maqueta.html`). Si cambia el flujo de la sincronización, la política se actualiza a la vez.
 
 1. Crear en el [portal de desarrolladores](https://developer.riotgames.com/) el producto **MikaLog** (VALORANT, uso: herramienta de entrenamiento para ver tu propio historial y estadísticas). Descripción: app de escritorio gratuita y de código abierto (enlace al repositorio y a la Release), RSO con consentimiento, servidor propio que guarda la clave, sin anuncios ni pagos, sin datos de otros jugadores, sin superposiciones en partida ni MMR.
 2. Adjuntar la maqueta o vídeo del flujo (7.2 y 7.4 con datos de ejemplo), la política de privacidad y la mención de que un jugador profesional ya la usa.
