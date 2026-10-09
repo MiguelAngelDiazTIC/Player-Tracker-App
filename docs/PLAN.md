@@ -16,7 +16,7 @@ No las cambies sin preguntar al usuario.
 - **10mans y scrims** van en un registro aparte, una entrada por partida. Sus estadísticas no se mezclan con las de rankeds; la fila del día solo muestra el recuento.
 - **Una gráfica por estadística** debajo de cada tabla (la diaria y la de scrims), siguiendo los filtros y el rango de fechas de la tabla.
 - Estilo **glassmorphism** según la skill `glassmorphism` de [bergside/awesome-design-skills](https://github.com/bergside/awesome-design-skills) (archivos `skills/glassmorphism/SKILL.md` y `DESIGN.md`).
-- K/D y ACS automáticos: solo serían posibles con la API no oficial de [HenrikDev](https://docs.henrikdev.xyz). Se hizo en la fase 4 y se retiró el 03/10/2026 (ver "Sincronización con HenrikDev"). Tracker.gg no da acceso a Valorant y Riot no aprueba apps de uso personal. La fase 7 (propuesta) usaría la API oficial de Riot registrando MikaLog como producto público, con servidor propio y RSO. La entrada manual es siempre la base.
+- K/D y ACS automáticos: solo serían posibles con la API no oficial de [HenrikDev](https://docs.henrikdev.xyz). Se hizo en la fase 4 y se retiró el 03/10/2026 (ver "Sincronización con HenrikDev"). Tracker.gg no da acceso a Valorant y Riot no aprueba apps de uso personal. La fase 7 usa la API oficial de Riot registrando MikaLog como producto público, con un servidor propio gratuito y RSO. La entrada manual es siempre la base.
 - Interfaz en español.
 
 ## Tecnologías
@@ -172,7 +172,7 @@ Cómo funciona:
 
 Trabaja una fase cada vez. Al acabar cada fase: pruebas en verde y un commit por bloque lógico en su propia rama. El usuario decidió el 02/10/2026 encadenar las fases sin parar a probar entre una y otra: las pruebas con datos reales y los cambios se harán cuando haya una versión 1.0. Los criterios "Terminada cuando" que dependen del uso real quedan para entonces.
 
-Estado (03/10/2026): las fases 0 a 5 están implementadas. La fase 6 (licencia y avisos legales) también. Antes de publicar la versión 1.0 queda la ronda de pruebas con datos reales y los cambios que salgan de ella. La fase 7 (edición para Saiz y API oficial de Riot) está propuesta el 09/10/2026, pendiente de que el usuario responda sus preguntas.
+Estado (03/10/2026): las fases 0 a 5 están implementadas. La fase 6 (licencia y avisos legales) también. Antes de publicar la versión 1.0 queda la ronda de pruebas con datos reales y los cambios que salgan de ella. La fase 7 (edición para Saiz y API oficial de Riot) está planificada el 09/10/2026 y sus decisiones están cerradas.
 
 ### Fase 0: cimientos
 
@@ -337,9 +337,9 @@ Cómo quedó hecho: los textos de la app están en `src/app/legal.ts` y la tarje
 
 Pendiente de revisar por el usuario, porque no es algo que la app pueda garantizar: esto sigue las prácticas habituales de software libre y la política de Riot para proyectos de fans, pero no es asesoramiento legal. Si la app llegara a tener ingresos o a usar la API de Riot, habría que revisarlo.
 
-### Fase 7: edición para Saiz y sincronización con la API oficial de Riot (propuesta)
+### Fase 7: edición para Saiz y sincronización con la API oficial de Riot 
 
-Pedida por el usuario el 09/10/2026: una versión paralela para Saiz, jugador profesional, **sin el registro de praccs y 10mans** (se quedan sus columnas en la Tabla) y con **ACS, K/D, agente y mapa automáticos** desde la API oficial de Riot. Es una propuesta: nada de esta fase se implementa hasta que el usuario cierre las preguntas del final.
+Pedida por el usuario el 09/10/2026: una versión paralela para Saiz, jugador profesional, **sin el registro de praccs y 10mans** (se quedan sus columnas en la Tabla) y con **ACS, K/D, agente y mapa automáticos** desde la API oficial de Riot. Las decisiones del usuario están en «Decisiones cerradas de la fase 7», al final de la fase.
 
 #### Qué pide Riot de verdad (revisado el 09/10/2026)
 
@@ -395,7 +395,7 @@ Se construye antes que el servidor y con datos de ejemplo, para que la app y la 
 
 Pequeño, sin base de datos de usuarios y en el mismo repositorio (`server/`, TypeScript, licencia GPL, con sus pruebas).
 
-- **Dónde**: Cloudflare Workers (el plan gratuito sobra para esto) con un almacén KV solo para datos de vida corta. La clave de producción y el cliente de RSO se guardan como secretos del Worker, nunca en el repositorio. Dominio propio recomendado (unos 10 € al año) para la web del producto y las URL de RSO; si no, el subdominio gratuito `workers.dev`.
+- **Dónde**: Cloudflare Workers (el plan gratuito sobra para esto) con un almacén KV solo para datos de vida corta. La clave de producción y el cliente de RSO se guardan como secretos del Worker, nunca en el repositorio. Coste cero: el subdominio gratuito `workers.dev` (por ejemplo `mikalog-sync.<cuenta>.workers.dev`) para el servidor y las URL de RSO, y GitHub Pages para la web del producto y la política de privacidad. Un dominio propio (unos 10 € al año) solo si Riot lo pide al revisar.
 - **Inicio de sesión**:
   1. La app crea un `state` aleatorio y abre el navegador en `GET /rso/login?state=…`, que redirige a la página de inicio de sesión de Riot.
   2. Riot vuelve a `GET /rso/callback`. El servidor cambia el código por los tokens con el secreto, pide `accounts/me` y guarda en KV, durante 5 minutos y bajo ese `state`, el `puuid`, el Riot ID y el token de refresco. Muestra "Ya puedes volver a MikaLog".
@@ -410,8 +410,8 @@ Pequeño, sin base de datos de usuarios y en el mismo repositorio (`server/`, Ty
 - **Token de refresco** en el almacén de credenciales de Windows (crate `keyring`, dos comandos de Tauri: guardar y leer), nunca en la base de datos ni en el JSON exportado ni en las copias automáticas.
 - **"Sincronizar"** en la página del día y "Sincronizar los últimos 7 días" en Rankeds. Guarda las partidas nuevas en `ranked_sessions` sin tocar las que ya estaban (para respetar lo corregido a mano) y escribe en el día `rankeds`, `kd`, `acs`, `agents` y `maps`. Todo sigue siendo editable. Sin sincronizar en segundo plano: solo al pulsar.
 - **Red**: vuelve `tauri-plugin-http`, con permiso solo para el dominio del servidor, y `connect-src` de la CSP se amplía solo a ese dominio. Para abrir el navegador, `tauri-plugin-opener` limitado a la URL de inicio de sesión del servidor.
-- **Edición**: la tarjeta y los botones existen en las dos ediciones (es la misma función del producto que se registra en Riot); en `saiz` vienen visibles por defecto y el tutorial añade el paso "Conecta tu cuenta de Riot (opcional)".
-- **Textos legales** (`src/app/legal.ts`, `NOTICE.md`, README): la privacidad pasa de "no envía ningún dato" a "solo se conecta a internet si conectas tu cuenta de Riot, y solo al pulsar Sincronizar; las peticiones pasan por el servidor de MikaLog, que no guarda tus datos". Política de privacidad en una página web (GitHub Pages) para la solicitud de Riot. Revisar también la regla "Nada de llamadas a internet" de este plan.
+- **Edición**: la tarjeta y los botones existen en las dos ediciones (es la misma función del producto que se registra en Riot); en la edición base la tarjeta está en Ajustes y la sincronización se activa al conectar la cuenta; en `saiz` viene a la vista y el tutorial añade el paso "Conecta tu cuenta de Riot (opcional)".
+- **Textos legales** (`src/app/legal.ts`, `NOTICE.md`, README): la privacidad pasa de "no envía ningún dato" a "solo se conecta a internet si conectas tu cuenta de Riot, y solo al pulsar Sincronizar; las peticiones pasan por el servidor de MikaLog, que no guarda tus datos". Política de privacidad en una página web (GitHub Pages) para la solicitud de Riot. La regla "Nada de llamadas a internet" de este plan ya recoge esta excepción.
 - Pruebas de interfaz con un servidor simulado: conectar, sincronizar un día, repetir sin duplicar, desconectar borra el token, error de red con aviso claro.
 - **Terminada cuando**: Saiz conecta su cuenta, sincroniza un día y la app da el mismo K/D, ACS, agentes y mapas que su historial del juego, y repetirlo no duplica partidas.
 
@@ -429,16 +429,16 @@ Orden recomendado: 7.1 ya; 7.2 y la maqueta a la vez, y enviar la solicitud; 7.3
 - **B2, a mano**: como hoy. Rankeds por partida con "Usar estas cifras en el día" y los campos de agentes y mapas escritos a mano. La entrada manual sigue siendo la base en cualquier caso.
 - Recomendación: si Riot rechaza la solicitud, B1 solo en la edición `saiz`, con aviso de que es una fuente no oficial.
 
-#### Preguntas para el usuario antes de empezar
+#### Decisiones cerradas de la fase 7 (09/10/2026)
 
-1. Nombre de la edición que verá Saiz (propuesta: "MikaLog Pro"; con "Saiz" en el nombre haría falta su permiso).
-2. ¿La columna se queda como una sola, "10mans / scrims", o se separa en "Praccs" y "10mans"? Por defecto, una sola.
-3. ¿Aceptas que MikaLog tenga un servidor y llamadas a internet (con dominio propio, unos 10 € al año) para usar la API oficial? Sin eso Riot no lo permite.
-4. ¿La sincronización con Riot va también en la edición base? Por defecto sí, oculta hasta que el usuario la active, porque es el mismo producto ante Riot.
+1. **Nombre de la edición**: **MikaLog Saiz Edition** (`productName` y título de la ventana en `tauri.saiz.conf.json`; carpeta propuesta `Documentos/MikaLog Saiz Edition`).
+2. **Columna**: se queda una sola, "10mans / scrims", como número a mano.
+3. **Servidor**: sí, pero gratuito: Cloudflare Workers en `workers.dev` y GitHub Pages, sin dominio de pago salvo que Riot lo exija.
+4. **Riot en la edición general**: sí. La sincronización forma parte de MikaLog para cualquier jugador, que es lo que hace que el producto sea público ante Riot.
 
 ## Reglas de trabajo
 
 - TypeScript estricto, sin `any`. Lógica de cálculo en funciones puras con pruebas.
-- Nada de telemetría ni llamadas a internet. La única excepción que hubo, HenrikDev, se retiró el 03/10/2026.
+- Nada de telemetría ni llamadas a internet, salvo la sincronización con Riot de la fase 7: solo hacia el servidor de MikaLog, solo con la cuenta conectada y solo al pulsar Sincronizar. HenrikDev se retiró el 03/10/2026.
 - Ante una decisión que cambie lo que el usuario ve o sus datos, pregunta antes.
 - Mantén este plan actualizado si algo cambia.
