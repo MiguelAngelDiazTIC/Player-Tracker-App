@@ -426,6 +426,19 @@ Pequeño, sin base de datos de usuarios y en el mismo repositorio (`server/`, Ty
 - Las partidas no cambian, así que el servidor puede guardarlas en caché para gastar menos peticiones. Respeta `Retry-After` cuando Riot devuelve 429.
 - El servidor no guarda nada de forma permanente: ni cuentas, ni partidas asociadas a nadie, ni registros con datos del jugador.
 
+Cómo quedó hecho (09/10/2026). El código está en `server/` y su contrato completo (rutas, cuerpos, errores y despliegue) en [server/README.md](../server/README.md). Lo que cambia respecto a lo de arriba:
+
+- **Recoger el inicio de sesión pide un secreto, no el `state`**. La app crea un secreto (`verifier`) y manda al navegador solo su SHA-256 (`/rso/login?challenge=…`), que es el `state` de Riot. El resultado se recoge con `POST /rso/result` y el secreto. Así, quien vea la URL del navegador o su historial no puede llevarse el token.
+- **`/sync` recibe un intervalo en milisegundos, no una fecha**: el servidor no sabe en qué zona horaria vive el jugador, y el día es el suyo. Como mucho 48 horas y 30 partidas por petición; si hay más, responde `truncated` y la app repite.
+- **Sin caché de partidas**. En su lugar la app manda las partidas que ya tiene (`known`) y el servidor no las vuelve a pedir a Riot. Se gastan las mismas peticiones y el servidor no guarda nada de nadie. En KV solo hay inicios de sesión a medias (5 minutos) y los nombres de agentes y mapas (1 día).
+- **La región sale de la cuenta**: al iniciar sesión el servidor pregunta a Riot el `activeShard` y se lo da a la app, que lo manda en cada `/sync`. El `puuid` no sale del servidor: la app no lo necesita.
+- **Las colas se filtran en el servidor** con la lista de partidas, antes de pedir cada una; `queues` va en la petición.
+- **Sin secretos responde 503** (`not_configured`), así que se puede desplegar ya y `GET /` dice si está configurado.
+- Sin dependencias: no tiene `package.json` propio. Las pruebas simulan a Riot y corren con el `npm test` de la raíz; `npm run typecheck` también lo cubre. Se arranca con `npm run server:dev` y se despliega con `npm run server:deploy` (wrangler por `npx`).
+- Probado en local con el motor de Cloudflare (`wrangler dev`): el arranque, la redirección a Riot, el aviso de permiso denegado y la recogida única. **Sin desplegar y sin probar contra Riot**: lo que hay que confirmar con la clave está al final de `server/README.md`.
+
+Para la 7.4: `MatchSource.fetchDay` tendrá que recibir las partidas ya guardadas del día (para `known`) y la app debe guardar el `shard` junto al Riot ID.
+
 #### 7.4 Conectar la cuenta y sincronizar en la app
 
 - **Ajustes > "Cuenta de Riot"**: botón "Conectar con Riot", el texto de consentimiento (qué se lee, que solo se usa en tu ordenador, el aviso de Riot de que vincular la cuenta hace públicos tus datos) y, ya conectada, el Riot ID con "Desconectar".

@@ -14,6 +14,7 @@ App de escritorio (Tauri 2 + React + TypeScript + SQLite) para que un jugador de
 - `src/app/`: estado de la app (`storeCore.ts`), la interfaz `Platform`, que aísla lo que depende de Tauri, y las ediciones (`edition.ts`: `base` y `saiz`, elegidas al compilar; llegan en `services.edition`).
 - `src/platform/`: implementación de `Platform` con Tauri y el arranque (carpeta de datos).
 - `src/views/` y `src/components/`: pantallas y componentes.
+- `server/`: servidor de sincronización con Riot (Cloudflare Workers, sin dependencias). Su contrato está en `server/README.md` y el formato de cada partida en `src/domain/riotMatches.ts`.
 - `src/test/`: SQLite en memoria (`node:sqlite`) y servicios de prueba; las pruebas de interfaz usan la app entera sobre ellos.
 
 Antes de dar algo por hecho: `npm run lint`, `npm run format:check`, `npm run typecheck` y `npm test`.

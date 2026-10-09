@@ -1,0 +1,20 @@
+# Servidor de sincronización de MikaLog (Cloudflare Workers).
+# Cómo desplegarlo: server/README.md.
+name = "mikalog-sync"
+main = "src/index.ts"
+compatibility_date = "2026-10-01"
+workers_dev = true
+
+# Almacén de vida corta: inicios de sesión a medias (5 minutos) y los nombres
+# de agentes y mapas (1 día). El id no es secreto; sale de
+# `npx wrangler kv namespace create KV`.
+[[kv_namespaces]]
+binding = "KV"
+id = "PON_AQUI_EL_ID_DEL_NAMESPACE"
+
+# Sin registros: una URL de inicio de sesión no debe quedar guardada.
+[observability]
+enabled = false
+
+# Los secretos no van aquí. Se guardan con `npx wrangler secret put`:
+#   RIOT_API_KEY, RSO_CLIENT_ID y RSO_CLIENT_SECRET.

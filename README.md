@@ -108,6 +108,7 @@ Documentación del proyecto:
 | `src/views/` y `src/components/` | Pantallas y componentes                                                      |
 | `src/test/`                      | SQLite en memoria y servicios de prueba para probar la app entera            |
 | `src-tauri/`                     | Lado nativo, iconos, permisos e instalador                                   |
+| `server/`                        | Servidor de sincronización con Riot (Cloudflare Workers); ver su README      |
 
 ### Publicar una versión
 
