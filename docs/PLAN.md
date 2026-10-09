@@ -16,7 +16,7 @@ No las cambies sin preguntar al usuario.
 - **10mans y scrims** van en un registro aparte, una entrada por partida. Sus estadísticas no se mezclan con las de rankeds; la fila del día solo muestra el recuento.
 - **Una gráfica por estadística** debajo de cada tabla (la diaria y la de scrims), siguiendo los filtros y el rango de fechas de la tabla.
 - Estilo **glassmorphism** según la skill `glassmorphism` de [bergside/awesome-design-skills](https://github.com/bergside/awesome-design-skills) (archivos `skills/glassmorphism/SKILL.md` y `DESIGN.md`).
-- K/D y ACS automáticos: solo serían posibles con la API no oficial de [HenrikDev](https://docs.henrikdev.xyz). Se hizo en la fase 4 y se retiró el 03/10/2026 (ver "Sincronización con HenrikDev"). Tracker.gg y la API oficial de Riot no sirven (Tracker no da acceso a Valorant; Riot no aprueba apps personales). La entrada manual es siempre la base.
+- K/D y ACS automáticos: solo serían posibles con la API no oficial de [HenrikDev](https://docs.henrikdev.xyz). Se hizo en la fase 4 y se retiró el 03/10/2026 (ver "Sincronización con HenrikDev"). Tracker.gg no da acceso a Valorant y Riot no aprueba apps de uso personal. La fase 7 usa la API oficial de Riot registrando MikaLog como producto público, con un servidor propio gratuito y RSO. La entrada manual es siempre la base.
 - Interfaz en español.
 
 ## Tecnologías
@@ -172,7 +172,7 @@ Cómo funciona:
 
 Trabaja una fase cada vez. Al acabar cada fase: pruebas en verde y un commit por bloque lógico en su propia rama. El usuario decidió el 02/10/2026 encadenar las fases sin parar a probar entre una y otra: las pruebas con datos reales y los cambios se harán cuando haya una versión 1.0. Los criterios "Terminada cuando" que dependen del uso real quedan para entonces.
 
-Estado (03/10/2026): las fases 0 a 5 están implementadas. La fase 6 (licencia y avisos legales) también. Antes de publicar la versión 1.0 queda la ronda de pruebas con datos reales y los cambios que salgan de ella.
+Estado (03/10/2026): las fases 0 a 5 están implementadas. La fase 6 (licencia y avisos legales) también. Antes de publicar la versión 1.0 queda la ronda de pruebas con datos reales y los cambios que salgan de ella. La fase 7 (edición para Saiz y API oficial de Riot) está planificada el 09/10/2026 y sus decisiones están cerradas.
 
 ### Fase 0: cimientos
 
@@ -337,9 +337,108 @@ Cómo quedó hecho: los textos de la app están en `src/app/legal.ts` y la tarje
 
 Pendiente de revisar por el usuario, porque no es algo que la app pueda garantizar: esto sigue las prácticas habituales de software libre y la política de Riot para proyectos de fans, pero no es asesoramiento legal. Si la app llegara a tener ingresos o a usar la API de Riot, habría que revisarlo.
 
+### Fase 7: edición para Saiz y sincronización con la API oficial de Riot 
+
+Pedida por el usuario el 09/10/2026: una versión paralela para Saiz, jugador profesional, **sin el registro de praccs y 10mans** (se quedan sus columnas en la Tabla) y con **ACS, K/D, agente y mapa automáticos** desde la API oficial de Riot. Las decisiones del usuario están en «Decisiones cerradas de la fase 7», al final de la fase.
+
+#### Qué pide Riot de verdad (revisado el 09/10/2026)
+
+Fuentes: [política de VALORANT](https://support-developer.riotgames.com/hc/en-us/articles/22698769097107-VALORANT), [documentación de VALORANT](https://developer.riotgames.com/docs/valorant), [tipos de clave](https://developer.riotgames.com/docs/portal), [preguntas frecuentes](https://developer.riotgames.com/docs/faqs) y [políticas generales](https://developer.riotgames.com/policies/general).
+
+- **Clave de producción, sí o sí.** Para VALORANT no hay claves personales ("personal key applications requesting VALORANT access will not be approved"). La clave de desarrollo caduca cada 24 horas y no sirve para un producto que se usa de verdad. Hay que registrar un producto en el portal y pedir la clave de producción (500 peticiones cada 10 s y 30.000 cada 10 min, por región).
+- **Tiene que ser público.** Riot rechaza "apps that are not public and are designed for personal use only". Una app hecha solo para Saiz es justo eso, así que **no se aprobaría**. Lo que sí aprueba es "training tools that allow players to view their own match histories and aggregate stats", que es lo que hace MikaLog. Por tanto el producto que se registra es **MikaLog, pública y gratuita**, y la edición de Saiz es una variante de ese mismo producto.
+- **Que el usuario sea profesional no cambia nada**: la política es la misma para cualquier jugador. Ayuda como argumento en la solicitud (hay un usuario real que lo usa), pero no es un permiso aparte. Tener varios usuarios tampoco cambia la aprobación; al contrario, es lo que Riot espera de un producto público. Una clave es para un solo producto, así que las dos ediciones van en la misma solicitud y cualquier función nueva debe pasar por la auditoría del producto en el portal.
+- **Consentimiento con Riot Sign On (RSO).** Toda app de VALORANT debe pedir al jugador que acepte compartir sus datos, iniciando sesión con su cuenta de Riot (OAuth, alcances `openid offline_access`). RSO solo se concede a quien ya tiene clave de producción; Riot da el cliente de RSO por mensaje en el portal. La app debe mostrar el aviso de que vincular la cuenta hace públicos los datos del jugador y el aviso de "no avalado por Riot".
+- **La clave no puede ir dentro de la app.** "Do not include your API key in your code, especially if you plan on distributing a binary." Lo mismo vale para el secreto del cliente de RSO. Como MikaLog es un instalador, hace falta **un servidor pequeño** que guarde la clave y el secreto y haga las llamadas a Riot. Es la consecuencia más grande de esta fase: hasta ahora la app no tenía servidor ni llamadas a internet.
+- **Para la solicitud basta un prototipo o maqueta** que enseñe el flujo ("a working site, mockup, prototype, or rendering"). La revisión va por lotes semanales y puede tardar hasta tres semanas, sin garantía de aprobación.
+- **Endpoints** (VAL-MATCH-V1 y VAL-CONTENT-V1, host de la región del jugador, por ejemplo `eu.api.riotgames.com`):
+  - `GET /val/match/v1/matchlists/by-puuid/{puuid}`: lista de partidas (`matchId`, `gameStartTimeMillis`, `queueId`).
+  - `GET /val/match/v1/matches/{matchId}`: la partida. De `matchInfo`: `mapId`, `gameStartMillis`, `queueId`. Del jugador en `players`: `characterId` (agente) y `stats` (`kills`, `deaths`, `score`, `roundsPlayed`).
+  - `GET /val/content/v1/contents?locale=es-ES`: nombres de agentes y mapas a partir de `characterId` y `mapId`.
+  - `GET /riot/account/v1/accounts/me` (host `europe.api.riotgames.com`) con el token de RSO: el `puuid` y el Riot ID del jugador que ha iniciado sesión.
+  - Los nombres exactos de los campos y si las customs salen en la lista se comprueban contra la referencia del portal al tener la clave. La clave de desarrollo probablemente no tenga acceso a VAL-MATCH, así que la primera prueba real llegará con la de producción.
+
+#### Cómo se organiza la versión paralela: misma base de código, dos ediciones
+
+No se hace un fork. Motivos: Riot solo aprueba un producto público por clave, así que la versión de Saiz tiene que ser parte de MikaLog y no una app suelta; los arreglos y las fases futuras llegan a las dos sin copiar código; y la diferencia entre ediciones es pequeña (secciones que se ven, plantilla de campos, sincronización activada). Un fork solo tendría sentido si la versión de Saiz fuese a crecer por su cuenta con otro rumbo, y aun así perdería la aprobación de Riot.
+
+- **Edición elegida al compilar**: variable `VITE_EDITION` (`base` por defecto, `saiz`). Un módulo `src/app/edition.ts` describe cada edición: nombre que se muestra, secciones visibles, plantilla de campos y si la sincronización con Riot viene activada. La edición llega a la app por los servicios (como `Platform`), no por una importación global, para poder probar las dos en Vitest.
+- **Instalación aparte**: `src-tauri/tauri.saiz.conf.json` se mezcla con la configuración base (`tauri build --config src-tauri/tauri.saiz.conf.json`) y cambia `productName`, el título de la ventana y el `identifier` (`com.playertracker.saiz`). Con otro `identifier`, las dos ediciones se pueden tener instaladas a la vez sin compartir `config.json` ni carpeta de datos. La carpeta propuesta en el primer arranque es `Documentos/<nombre de la edición>`.
+- **Scripts**: `npm run tauri:dev:saiz` y `npm run tauri:build:saiz`. El CI prueba las dos ediciones y genera los dos instaladores; la Release sube los dos `.exe`.
+- **Mismos formatos**: el JSON sigue siendo `"format": "player-tracker"`, así que una copia de una edición se abre en la otra.
+
+#### 7.1 Edición sin registro de praccs y 10mans
+
+Interpretación de "eliminar la parte de praccs y 10mans (no las columnas)": se quita el registro aparte (una entrada por partida) y todo lo que se apoya en él, y la columna de la Tabla se queda como un número que se escribe a mano.
+
+- **Fuera en la edición `saiz`**: la sección "Scrims y 10mans" de la barra lateral, `ScrimCharts`, las tarjetas de scrims del Dashboard, el resumen de scrims de la Revisión semanal, la hoja "Scrims y 10mans" de la exportación a Excel/CSV, el botón "Exportar lo que ves" de esa sección y su globo del tutorial.
+- **La columna se queda**: en la plantilla de la edición, `scrims` ("10mans / scrims") pasa de `scrim_count` a `number`, en el grupo Juego y en el mismo sitio. Sigue contando como volumen (se suma, barras por día) en gráficas, Calendario, Insights y saturación.
+- **La tabla `scrim_matches` no se borra** (las migraciones son iguales en las dos ediciones); simplemente no se usa. Al importar en la edición `saiz` un JSON o la hoja con partidas de scrims, el recuento de cada día se pasa al campo `scrims` y las partidas se conservan en la base sin mostrarse, para no perder nada si luego se abre la copia en la edición base.
+- La edición base no cambia.
+- Pruebas de interfaz con la app entera en las dos ediciones: en `saiz` no aparece la sección ni sus gráficas, la columna se edita a mano y la importación pasa el recuento al día; en `base` todo sigue como antes.
+- **Terminada cuando**: el instalador de la edición `saiz` se instala junto al de la base, abre su propia carpeta y no muestra nada del registro de scrims salvo la columna.
+
+Esta parte no depende de Riot y se puede hacer ya.
+
+#### 7.2 Partidas de Riot a filas de la app (lógica pura)
+
+Se construye antes que el servidor y con datos de ejemplo, para que la app y la maqueta de la solicitud estén listas aunque Riot tarde.
+
+- `src/domain/riotMatches.ts`: convierte la respuesta de una partida (ya reducida por el servidor, ver 7.3) en una fila de `ranked_sessions` con `source = 'riot'` y `external_match_id = 'riot:<matchId>'`: fecha local de inicio, mapa, agente, resultado, kills, muertes, `score` y rondas.
+- Resumen del día, con las mismas reglas que Rankeds (sobre los totales, como el juego): recuento de rankeds, K/D = kills totales entre muertes totales, ACS = puntuación total entre rondas totales.
+- **Agente y mapa en la fila del día**: dos campos nuevos de tipo `text` en el grupo Rendimiento, "Agentes" (`agents`) y "Mapas" (`maps`), con lo jugado ese día de más a menos partidas, por ejemplo `Jett ×3, Raze ×1`. Cada partida con su mapa y agente está en Rankeds, que ya tiene gráficas por mapa y agente.
+- **Qué colas cuentan**: por defecto solo competitivo (`queueId = competitive`). En Ajustes se pueden añadir otras (por ejemplo Premier). Las customs no se traen: no hay registro de 10mans en esta edición y la columna es manual.
+- Una interfaz `MatchSource` (`fetchDay(fecha)`) aísla de dónde salen las partidas, para que el plan B solo cambie la fuente.
+- Pruebas: conversión de una partida, día con varias partidas y agentes, partida que empieza antes de medianoche, colas filtradas, sin duplicados al repetir.
+
+#### 7.3 Servidor de sincronización
+
+Pequeño, sin base de datos de usuarios y en el mismo repositorio (`server/`, TypeScript, licencia GPL, con sus pruebas).
+
+- **Dónde**: Cloudflare Workers (el plan gratuito sobra para esto) con un almacén KV solo para datos de vida corta. La clave de producción y el cliente de RSO se guardan como secretos del Worker, nunca en el repositorio. Coste cero: el subdominio gratuito `workers.dev` (por ejemplo `mikalog-sync.<cuenta>.workers.dev`) para el servidor y las URL de RSO, y GitHub Pages para la web del producto y la política de privacidad. Un dominio propio (unos 10 € al año) solo si Riot lo pide al revisar.
+- **Inicio de sesión**:
+  1. La app crea un `state` aleatorio y abre el navegador en `GET /rso/login?state=…`, que redirige a la página de inicio de sesión de Riot.
+  2. Riot vuelve a `GET /rso/callback`. El servidor cambia el código por los tokens con el secreto, pide `accounts/me` y guarda en KV, durante 5 minutos y bajo ese `state`, el `puuid`, el Riot ID y el token de refresco. Muestra "Ya puedes volver a MikaLog".
+  3. La app pregunta `GET /rso/result?state=…` cada pocos segundos; al recibirlo, el servidor lo borra de KV.
+- **Sincronizar** `POST /sync` con el token de refresco y la fecha: el servidor renueva el token, comprueba con `accounts/me` que el `puuid` es de quien pregunta (así solo se leen datos de jugadores que han dado su consentimiento), pide la lista de partidas y cada partida de esa fecha, resuelve agente y mapa con VAL-CONTENT (en caché un día) y devuelve solo lo que la app usa. Devuelve también el token de refresco nuevo si Riot lo cambia.
+- Las partidas no cambian, así que el servidor puede guardarlas en caché para gastar menos peticiones. Respeta `Retry-After` cuando Riot devuelve 429.
+- El servidor no guarda nada de forma permanente: ni cuentas, ni partidas asociadas a nadie, ni registros con datos del jugador.
+
+#### 7.4 Conectar la cuenta y sincronizar en la app
+
+- **Ajustes > "Cuenta de Riot"**: botón "Conectar con Riot", el texto de consentimiento (qué se lee, que solo se usa en tu ordenador, el aviso de Riot de que vincular la cuenta hace públicos tus datos) y, ya conectada, el Riot ID con "Desconectar".
+- **Token de refresco** en el almacén de credenciales de Windows (crate `keyring`, dos comandos de Tauri: guardar y leer), nunca en la base de datos ni en el JSON exportado ni en las copias automáticas.
+- **"Sincronizar"** en la página del día y "Sincronizar los últimos 7 días" en Rankeds. Guarda las partidas nuevas en `ranked_sessions` sin tocar las que ya estaban (para respetar lo corregido a mano) y escribe en el día `rankeds`, `kd`, `acs`, `agents` y `maps`. Todo sigue siendo editable. Sin sincronizar en segundo plano: solo al pulsar.
+- **Red**: vuelve `tauri-plugin-http`, con permiso solo para el dominio del servidor, y `connect-src` de la CSP se amplía solo a ese dominio. Para abrir el navegador, `tauri-plugin-opener` limitado a la URL de inicio de sesión del servidor.
+- **Edición**: la tarjeta y los botones existen en las dos ediciones (es la misma función del producto que se registra en Riot); en la edición base la tarjeta está en Ajustes y la sincronización se activa al conectar la cuenta; en `saiz` viene a la vista y el tutorial añade el paso "Conecta tu cuenta de Riot (opcional)".
+- **Textos legales** (`src/app/legal.ts`, `NOTICE.md`, README): la privacidad pasa de "no envía ningún dato" a "solo se conecta a internet si conectas tu cuenta de Riot, y solo al pulsar Sincronizar; las peticiones pasan por el servidor de MikaLog, que no guarda tus datos". Política de privacidad en una página web (GitHub Pages) para la solicitud de Riot. La regla "Nada de llamadas a internet" de este plan ya recoge esta excepción.
+- Pruebas de interfaz con un servidor simulado: conectar, sincronizar un día, repetir sin duplicar, desconectar borra el token, error de red con aviso claro.
+- **Terminada cuando**: Saiz conecta su cuenta, sincroniza un día y la app da el mismo K/D, ACS, agentes y mapas que su historial del juego, y repetirlo no duplica partidas.
+
+#### 7.5 Solicitud a Riot (la hace el usuario)
+
+1. Crear en el [portal de desarrolladores](https://developer.riotgames.com/) el producto **MikaLog** (VALORANT, uso: herramienta de entrenamiento para ver tu propio historial y estadísticas). Descripción: app de escritorio gratuita y de código abierto (enlace al repositorio y a la Release), RSO con consentimiento, servidor propio que guarda la clave, sin anuncios ni pagos, sin datos de otros jugadores, sin superposiciones en partida ni MMR.
+2. Adjuntar la maqueta o vídeo del flujo (7.2 y 7.4 con datos de ejemplo), la política de privacidad y la mención de que un jugador profesional ya la usa.
+3. Esperar la respuesta (hasta tres semanas). Si aprueban, pedir el cliente de RSO por el portal, configurar los secretos del servidor y hacer la prueba real con la cuenta de Saiz.
+
+Orden recomendado: 7.1 ya; 7.2 y la maqueta a la vez, y enviar la solicitud; 7.3 y 7.4 mientras Riot responde.
+
+#### Plan B si Riot no lo aprueba o no contesta
+
+- **B1, HenrikDev** (API no oficial). Funcionó en la fase 4 con la cuenta del usuario y se retiró el 03/10/2026; el código está en el historial (hasta el PR #14). Se reactivaría solo como otra `MatchSource`, con la clave gratuita del propio Saiz, sin servidor. Trae lo mismo (mapa, agente, kills, muertes, puntuación y rondas), pero depende de un tercero y de su clave.
+- **B2, a mano**: como hoy. Rankeds por partida con "Usar estas cifras en el día" y los campos de agentes y mapas escritos a mano. La entrada manual sigue siendo la base en cualquier caso.
+- Recomendación: si Riot rechaza la solicitud, B1 solo en la edición `saiz`, con aviso de que es una fuente no oficial.
+
+#### Decisiones cerradas de la fase 7 (09/10/2026)
+
+1. **Nombre de la edición**: **MikaLog Saiz Edition** (`productName` y título de la ventana en `tauri.saiz.conf.json`; carpeta propuesta `Documentos/MikaLog Saiz Edition`).
+2. **Columna**: se queda una sola, "10mans / scrims", como número a mano.
+3. **Servidor**: sí, pero gratuito: Cloudflare Workers en `workers.dev` y GitHub Pages, sin dominio de pago salvo que Riot lo exija.
+4. **Riot en la edición general**: sí. La sincronización forma parte de MikaLog para cualquier jugador, que es lo que hace que el producto sea público ante Riot.
+
 ## Reglas de trabajo
 
 - TypeScript estricto, sin `any`. Lógica de cálculo en funciones puras con pruebas.
-- Nada de telemetría ni llamadas a internet. La única excepción que hubo, HenrikDev, se retiró el 03/10/2026.
+- Nada de telemetría ni llamadas a internet, salvo la sincronización con Riot de la fase 7: solo hacia el servidor de MikaLog, solo con la cuenta conectada y solo al pulsar Sincronizar. HenrikDev se retiró el 03/10/2026.
 - Ante una decisión que cambie lo que el usuario ve o sus datos, pregunta antes.
 - Mantén este plan actualizado si algo cambia.
