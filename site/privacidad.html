@@ -43,9 +43,11 @@
           </li>
           <li>
             Solo cuando pulsas «Sincronizar», la app envía ese token y la fecha
-            al servidor de MikaLog (alojado en Cloudflare). El servidor pide a
-            Riot tus partidas de esa fecha y devuelve a tu ordenador mapa,
-            agente, resultado, kills, muertes, puntuación y rondas de cada una.
+            al servidor de MikaLog
+            (<code>mikalog-sync.miguelangeldiaztic.workers.dev</code>, alojado
+            en Cloudflare). El servidor pide a Riot tus partidas de esa fecha y
+            devuelve a tu ordenador mapa, agente, resultado, kills, muertes,
+            puntuación y rondas de cada una.
           </li>
           <li>
             El servidor no guarda tu cuenta, tu token ni tus estadísticas. Solo
@@ -105,13 +107,14 @@
           your account identifier (PUUID) and Riot ID. Your computer keeps an
           access token in the Windows Credential Manager, never in backups or
           exports. Only when you press "Sync" does the app send that token and a
-          date to the MikaLog server (hosted on Cloudflare), which asks Riot for
-          your matches on that date and returns map, agent, result, kills,
-          deaths, score and rounds for each one. The server does not store your
-          account, token or stats; it keeps sign-in data for a few minutes until
-          the app collects it, and may cache match data that Riot already
-          publishes. Your stats are not shown to other players; as Riot
-          requires, note that linking your account makes your player data
+          date to the MikaLog server
+          (mikalog-sync.miguelangeldiaztic.workers.dev, hosted on Cloudflare),
+          which asks Riot for your matches on that date and returns map, agent,
+          result, kills, deaths, score and rounds for each one. The server does
+          not store your account, token or stats; it keeps sign-in data for a
+          few minutes until the app collects it, and may cache match data that
+          Riot already publishes. Your stats are not shown to other players; as
+          Riot requires, note that linking your account makes your player data
           public. Cloudflare may log technical request data such as IP addresses
           under its own privacy policy.
         </p>

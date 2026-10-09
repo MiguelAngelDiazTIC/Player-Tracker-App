@@ -395,7 +395,7 @@ Se construye antes que el servidor y con datos de ejemplo, para que la app y la 
 
 Pequeño, sin base de datos de usuarios y en el mismo repositorio (`server/`, TypeScript, licencia GPL, con sus pruebas).
 
-- **Dónde**: Cloudflare Workers (el plan gratuito sobra para esto) con un almacén KV solo para datos de vida corta. La clave de producción y el cliente de RSO se guardan como secretos del Worker, nunca en el repositorio. Coste cero: el subdominio gratuito `workers.dev` (por ejemplo `mikalog-sync.<cuenta>.workers.dev`) para el servidor y las URL de RSO, y GitHub Pages para la web del producto y la política de privacidad. Un dominio propio (unos 10 € al año) solo si Riot lo pide al revisar.
+- **Dónde**: Cloudflare Workers (el plan gratuito sobra para esto) con un almacén KV solo para datos de vida corta. La clave de producción y el cliente de RSO se guardan como secretos del Worker, nunca en el repositorio. Coste cero: el subdominio gratuito `workers.dev` (`https://mikalog-sync.miguelangeldiaztic.workers.dev`, reservado el 09/10/2026 con un Worker de ejemplo que la 7.3 sustituye) para el servidor y las URL de RSO, y GitHub Pages para la web del producto y la política de privacidad. Un dominio propio (unos 10 € al año) solo si Riot lo pide al revisar.
 - **Inicio de sesión**:
   1. La app crea un `state` aleatorio y abre el navegador en `GET /rso/login?state=…`, que redirige a la página de inicio de sesión de Riot.
   2. Riot vuelve a `GET /rso/callback`. El servidor cambia el código por los tokens con el secreto, pide `accounts/me` y guarda en KV, durante 5 minutos y bajo ese `state`, el `puuid`, el Riot ID y el token de refresco. Muestra "Ya puedes volver a MikaLog".
