@@ -171,6 +171,18 @@ export const DEFAULT_FIELDS: readonly FieldDefinition[] = [
   archived: false,
 })) as FieldDefinition[];
 
+/**
+ * Los mismos campos para una edición sin registro de scrims: el recuento deja
+ * de calcularse y pasa a ser un número que se escribe a mano.
+ */
+export function withManualScrimCount(
+  fields: readonly FieldDefinition[],
+): FieldDefinition[] {
+  return fields.map((field) =>
+    field.type === "scrim_count" ? { ...field, type: "number" } : field,
+  );
+}
+
 export function sortFields<T extends Pick<FieldDefinition, "order">>(
   fields: readonly T[],
 ): T[] {

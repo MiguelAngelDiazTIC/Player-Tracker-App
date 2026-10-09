@@ -1,5 +1,6 @@
 import { runAutoBackup } from "../data/autoBackup";
 import type { Settings } from "../data/repository";
+import { foldScrimLogIntoDays } from "../data/scrimColumn";
 import { AUTO_BACKUP_SETTING, readAutoBackup } from "../domain/autoBackup";
 import { emptyDay, type Day } from "../domain/day";
 import type { FieldDefinition, FieldValue } from "../domain/fields";
@@ -92,7 +93,7 @@ function describe(cause: unknown): string {
  * manda la escritura a una fila, para que lleguen en orden a la base de datos.
  */
 export function createAppStore(services: Services): AppStoreCore {
-  const { repository, platform } = services;
+  const { repository, platform, edition } = services;
   let backupChecked = false;
   let data: AppData | null = null;
   let snapshot: StoreSnapshot = { data: null, error: null };
@@ -133,6 +134,9 @@ export function createAppStore(services: Services): AppStoreCore {
   async function reload() {
     await queue;
     try {
+      // Datos de la edición base (una carpeta o una copia recién importada):
+      // el recuento de scrims pasa a la columna antes de leerlos.
+      if (!edition.scrimLog) await foldScrimLogIntoDays(repository);
       data = {
         fields: await repository.listFields(),
         days: await repository.listDays(),

@@ -91,7 +91,11 @@ export interface Repository {
   setSetting(key: string, value: unknown): Promise<void>;
 }
 
-export function createRepository(driver: SqlDriver): Repository {
+export function createRepository(
+  driver: SqlDriver,
+  /** Plantilla con la que se siembra una base de datos sin campos. */
+  defaultFields: readonly FieldDefinition[] = DEFAULT_FIELDS,
+): Repository {
   /** `INSERT ... ON CONFLICT DO UPDATE` de muchas filas, por tandas. */
   async function upsertMany(
     table: string,
@@ -122,7 +126,7 @@ export function createRepository(driver: SqlDriver): Repository {
       const [{ total }] = await driver.select<{ total: number }>(
         "SELECT COUNT(*) AS total FROM field_definitions",
       );
-      if (total === 0) await repository.saveFields(DEFAULT_FIELDS);
+      if (total === 0) await repository.saveFields(defaultFields);
     },
 
     async listFields() {

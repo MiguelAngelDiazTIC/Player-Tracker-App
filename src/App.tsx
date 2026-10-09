@@ -1,5 +1,9 @@
 import { useState } from "react";
-import { DEFAULT_SECTION_ID, getSection, type SectionId } from "./app/sections";
+import {
+  DEFAULT_SECTION_ID,
+  sectionsFor,
+  type SectionId,
+} from "./app/sections";
 import type { Services } from "./app/services";
 import { StoreProvider, useStore } from "./app/store";
 import { Sidebar } from "./components/Sidebar";
@@ -39,7 +43,9 @@ function Shell() {
   // Día cuyas partidas se enseñan al llegar a Rankeds desde su página.
   const [rankedDate, setRankedDate] = useState<string | null>(null);
   const [noteId, setNoteId] = useState<string | null>(null);
-  const section = getSection(activeId);
+  const sections = sectionsFor(services.edition);
+  const section =
+    sections.find((other) => other.id === activeId) ?? sections[0];
   const showingDay = activeId === "tabla" && openDate !== null;
 
   function select(id: SectionId) {
@@ -177,7 +183,9 @@ function Shell() {
         {renderSection()}
       </main>
 
-      {tutorial ? <Tutorial onClose={closeTutorial} /> : null}
+      {tutorial ? (
+        <Tutorial edition={services.edition} onClose={closeTutorial} />
+      ) : null}
     </div>
   );
 }

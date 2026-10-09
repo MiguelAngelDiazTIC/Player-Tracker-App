@@ -1,0 +1,20 @@
+{
+  "productName": "MikaLog Saiz Edition",
+  "identifier": "com.playertracker.saiz",
+  "build": {
+    "beforeDevCommand": "npm run dev:saiz",
+    "beforeBuildCommand": "npm run build:saiz"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "MikaLog Saiz Edition",
+        "width": 1440,
+        "height": 900,
+        "minWidth": 960,
+        "minHeight": 600,
+        "dragDropEnabled": false
+      }
+    ]
+  }
+}

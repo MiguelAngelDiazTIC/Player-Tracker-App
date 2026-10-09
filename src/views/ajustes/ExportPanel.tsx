@@ -27,7 +27,7 @@ export function ExportPanel() {
 
   const sheets = (): ExportSheet[] => [
     daysSheet(fields, days, countScrimsByDate(scrims)),
-    scrimsSheet(byDate(scrims)),
+    ...(services.edition.scrimLog ? [scrimsSheet(byDate(scrims))] : []),
     rankedsSheet(byDate(sessions)),
     reviewsSheet(
       [...reviews].sort((a, b) => a.weekStart.localeCompare(b.weekStart)),

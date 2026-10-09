@@ -1,6 +1,7 @@
 import { Moon, Sun } from "lucide-react";
 import { APP_LOGO_URL, APP_NAME } from "../app/brand";
-import { SECTIONS, type SectionId } from "../app/sections";
+import { sectionsFor, type SectionId } from "../app/sections";
+import { useStore } from "../app/store";
 import { useTheme } from "../app/theme";
 
 interface SidebarProps {
@@ -9,6 +10,7 @@ interface SidebarProps {
 }
 
 export function Sidebar({ activeId, onSelect }: SidebarProps) {
+  const { edition } = useStore().services;
   const { theme, setChoice } = useTheme();
   const isDark = theme === "dark";
   const ThemeIcon = isDark ? Sun : Moon;
@@ -24,14 +26,14 @@ export function Sidebar({ activeId, onSelect }: SidebarProps) {
         <div>
           <p className="text-lg leading-tight font-bold">{APP_NAME}</p>
           <p className="text-ink/70 text-xs font-semibold tracking-wide uppercase">
-            Road to Top 1
+            {edition.tagline}
           </p>
         </div>
       </div>
 
       <nav aria-label="Secciones">
         <ul className="flex flex-col gap-2">
-          {SECTIONS.map(({ id, label, icon: Icon }) => {
+          {sectionsFor(edition).map(({ id, label, icon: Icon }) => {
             const isActive = id === activeId;
             return (
               <li key={id}>
