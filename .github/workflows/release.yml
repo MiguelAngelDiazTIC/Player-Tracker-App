@@ -1,6 +1,7 @@
 name: Publicar versión
 
-# Al subir una etiqueta como v1.0.0, compila el instalador y crea la Release.
+# Al subir una etiqueta como v1.0.0, compila los instaladores de las dos
+# ediciones y crea la Release.
 on:
   push:
     tags:
@@ -37,8 +38,9 @@ jobs:
       - run: npm run typecheck
       - run: npm test
       - run: npm run tauri build
+      - run: npm run tauri:build:saiz
 
-      - name: Crear la Release con el instalador
+      - name: Crear la Release con los dos instaladores
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}

@@ -59,7 +59,7 @@ interface RevisionViewProps {
 
 /** Nota guiada de la semana: el resumen lo pone la app; las conclusiones, tú. */
 export function RevisionView({ onOpenDay }: RevisionViewProps) {
-  const { days, fields, scrims, reviews, saveReview } = useStore();
+  const { days, fields, scrims, reviews, saveReview, services } = useStore();
   const today = todayIso();
   const [start, setStart] = useState(() => weekStart(today));
   const end = addDays(start, 6);
@@ -168,7 +168,7 @@ export function RevisionView({ onOpenDay }: RevisionViewProps) {
             ))}
           </div>
 
-          {summary.scrims.count > 0 ? (
+          {services.edition.scrimLog && summary.scrims.count > 0 ? (
             <p className="text-ink/70 px-2 text-sm">
               Scrims y 10mans: {summary.scrims.count}{" "}
               {summary.scrims.count === 1 ? "partida" : "partidas"}

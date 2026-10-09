@@ -71,7 +71,7 @@ const scrimField = (type: FieldDefinition["type"]): FieldDefinition => ({
 
 /** Tendencias y rachas: cómo va el periodo frente al anterior. */
 export function DashboardView() {
-  const { days, fields, scrims } = useStore();
+  const { days, fields, scrims, services } = useStore();
   const today = todayIso();
   const [period, setPeriod] = useState<Period>(7);
 
@@ -233,68 +233,70 @@ export function DashboardView() {
           </section>
         ) : null}
 
-        <section
-          aria-labelledby="dashboard-scrims"
-          className="flex flex-col gap-2"
-        >
-          <h2 id="dashboard-scrims" className="px-2 text-lg font-bold">
-            Scrims y 10mans
-          </h2>
-          <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-            <StatTile
-              label="Partidas"
-              value={String(now.scrims.count)}
-              hint="Total del periodo"
-              delta={deltaOf(
-                scrimField("number"),
-                now.scrims.count,
-                before.scrims.count,
-                versus,
-              )}
-            />
-            <StatTile
-              label="Victorias"
-              value={formatPercent(now.scrims.winRate)}
-              hint={
-                now.scrims.winRate === null
-                  ? "Sin resultados en el periodo"
-                  : `${now.scrims.wins} victorias, ${now.scrims.losses} derrotas, ${now.scrims.draws} empates`
-              }
-            />
-            <StatTile
-              label="K/D en scrims"
-              value={formatStat("decimal", now.scrims.kd)}
-              hint={
-                now.scrims.kd === null
-                  ? "Sin datos en el periodo"
-                  : "Media por partida"
-              }
-              delta={deltaOf(
-                scrimField("decimal"),
-                now.scrims.kd,
-                before.scrims.kd,
-                versus,
-                true,
-              )}
-            />
-            <StatTile
-              label="ACS en scrims"
-              value={formatStat("number", now.scrims.acs)}
-              hint={
-                now.scrims.acs === null
-                  ? "Sin datos en el periodo"
-                  : "Media por partida"
-              }
-              delta={deltaOf(
-                scrimField("number"),
-                now.scrims.acs,
-                before.scrims.acs,
-                versus,
-                true,
-              )}
-            />
-          </div>
-        </section>
+        {services.edition.scrimLog ? (
+          <section
+            aria-labelledby="dashboard-scrims"
+            className="flex flex-col gap-2"
+          >
+            <h2 id="dashboard-scrims" className="px-2 text-lg font-bold">
+              Scrims y 10mans
+            </h2>
+            <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+              <StatTile
+                label="Partidas"
+                value={String(now.scrims.count)}
+                hint="Total del periodo"
+                delta={deltaOf(
+                  scrimField("number"),
+                  now.scrims.count,
+                  before.scrims.count,
+                  versus,
+                )}
+              />
+              <StatTile
+                label="Victorias"
+                value={formatPercent(now.scrims.winRate)}
+                hint={
+                  now.scrims.winRate === null
+                    ? "Sin resultados en el periodo"
+                    : `${now.scrims.wins} victorias, ${now.scrims.losses} derrotas, ${now.scrims.draws} empates`
+                }
+              />
+              <StatTile
+                label="K/D en scrims"
+                value={formatStat("decimal", now.scrims.kd)}
+                hint={
+                  now.scrims.kd === null
+                    ? "Sin datos en el periodo"
+                    : "Media por partida"
+                }
+                delta={deltaOf(
+                  scrimField("decimal"),
+                  now.scrims.kd,
+                  before.scrims.kd,
+                  versus,
+                  true,
+                )}
+              />
+              <StatTile
+                label="ACS en scrims"
+                value={formatStat("number", now.scrims.acs)}
+                hint={
+                  now.scrims.acs === null
+                    ? "Sin datos en el periodo"
+                    : "Media por partida"
+                }
+                delta={deltaOf(
+                  scrimField("number"),
+                  now.scrims.acs,
+                  before.scrims.acs,
+                  versus,
+                  true,
+                )}
+              />
+            </div>
+          </section>
+        ) : null}
       </div>
     </div>
   );

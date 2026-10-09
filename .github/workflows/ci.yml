@@ -44,6 +44,8 @@ jobs:
           npm run notices
           git diff --exit-code THIRD-PARTY-NOTICES.md
       - run: npm run tauri build
+      - name: Instalador de la edición Saiz
+        run: npm run tauri:build:saiz
       - uses: actions/upload-artifact@v7
         with:
           name: mikalog-windows

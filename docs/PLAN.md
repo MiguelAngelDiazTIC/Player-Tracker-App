@@ -380,6 +380,19 @@ Interpretación de "eliminar la parte de praccs y 10mans (no las columnas)": se 
 
 Esta parte no depende de Riot y se puede hacer ya.
 
+Cómo quedó hecho (09/10/2026):
+
+- `src/app/edition.ts` describe las dos ediciones (nombre, línea de la barra lateral, si hay registro de scrims y plantilla de campos) y llega a la app en `services.edition`. `resolveEdition` falla con un `VITE_EDITION` mal escrito, para no compilar la base sin avisar. La sincronización con Riot se añadirá a la edición en la 7.4.
+- `VITE_EDITION` se fija con el modo de Vite: `.env.saiz` y los scripts `dev:saiz` y `build:saiz`, que `tauri.saiz.conf.json` usa como `beforeDevCommand` y `beforeBuildCommand`. Así no hace falta ninguna variable de entorno en Windows.
+- `sectionsFor(edition)` da las secciones de la barra lateral; en `saiz` no está la de scrims y el Dashboard se describe sin ellos. Bajo el nombre de la app, donde la base dice "Road to Top 1", `saiz` dice "Saiz Edition".
+- La columna a mano sale de `withManualScrimCount` (`src/domain/fields.ts`). Como es un `number` sin umbral, las gráficas, el Calendario, los Insights y el Dashboard ya la tratan como volumen sin más cambios.
+- **Datos que vienen de la base**: `foldScrimLogIntoDays` (`src/data/scrimColumn.ts`) se ejecuta en `saiz` cada vez que la app lee los datos (al abrir y tras importar). Si encuentra la columna calculada, la pasa a número y apunta en cada día sus partidas del registro, sin pisar un valor ya escrito. Vale igual para un JSON de la base que para abrir su carpeta de datos. Las partidas se quedan en `scrim_matches` y siguen saliendo en el JSON.
+- **Al revés**: un JSON de `saiz` abierto en la base trae la columna como número a mano, y así se queda (los campos del archivo sustituyen a los actuales, como en cualquier importación). El registro de scrims de la base sigue funcionando, pero esa columna deja de calcularse desde él.
+- El instalador avisa al desinstalar con el nombre de su edición (`${PRODUCTNAME}` en `hooks.nsh`). El CI y la Release compilan los dos instaladores.
+- Pruebas: `src/App.saiz.test.tsx` (la app entera en `saiz` y las copias entre ediciones), `src/data/scrimColumn.test.ts` y `src/app/edition.test.ts`.
+
+Sin comprobar todavía: instalar las dos ediciones a la vez en un equipo.
+
 #### 7.2 Partidas de Riot a filas de la app (lógica pura)
 
 Se construye antes que el servidor y con datos de ejemplo, para que la app y la maqueta de la solicitud estén listas aunque Riot tarde.

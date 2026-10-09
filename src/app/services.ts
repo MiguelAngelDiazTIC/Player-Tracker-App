@@ -1,6 +1,7 @@
 import type { BackupFolder } from "../data/autoBackup";
 import type { AttachmentStore } from "../data/backup";
 import type { Repository } from "../data/repository";
+import type { Edition } from "./edition";
 
 export interface PickedFile {
   name: string;
@@ -53,4 +54,6 @@ export interface Platform {
 export interface Services {
   repository: Repository;
   platform: Platform;
+  /** Variante de la app que se ha compilado. */
+  edition: Edition;
 }

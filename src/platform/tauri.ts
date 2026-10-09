@@ -13,12 +13,15 @@ import {
   writeTextFile,
 } from "@tauri-apps/plugin-fs";
 import Database from "@tauri-apps/plugin-sql";
-import { APP_NAME } from "../app/brand";
+import { resolveEdition } from "../app/edition";
 import type { PickedFile, Platform, Services } from "../app/services";
 import type { BackupFolder } from "../data/autoBackup";
 import type { AttachmentStore } from "../data/backup";
 import type { SqlDriver } from "../data/driver";
 import { createRepository } from "../data/repository";
+
+/** La edición con la que se compiló esta app. */
+export const EDITION = resolveEdition(import.meta.env.VITE_EDITION);
 
 const DATABASE_FILE = "tracker.db";
 const ATTACHMENTS_DIR = "attachments";
@@ -80,7 +83,7 @@ const writeConfiguredFolder = (folder: string) =>
   writeConfig({ dataFolder: folder });
 
 export async function suggestDataFolder(): Promise<string> {
-  return join(await documentDir(), APP_NAME);
+  return join(await documentDir(), EDITION.name);
 }
 
 export async function pickFolder(title: string): Promise<string | null> {
@@ -182,7 +185,7 @@ export async function openDataFolder(folder: string): Promise<Services> {
   await mkdir(attachmentsFolder, { recursive: true });
 
   const driver = await openDriver(databasePath);
-  const repository = createRepository(driver);
+  const repository = createRepository(driver, EDITION.defaultFields);
   await repository.init();
   await writeConfiguredFolder(folder);
   const { tutorialSeen = false } = await readConfig();
@@ -276,5 +279,5 @@ export async function openDataFolder(folder: string): Promise<Services> {
     },
   };
 
-  return { repository, platform };
+  return { repository, platform, edition: EDITION };
 }

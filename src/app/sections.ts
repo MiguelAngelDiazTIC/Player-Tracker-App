@@ -10,6 +10,7 @@ import {
   Trophy,
   type LucideIcon,
 } from "lucide-react";
+import type { Edition } from "./edition";
 
 export interface Section {
   id: string;
@@ -77,8 +78,23 @@ export const SECTIONS = [
 
 export type SectionId = (typeof SECTIONS)[number]["id"];
 
+export type AppSection = Section & { id: SectionId };
+
 export const DEFAULT_SECTION_ID: SectionId = "tabla";
 
-export function getSection(id: SectionId): Section {
-  return SECTIONS.find((section) => section.id === id) ?? SECTIONS[0];
+/** Secciones de una edición: sin registro de scrims, la suya no existe. */
+export function sectionsFor(
+  edition: Pick<Edition, "scrimLog">,
+): readonly AppSection[] {
+  if (edition.scrimLog) return SECTIONS;
+  return SECTIONS.filter((section) => section.id !== "scrims").map(
+    (section): AppSection =>
+      section.id === "dashboard"
+        ? {
+            ...section,
+            description:
+              "Tendencias y rachas, comparadas con el periodo anterior.",
+          }
+        : section,
+  );
 }

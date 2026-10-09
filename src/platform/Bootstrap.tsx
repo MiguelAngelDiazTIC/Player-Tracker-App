@@ -1,10 +1,11 @@
 import { useEffect, useState, type ReactNode } from "react";
-import { APP_LOGO_URL, APP_NAME } from "../app/brand";
+import { APP_LOGO_URL } from "../app/brand";
 import type { Services } from "../app/services";
 import { Button } from "../components/ui/Button";
 import { Labeled, TextInput } from "../components/ui/fields";
 import { Card, Notice } from "../components/ui/surfaces";
 import {
+  EDITION,
   folderHasData,
   openDataFolder,
   pickFolder,
@@ -86,7 +87,7 @@ export function Bootstrap({ children }: BootstrapProps) {
             alt=""
             className="shadow-pill mb-4 size-16 rounded-md"
           />
-          <h1 className="text-3xl font-bold">{APP_NAME}</h1>
+          <h1 className="text-3xl font-bold">{EDITION.name}</h1>
           <p className="text-ink/70">
             Tus datos se guardan en una carpeta de tu ordenador, sin cuentas ni
             servidores. Elige dónde.
