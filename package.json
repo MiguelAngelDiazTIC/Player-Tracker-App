@@ -22,7 +22,9 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "typecheck": "tsc && tsc -p tsconfig.test.json && tsc -p tsconfig.node.json",
+    "typecheck": "tsc && tsc -p tsconfig.test.json && tsc -p tsconfig.node.json && tsc -p server/tsconfig.json",
+    "server:dev": "npx wrangler@4 dev --config server/wrangler.toml",
+    "server:deploy": "npx wrangler@4 deploy --config server/wrangler.toml",
     "test": "vitest run",
     "test:watch": "vitest"
   },

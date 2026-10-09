@@ -43,18 +43,20 @@
             exportaciones.
           </li>
           <li>
-            Solo cuando pulsas «Sincronizar», la app envía ese token y la fecha
-            al servidor de MikaLog
+            Solo cuando pulsas «Sincronizar», la app envía ese token, la fecha y
+            los identificadores de las partidas de ese día que ya tiene al
+            servidor de MikaLog
             (<code>mikalog-sync.miguelangeldiaztic.workers.dev</code>, alojado
             en Cloudflare). El servidor pide a Riot tus partidas de esa fecha y
             devuelve a tu ordenador mapa, agente, resultado, kills, muertes,
             puntuación y rondas de cada una.
           </li>
           <li>
-            El servidor no guarda tu cuenta, tu token ni tus estadísticas. Solo
-            conserva unos minutos los datos del inicio de sesión hasta que la
-            app los recoge, y puede guardar en caché los datos de una partida
-            (que ya publica Riot) para no pedirla dos veces.
+            El servidor no guarda tu cuenta, tu token, tus partidas ni tus
+            estadísticas, y no escribe registros. Solo conserva, cinco minutos
+            como mucho, los datos del inicio de sesión hasta que la app los
+            recoge. Lo único que guarda en caché son los nombres de los agentes
+            y los mapas del juego, que no son datos de nadie.
           </li>
           <li>
             Tus estadísticas no se muestran a otros jugadores. Aun así, Riot
@@ -107,17 +109,18 @@
           Games' official page; MikaLog never sees your password. Riot shares
           your account identifier (PUUID) and Riot ID. Your computer keeps an
           access token in the Windows Credential Manager, never in backups or
-          exports. Only when you press "Sync" does the app send that token and a
-          date to the MikaLog server
-          (mikalog-sync.miguelangeldiaztic.workers.dev, hosted on Cloudflare),
-          which asks Riot for your matches on that date and returns map, agent,
-          result, kills, deaths, score and rounds for each one. The server does
-          not store your account, token or stats; it keeps sign-in data for a
-          few minutes until the app collects it, and may cache match data that
-          Riot already publishes. Your stats are not shown to other players; as
-          Riot requires, note that linking your account makes your player data
-          public. Cloudflare may log technical request data such as IP addresses
-          under its own privacy policy.
+          exports. Only when you press "Sync" does the app send that token, a
+          date and the ids of that day's matches it already has to the MikaLog
+          server (mikalog-sync.miguelangeldiaztic.workers.dev, hosted on
+          Cloudflare), which asks Riot for your matches on that date and returns
+          map, agent, result, kills, deaths, score and rounds for each one. The
+          server does not store your account, token, matches or stats, and
+          writes no logs; it keeps sign-in data for at most five minutes until
+          the app collects it, and only caches the names of the game's agents
+          and maps. Your stats are not shown to other players; as Riot requires,
+          note that linking your account makes your player data public.
+          Cloudflare may log technical request data such as IP addresses under
+          its own privacy policy.
         </p>
         <p>
           <strong>Unlinking.</strong> Settings &gt; "Riot account" &gt;

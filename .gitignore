@@ -25,3 +25,7 @@ dist-ssr
 
 # Datos de ejemplo generados con npm run demo:data
 .demo
+
+# Estado local de wrangler (npm run server:dev) y secretos de desarrollo
+.wrangler
+.dev.vars

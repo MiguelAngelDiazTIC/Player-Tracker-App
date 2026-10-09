@@ -3,4 +3,5 @@ docs
 package-lock.json
 src-tauri/target
 src-tauri/gen
+server/.wrangler
 THIRD-PARTY-NOTICES.md
