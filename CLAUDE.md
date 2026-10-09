@@ -11,7 +11,7 @@ App de escritorio (Tauri 2 + React + TypeScript + SQLite) para que un jugador de
 
 - `src/domain/`: lógica pura (campos, fechas, duraciones, importador de la hoja, formato de exportación). Todo con pruebas.
 - `src/data/`: SQLite detrás de la interfaz `SqlDriver`, migraciones, repositorio e importación/exportación.
-- `src/app/`: estado de la app (`storeCore.ts`) y la interfaz `Platform`, que aísla lo que depende de Tauri.
+- `src/app/`: estado de la app (`storeCore.ts`), la interfaz `Platform`, que aísla lo que depende de Tauri, y las ediciones (`edition.ts`: `base` y `saiz`, elegidas al compilar; llegan en `services.edition`).
 - `src/platform/`: implementación de `Platform` con Tauri y el arranque (carpeta de datos).
 - `src/views/` y `src/components/`: pantallas y componentes.
 - `src/test/`: SQLite en memoria (`node:sqlite`) y servicios de prueba; las pruebas de interfaz usan la app entera sobre ellos.

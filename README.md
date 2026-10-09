@@ -80,6 +80,17 @@ npm run tauri dev
 | `npm test`            | Pruebas con Vitest (`test:watch` las deja en marcha)            |
 | `npm run notices`     | Regenera `THIRD-PARTY-NOTICES.md`                               |
 
+### Ediciones
+
+Del mismo código salen dos instaladores. La edición se elige al compilar con `VITE_EDITION` y está descrita en `src/app/edition.ts`.
+
+| Edición                       | Comandos                                             | Qué cambia                                                                                    |
+| ----------------------------- | ---------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| MikaLog (`base`)              | `npm run tauri dev`, `npm run tauri build`           | La de siempre                                                                                 |
+| MikaLog Saiz Edition (`saiz`) | `npm run tauri:dev:saiz`, `npm run tauri:build:saiz` | Sin el registro de scrims y 10mans: su columna de la Tabla es un número que se escribe a mano |
+
+Cada una tiene su identificador (`com.playertracker.desktop` y `com.playertracker.saiz`), así que se instalan a la vez sin compartir configuración ni carpeta de datos. Las copias en JSON de una se abren en la otra. Las pruebas cubren las dos con el mismo `npm test`.
+
 Documentación del proyecto:
 
 - [La idea](docs/IDEA.md): el concepto original y sus vistas.
@@ -102,7 +113,7 @@ Documentación del proyecto:
 
 1. Sube el número en `package.json` (el instalador lo lee de ahí) y en `src-tauri/Cargo.toml`.
 2. Crea y sube una etiqueta con ese número: `git tag v1.0.0` y `git push origin v1.0.0`.
-3. El workflow «Publicar versión» pasa las pruebas, compila el instalador y crea la Release con el `.exe` y las notas de `.github/release-notes.md`.
+3. El workflow «Publicar versión» pasa las pruebas, compila los instaladores de las dos ediciones y crea la Release con los `.exe` y las notas de `.github/release-notes.md`.
 
 Al añadir, quitar o actualizar una dependencia, lanza `npm run notices` y sube el `THIRD-PARTY-NOTICES.md` que genera. El CI falla si no está al día o si entra una licencia incompatible con la GPL-3.0.
 

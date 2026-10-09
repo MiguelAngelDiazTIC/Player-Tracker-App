@@ -1,6 +1,7 @@
 import { CalendarPlus, FileJson, FileSpreadsheet } from "lucide-react";
 import { useId, useLayoutEffect, useRef, useState } from "react";
 import { APP_LOGO_URL, APP_NAME } from "../../app/brand";
+import type { Edition } from "../../app/edition";
 import { PRIVACY_SHORT } from "../../app/legal";
 import { Button } from "../../components/ui/Button";
 import { Dialog } from "../../components/ui/Dialog";
@@ -91,6 +92,7 @@ const clamp = (value: number, min: number, max: number) =>
   Math.max(min, Math.min(value, Math.max(min, max)));
 
 interface TourBalloonProps {
+  tour: readonly TourStop[];
   index: number;
   onPrevious: () => void;
   onNext: () => void;
@@ -98,9 +100,15 @@ interface TourBalloonProps {
 }
 
 /** Globo de cristal que señala un elemento real de la app. */
-function TourBalloon({ index, onPrevious, onNext, onExit }: TourBalloonProps) {
-  const stop = TOUR[index];
-  const isLast = index === TOUR.length - 1;
+function TourBalloon({
+  tour,
+  index,
+  onPrevious,
+  onNext,
+  onExit,
+}: TourBalloonProps) {
+  const stop = tour[index];
+  const isLast = index === tour.length - 1;
   const titleId = useId();
   const textId = useId();
   const balloonRef = useRef<HTMLDivElement>(null);
@@ -187,7 +195,7 @@ function TourBalloon({ index, onPrevious, onNext, onExit }: TourBalloonProps) {
         className="glass-solid fixed flex w-80 max-w-[calc(100vw-2rem)] flex-col gap-2 rounded-md p-4"
       >
         <p className="text-ink/70 font-mono text-xs">
-          {index + 1} de {TOUR.length}
+          {index + 1} de {tour.length}
         </p>
         <h2 id={titleId} className="text-lg font-bold">
           {stop.title}
@@ -210,6 +218,7 @@ function TourBalloon({ index, onPrevious, onNext, onExit }: TourBalloonProps) {
 }
 
 interface TutorialProps {
+  edition: Edition;
   /** Cierra el tutorial. `start` es `null` si se saltó o se dejó a medias. */
   onClose: (start: StartChoice | null) => void;
 }
@@ -218,7 +227,11 @@ interface TutorialProps {
  * Tutorial del primer arranque: bienvenida, cómo empezar y un recorrido por
  * la app. Se puede saltar en cualquier paso.
  */
-export function Tutorial({ onClose }: TutorialProps) {
+export function Tutorial({ edition, onClose }: TutorialProps) {
+  // Sin registro de scrims, su sección no está en la barra lateral.
+  const tour = edition.scrimLog
+    ? TOUR
+    : TOUR.filter((stop) => stop.target !== "nav-scrims");
   // 0 y 1: pasos en un diálogo. Desde 2: paradas del recorrido.
   const [step, setStep] = useState(0);
   const [start, setStart] = useState<StartChoice>("scratch");
@@ -228,10 +241,11 @@ export function Tutorial({ onClose }: TutorialProps) {
     const index = step - INTRO_STEPS;
     return (
       <TourBalloon
+        tour={tour}
         index={index}
         onPrevious={() => setStep(step - 1)}
         onNext={() =>
-          index === TOUR.length - 1 ? onClose(start) : setStep(step + 1)
+          index === tour.length - 1 ? onClose(start) : setStep(step + 1)
         }
         onExit={() => onClose(null)}
       />
@@ -265,7 +279,7 @@ export function Tutorial({ onClose }: TutorialProps) {
     return (
       <Dialog
         key="welcome"
-        title={`Te doy la bienvenida a ${APP_NAME}`}
+        title={`Te doy la bienvenida a ${edition.name}`}
         onClose={() => onClose(null)}
         actions={actions}
         size="xl"

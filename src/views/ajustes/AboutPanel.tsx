@@ -10,6 +10,7 @@ import {
   loadLicenseText,
   loadThirdPartyNotices,
 } from "../../app/legal";
+import { useStore } from "../../app/store";
 import { Button } from "../../components/ui/Button";
 import { Dialog } from "../../components/ui/Dialog";
 import { Card, Notice } from "../../components/ui/surfaces";
@@ -23,6 +24,7 @@ interface LegalText {
 
 /** Versión, autor, licencia y avisos legales de la app. */
 export function AboutPanel() {
+  const { edition } = useStore().services;
   const [shown, setShown] = useState<LegalText | null>(null);
 
   function show(title: string, load: () => Promise<string>) {
@@ -46,7 +48,7 @@ export function AboutPanel() {
         />
         <div className="min-w-0">
           <p className="text-lg leading-tight font-bold">
-            {APP_NAME}{" "}
+            {edition.name}{" "}
             <span className="text-ink/70 font-mono text-sm font-normal">
               versión {APP_VERSION}
             </span>

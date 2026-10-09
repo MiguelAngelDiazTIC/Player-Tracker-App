@@ -40,6 +40,10 @@ function plural(count: number, one: string, many: string): string {
 export function BackupPanel() {
   const { services, reload } = useStore();
   const { repository, platform } = services;
+  // Sin registro de scrims no se habla de partidas: no hay dónde verlas.
+  const { scrimLog } = services.edition;
+  const andMatches = (count: number) =>
+    scrimLog ? ` y ${plural(count, "partida", "partidas")}` : "";
   const [message, setMessage] = useState<Message>(null);
   const [pending, setPending] = useState<PendingImport | null>(null);
   const [busy, setBusy] = useState(false);
@@ -67,7 +71,7 @@ export function BackupPanel() {
       if (path) {
         setMessage({
           tone: "success",
-          text: `Exportados ${plural(data.days.length, "día", "días")} y ${plural(data.scrimMatches.length, "partida", "partidas")} a ${path}`,
+          text: `Exportados ${plural(data.days.length, "día", "días")}${andMatches(data.scrimMatches.length)} a ${path}`,
         });
       }
     }, "No se pudo exportar");
@@ -114,7 +118,7 @@ export function BackupPanel() {
       await reload();
       setMessage({
         tone: "success",
-        text: `Importación hecha: ${plural(summary.daysWritten, "día", "días")} y ${plural(summary.scrimsWritten, "partida", "partidas")}.`,
+        text: `Importación hecha: ${plural(summary.daysWritten, "día", "días")}${andMatches(summary.scrimsWritten)}.`,
         details: [
           ...(summary.daysSkipped > 0
             ? [
@@ -192,11 +196,25 @@ export function BackupPanel() {
         >
           <p className="font-mono break-all">{pending.fileName}</p>
           <p>
-            Contiene {plural(pending.data.days.length, "día", "días")},{" "}
-            {plural(pending.data.scrimMatches.length, "partida", "partidas")} y{" "}
-            {plural(pending.data.fieldDefinitions.length, "campo", "campos")}.
+            Contiene {plural(pending.data.days.length, "día", "días")}
+            {scrimLog
+              ? `, ${plural(pending.data.scrimMatches.length, "partida", "partidas")}`
+              : ""}{" "}
+            y {plural(pending.data.fieldDefinitions.length, "campo", "campos")}.
             Los campos y ajustes del archivo sustituyen a los actuales.
           </p>
+          {!scrimLog && pending.data.scrimMatches.length > 0 ? (
+            <Notice>
+              El archivo trae{" "}
+              {plural(
+                pending.data.scrimMatches.length,
+                "partida de scrims o 10mans",
+                "partidas de scrims o 10mans",
+              )}
+              . Esta edición no tiene ese registro: el recuento de cada día pasa
+              a la columna de la Tabla y las partidas se guardan sin mostrarse.
+            </Notice>
+          ) : null}
           {repeated > 0 ? (
             <Notice tone="warning">
               {plural(repeated, "día ya existe", "días ya existen")} en esta

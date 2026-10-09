@@ -1,5 +1,6 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
+import { EDITIONS, type EditionId } from "../app/edition";
 import type { PickedFile, Platform, Services } from "../app/services";
 import { createRepository } from "../data/repository";
 import { createMemoryAttachments, createMemoryDriver } from "./memoryDriver";
@@ -29,11 +30,17 @@ export interface TestServices extends Services {
 /** Servicios en memoria: SQLite de `node:sqlite` y un sistema sin diálogos. */
 export async function createTestServices({
   tutorialSeen = true,
+  edition: editionId = "base",
 }: {
   /** Las pruebas arrancan con el tutorial ya visto, salvo las suyas. */
   tutorialSeen?: boolean;
+  edition?: EditionId;
 } = {}): Promise<TestServices> {
-  const repository = createRepository(createMemoryDriver());
+  const edition = EDITIONS[editionId];
+  const repository = createRepository(
+    createMemoryDriver(),
+    edition.defaultFields,
+  );
   await repository.init();
 
   const test: Pick<
@@ -92,5 +99,5 @@ export async function createTestServices({
     },
   };
 
-  return Object.assign(test, { repository, platform });
+  return Object.assign(test, { repository, platform, edition });
 }

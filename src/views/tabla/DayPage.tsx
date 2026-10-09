@@ -35,8 +35,15 @@ export function DayPage({
   onOpenNote,
 }: DayPageProps) {
   const store = useStore();
-  const { days, fields, scrims, setDayValue, setDayFeelings, deleteDay } =
-    store;
+  const {
+    days,
+    fields,
+    scrims,
+    setDayValue,
+    setDayFeelings,
+    deleteDay,
+    services,
+  } = store;
   const daySessions = store.sessions.filter((session) => session.date === date);
   const sessionTotals = rankedTotals(daySessions);
   // Notas que mencionan el día y notas que el día menciona en sus feelings.
@@ -274,8 +281,10 @@ export function DayPage({
           }
         >
           <p>
-            Se borran sus valores y sus feelings. Las partidas de scrims y
-            10mans de ese día se conservan en su registro.
+            Se borran sus valores y sus feelings.
+            {services.edition.scrimLog
+              ? " Las partidas de scrims y 10mans de ese día se conservan en su registro."
+              : null}
           </p>
         </Dialog>
       ) : null}
