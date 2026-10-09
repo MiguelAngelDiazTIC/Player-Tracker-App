@@ -404,6 +404,15 @@ Se construye antes que el servidor y con datos de ejemplo, para que la app y la 
 - Una interfaz `MatchSource` (`fetchDay(fecha)`) aísla de dónde salen las partidas, para que el plan B solo cambie la fuente.
 - Pruebas: conversión de una partida, día con varias partidas y agentes, partida que empieza antes de medianoche, colas filtradas, sin duplicados al repetir.
 
+Cómo quedó hecho (09/10/2026):
+
+- **Contrato con el servidor** (`riotMatchSchema`): cada partida llega como `{ matchId, queueId, startedAtMillis, map, agent, result, kills, deaths, score, rounds }`, con el mapa y el agente ya por su nombre, el resultado ya calculado (`win`, `loss`, `draw` o `null`) y solo las cifras del jugador. La 7.3 debe devolver exactamente eso; la app lo valida con `riotMatchesSchema`.
+- `planDaySync(fecha, partidas, sesiones, colas, newId)` decide qué partidas son nuevas y qué se escribe en el día. Descarta las de otras colas y las de otro día, no repite una partida que la fuente devuelva dos veces y deja como están las ya guardadas. El resumen del día incluye también las partidas apuntadas a mano ese día: si alguien apunta una partida a mano y luego la sincroniza, contará dos veces hasta que borre una.
+- **Colas**: `RIOT_QUEUES` (competitivo, Premier, no competitivo y Swiftplay; las de rondas, que dan un K/D y un ACS comparables). El ajuste `riot.queues` guarda las añadidas; el competitivo cuenta siempre. La pantalla para elegirlas llega con la tarjeta de Riot de la 7.4.
+- **Campos "Agentes" y "Mapas"**: están en la plantilla y, para las carpetas que ya existían, los añade la migración 4 al final del grupo Rendimiento, sin tocar un campo del usuario que ya usara esa clave. Se pueden escribir a mano, y el botón "Usar estas cifras en el día" de la página del día también los rellena desde Rankeds (`rankedDayValues` en `src/domain/ranked.ts`, que es el mismo resumen que usa la sincronización).
+- `source` admite `riot`. Un JSON con partidas de Riot no se puede importar en la 1.0.0, que no conoce esa fuente; hay que actualizar la app antes.
+- Los nombres de `queueId` son los de la documentación de Riot y, como dice el apartado de endpoints, se confirman contra la referencia del portal al tener la clave.
+
 #### 7.3 Servidor de sincronización
 
 Pequeño, sin base de datos de usuarios y en el mismo repositorio (`server/`, TypeScript, licencia GPL, con sus pruebas).

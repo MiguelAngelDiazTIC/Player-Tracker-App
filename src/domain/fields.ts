@@ -163,6 +163,9 @@ export const DEFAULT_FIELDS: readonly FieldDefinition[] = [
     group: "Rendimiento",
     thresholds: { mode: "average" },
   },
+  // Lo jugado ese día, como `Jett ×3, Raze ×1`. Ver `rankedDayValues`.
+  { key: "agents", label: "Agentes", type: "text", group: "Rendimiento" },
+  { key: "maps", label: "Mapas", type: "text", group: "Rendimiento" },
 ].map((field, index) => ({
   thresholds: null,
   ...field,

@@ -252,7 +252,7 @@ describe("copias entre ediciones", () => {
     const dialog = await screen.findByRole("dialog", {
       name: "Importar datos",
     });
-    expect(dialog).toHaveTextContent("Contiene 13 días y 11 campos");
+    expect(dialog).toHaveTextContent("Contiene 13 días y 13 campos");
     expect(dialog).toHaveTextContent(
       "El archivo trae 18 partidas de scrims o 10mans",
     );

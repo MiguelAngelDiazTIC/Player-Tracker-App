@@ -166,6 +166,66 @@ describe("migraciones", () => {
     ]);
     expect(applied).toEqual([99]);
   });
+
+  it("añaden agentes y mapas a una instalación que ya tenía sus campos", async () => {
+    // Una carpeta de la 1.0: migraciones hasta la 3 y la plantilla de entonces,
+    // más un campo propio al final.
+    const driver = createMemoryDriver();
+    await migrate(
+      driver,
+      MIGRATIONS.filter((item) => item.version <= 3),
+    );
+    const repository = createRepository(driver);
+    const old = DEFAULT_FIELDS.filter(
+      (item) => item.key !== "agents" && item.key !== "maps",
+    );
+    await repository.saveFields([
+      ...old,
+      { ...old[0], id: "propio", key: "cafe", label: "Cafés", order: 40 },
+    ]);
+
+    await repository.init();
+    await repository.init();
+
+    const fields = await repository.listFields();
+    expect(fields).toHaveLength(old.length + 3);
+    expect(fields.slice(-3)).toMatchObject([
+      { key: "cafe", order: 40 },
+      {
+        id: "default-agents",
+        key: "agents",
+        label: "Agentes",
+        type: "text",
+        group: "Rendimiento",
+        order: 41,
+        thresholds: null,
+        archived: false,
+      },
+      { id: "default-maps", key: "maps", label: "Mapas", order: 42 },
+    ]);
+  });
+
+  it("no pisan un campo del usuario que ya usaba esa clave", async () => {
+    const driver = createMemoryDriver();
+    await migrate(
+      driver,
+      MIGRATIONS.filter((item) => item.version <= 3),
+    );
+    const repository = createRepository(driver);
+    const mine = {
+      ...DEFAULT_FIELDS[0],
+      id: "mio",
+      key: "agents",
+      label: "Mis agentes",
+    };
+    await repository.saveFields([mine]);
+
+    await repository.init();
+
+    const fields = await repository.listFields();
+    expect(fields.filter((item) => item.key === "agents")).toEqual([mine]);
+    expect(fields.map((item) => item.key)).toContain("maps");
+  });
 });
 
 describe("repositorio", () => {

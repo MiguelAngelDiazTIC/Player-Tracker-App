@@ -12,7 +12,7 @@ import { emptyDay } from "../../domain/day";
 import { groupFields, type FieldDefinition } from "../../domain/fields";
 import { formatStat } from "../../domain/format";
 import { backlinksTo, noteName, notesMentioningDay } from "../../domain/notes";
-import { rankedTotals, type RankedTotals } from "../../domain/ranked";
+import { rankedDayValues, rankedTotals } from "../../domain/ranked";
 import { countScrimsByDate } from "../../domain/scrims";
 import { FeelingsEditor } from "./FeelingsEditor";
 
@@ -67,15 +67,10 @@ export function DayPage({
   const title = formatLongDate(date);
 
   /** Pasa a los campos del día lo que suman sus partidas de ranked. */
-  function applyTotals(totals: RankedTotals) {
-    const has = (key: string) =>
-      fields.some((field) => field.key === key && !field.archived);
-    if (has("rankeds")) setDayValue(date, "rankeds", totals.count);
-    if (has("kd") && totals.kd !== null) {
-      setDayValue(date, "kd", Math.round(totals.kd * 100) / 100);
-    }
-    if (has("acs") && totals.acs !== null) {
-      setDayValue(date, "acs", Math.round(totals.acs));
+  function applyTotals() {
+    for (const [key, value] of Object.entries(rankedDayValues(daySessions))) {
+      const has = fields.some((field) => field.key === key && !field.archived);
+      if (has && value !== null) setDayValue(date, key, value);
     }
   }
 
@@ -206,8 +201,8 @@ export function DayPage({
               {daySessions.length > 0 ? (
                 <Button
                   variant="ghost"
-                  title="Copia el recuento, el K/D y el ACS de las partidas a los campos del día"
-                  onClick={() => applyTotals(sessionTotals)}
+                  title="Copia el recuento, el K/D, el ACS, los agentes y los mapas de las partidas a los campos del día"
+                  onClick={applyTotals}
                 >
                   Usar estas cifras en el día
                 </Button>

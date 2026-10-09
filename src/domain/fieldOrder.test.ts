@@ -48,7 +48,7 @@ describe("ordenar campos", () => {
       "Juego: rankeds scrims dms",
       "Hábitos core: gym supplements nutrition",
       "Sueño: sleep_score sleep_hours kovaaks",
-      "Rendimiento: kd acs",
+      "Rendimiento: kd acs agents maps",
     ]);
   });
 

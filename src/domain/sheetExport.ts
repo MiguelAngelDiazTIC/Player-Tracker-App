@@ -1,7 +1,7 @@
 import { formatDate } from "./dates";
 import type { Day } from "./day";
 import { sortFields, type FieldDefinition, type FieldValue } from "./fields";
-import { sessionAcs, type RankedSession } from "./ranked";
+import { isSyncedSession, sessionAcs, type RankedSession } from "./ranked";
 import type { WeeklyReview } from "./review";
 import {
   kdRatio,
@@ -159,7 +159,7 @@ export function rankedsSheet(sessions: readonly RankedSession[]): ExportSheet {
           round2(kdRatio(session.kills, session.deaths)),
           session.rounds,
           acs === null ? null : Math.round(acs),
-          session.source === "henrikdev" ? "Sincronizada" : "Manual",
+          isSyncedSession(session) ? "Sincronizada" : "Manual",
         ];
       }),
     ],

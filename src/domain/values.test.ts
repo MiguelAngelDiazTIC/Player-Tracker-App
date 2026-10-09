@@ -120,7 +120,7 @@ describe("campos", () => {
       ["Juego", ["Rankeds", "10mans / scrims", "DMs", "Kovaaks"]],
       ["Hábitos core", ["Gimnasio", "Suplementación", "Nutrición"]],
       ["Sueño", ["Sleep score", "Horas de sueño"]],
-      ["Rendimiento", ["K/D", "ACS"]],
+      ["Rendimiento", ["K/D", "ACS", "Agentes", "Mapas"]],
     ]);
   });
 

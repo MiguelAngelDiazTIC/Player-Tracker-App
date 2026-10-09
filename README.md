@@ -12,7 +12,7 @@ Es una app para Windows, gratuita y libre. Funciona sin cuenta y sin internet: t
 
 ## Qué puedes hacer
 
-- **Tabla**: una fila por día, como en una hoja de cálculo. Rankeds, scrims, DMs, Kovaaks, gimnasio, suplementación, nutrición, sueño, K/D y ACS, con colores según tus umbrales y una gráfica por columna.
+- **Tabla**: una fila por día, como en una hoja de cálculo. Rankeds, scrims, DMs, Kovaaks, gimnasio, suplementación, nutrición, sueño, K/D, ACS, agentes y mapas, con colores según tus umbrales y una gráfica por columna.
 - **Página del día**: los campos del día y un editor para escribir tus feelings, con `#etiquetas` como `#tilt` o `#saturado`.
 - **Rankeds** y **Scrims y 10mans**: cada partida con su mapa, agente y resultado, y tus cifras por mapa y por agente.
 - **Calendario**: mapa de calor mensual de la métrica que elijas.

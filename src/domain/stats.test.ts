@@ -353,6 +353,8 @@ describe("chartKind", () => {
       sleep_hours: "line-goal",
       kd: "line-average",
       acs: "line-average",
+      agents: null,
+      maps: null,
     });
   });
 

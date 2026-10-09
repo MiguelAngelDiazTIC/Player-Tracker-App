@@ -420,7 +420,10 @@ export function TablaView({
                           <td
                             key={column.id}
                             className={cx(
-                              "border-ink/10 min-w-16 border-b p-0",
+                              "border-ink/10 border-b p-0",
+                              // Un texto (agentes, mapas) necesita más sitio
+                              // que una cifra.
+                              field.type === "text" ? "min-w-40" : "min-w-16",
                               STATUS_TINT[status],
                             )}
                           >

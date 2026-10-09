@@ -2,7 +2,7 @@ import { z } from "zod";
 import { isoDateSchema } from "./day";
 import { SCRIM_RESULTS } from "./scrims";
 
-export const RANKED_SOURCES = ["manual", "henrikdev"] as const;
+export const RANKED_SOURCES = ["manual", "henrikdev", "riot"] as const;
 
 const count = z.number().int().min(0).nullable();
 
@@ -18,11 +18,19 @@ export const rankedSessionSchema = z.object({
   score: count,
   rounds: count,
   source: z.enum(RANKED_SOURCES),
-  /** Id de la partida en HenrikDev, de cuando la app sincronizaba. */
+  /**
+   * Id de la partida en su fuente: `riot:<matchId>`, o el de HenrikDev de
+   * cuando la app sincronizaba con él.
+   */
   externalMatchId: z.string().nullable(),
 });
 
 export type RankedSession = z.infer<typeof rankedSessionSchema>;
+
+/** `true` si la partida llegó de una sincronización y no se apuntó a mano. */
+export function isSyncedSession(session: Pick<RankedSession, "source">) {
+  return session.source !== "manual";
+}
 
 export function emptyRankedSession(id: string, date: string): RankedSession {
   return {
@@ -118,4 +126,40 @@ export function rankedBy(
   return [...groups.entries()]
     .map(([name, list]) => ({ name, ...rankedTotals(list) }))
     .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+}
+
+/** `Jett ×3, Raze ×1`: lo jugado, de más a menos partidas. */
+export function playedSummary(
+  sessions: readonly RankedSession[],
+  key: "map" | "agent",
+): string {
+  return rankedBy(sessions, key)
+    .map((group) => `${group.name} ×${group.count}`)
+    .join(", ");
+}
+
+/**
+ * Lo que las partidas de un día dicen de él, por clave de campo. `null` es
+ * "las partidas no lo dicen": ese campo del día se deja como esté.
+ */
+export interface RankedDayValues {
+  rankeds: number;
+  kd: number | null;
+  acs: number | null;
+  agents: string | null;
+  maps: string | null;
+}
+
+/** Resumen de las partidas de un día, con el redondeo de sus campos. */
+export function rankedDayValues(
+  sessions: readonly RankedSession[],
+): RankedDayValues {
+  const totals = rankedTotals(sessions);
+  return {
+    rankeds: totals.count,
+    kd: totals.kd === null ? null : Math.round(totals.kd * 100) / 100,
+    acs: totals.acs === null ? null : Math.round(totals.acs),
+    agents: playedSummary(sessions, "agent") || null,
+    maps: playedSummary(sessions, "map") || null,
+  };
 }

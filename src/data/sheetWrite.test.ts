@@ -101,6 +101,8 @@ describe("formato de la hoja", () => {
       "Horas de sueño",
       "K/D",
       "ACS",
+      "Agentes",
+      "Mapas",
       "Feelings del día",
     ]);
     expect(sheet.rows[1].slice(0, 12)).toEqual([

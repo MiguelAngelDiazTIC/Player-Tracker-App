@@ -40,6 +40,7 @@ import {
   type ParseResult,
 } from "../../domain/parse";
 import {
+  isSyncedSession,
   rankedBy,
   rankedTotals,
   sessionAcs,
@@ -437,9 +438,7 @@ export function RankedsView({ focusDate = null }: RankedsViewProps) {
                       </td>
                       <td className={`${CELL} min-w-28 px-2`}>
                         <Chip>
-                          {session.source === "henrikdev"
-                            ? "Sincronizada"
-                            : "Manual"}
+                          {isSyncedSession(session) ? "Sincronizada" : "Manual"}
                         </Chip>
                       </td>
                       <td className={`${CELL} min-w-10`}>

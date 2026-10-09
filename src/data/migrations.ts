@@ -92,6 +92,25 @@ export const MIGRATIONS: readonly Migration[] = [
       )`,
     ],
   },
+  {
+    version: 4,
+    name: "Campos de agentes y mapas",
+    // Para las instalaciones que ya tenían sus campos: se añaden al final, en
+    // el grupo Rendimiento. Una base recién creada aún no tiene campos (el
+    // `WHERE EXISTS` no deja pasar nada) y los recibe con la plantilla.
+    statements: (
+      [
+        ["agents", "Agentes"],
+        ["maps", "Mapas"],
+      ] as const
+    ).map(
+      ([key, label]) =>
+        `INSERT OR IGNORE INTO field_definitions (id, key, label, type, "group", "order")
+         SELECT 'default-${key}', '${key}', '${label}', 'text', 'Rendimiento',
+           (SELECT MAX("order") + 1 FROM field_definitions)
+         WHERE EXISTS (SELECT 1 FROM field_definitions)`,
+    ),
+  },
 ];
 
 /** Aplica las migraciones pendientes y devuelve las versiones aplicadas. */

@@ -185,6 +185,8 @@ describe("Tabla", () => {
       "Horas de sueño",
       "K/D",
       "ACS",
+      "Agentes",
+      "Mapas",
       "Feelings del día",
     ]);
   });
@@ -535,7 +537,7 @@ describe("Ajustes", () => {
       name: "Importar datos",
     });
     expect(dialog).toHaveTextContent(
-      "Contiene 13 días, 18 partidas y 11 campos",
+      "Contiene 13 días, 18 partidas y 13 campos",
     );
     await target.user.click(
       within(dialog).getByRole("button", { name: "Importar" }),
@@ -599,6 +601,8 @@ describe("Ajustes", () => {
       "Horas de sueño",
       "K/D",
       "ACS",
+      "Agentes",
+      "Mapas",
       "Feelings del día",
     ]);
 
@@ -1093,6 +1097,12 @@ describe("Rankeds", () => {
     expect(screen.getByLabelText("Rankeds")).toHaveValue("2");
     expect(screen.getByLabelText("K/D")).toHaveValue("1.00");
     expect(screen.getByLabelText("ACS")).toHaveValue("200");
+    expect(screen.getByLabelText<HTMLInputElement>("Agentes").value).toContain(
+      "Raze ×1",
+    );
+    expect(screen.getByLabelText<HTMLInputElement>("Mapas").value).toContain(
+      "Bind ×1",
+    );
 
     await user.click(
       within(card).getByRole("button", { name: "Ver partidas" }),
