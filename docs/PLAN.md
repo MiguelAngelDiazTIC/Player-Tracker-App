@@ -16,7 +16,7 @@ No las cambies sin preguntar al usuario.
 - **10mans y scrims** van en un registro aparte, una entrada por partida. Sus estadísticas no se mezclan con las de rankeds; la fila del día solo muestra el recuento.
 - **Una gráfica por estadística** debajo de cada tabla (la diaria y la de scrims), siguiendo los filtros y el rango de fechas de la tabla.
 - Estilo **glassmorphism** según la skill `glassmorphism` de [bergside/awesome-design-skills](https://github.com/bergside/awesome-design-skills) (archivos `skills/glassmorphism/SKILL.md` y `DESIGN.md`).
-- K/D y ACS automáticos: solo serían posibles con la API no oficial de [HenrikDev](https://docs.henrikdev.xyz). Se hizo en la fase 4 y se retiró el 03/10/2026 (ver "Sincronización con HenrikDev"). Vuelve el 11/10/2026 y desde el 13/10/2026 es la fuente de partidas de las dos ediciones (fase 7.6); la API oficial de Riot queda aparcada. Tracker.gg no da acceso a Valorant y Riot no aprueba apps de uso personal. La fase 7 usa la API oficial de Riot registrando MikaLog como producto público, con un servidor propio gratuito y RSO. La entrada manual es siempre la base.
+- K/D y ACS automáticos: con la API no oficial de [HenrikDev](https://docs.henrikdev.xyz) y la clave de cada jugador. Se hizo en la fase 4, se retiró el 03/10/2026 (ver "Sincronización con HenrikDev") y volvió el 11/10/2026; desde el 13/10/2026 es la única fuente de partidas, en las dos ediciones (fase 7.6). La API oficial de Riot se descartó ese día: pide un producto público aprobado, RSO y un servidor propio. Tracker.gg no da acceso a Valorant. La entrada manual es siempre la base.
 - Interfaz en español.
 
 ## Tecnologías
@@ -172,7 +172,7 @@ Cómo funciona:
 
 Trabaja una fase cada vez. Al acabar cada fase: pruebas en verde y un commit por bloque lógico en su propia rama. El usuario decidió el 02/10/2026 encadenar las fases sin parar a probar entre una y otra: las pruebas con datos reales y los cambios se harán cuando haya una versión 1.0. Los criterios "Terminada cuando" que dependen del uso real quedan para entonces.
 
-Estado (03/10/2026): las fases 0 a 5 están implementadas. La fase 6 (licencia y avisos legales) también. Antes de publicar la versión 1.0 queda la ronda de pruebas con datos reales y los cambios que salgan de ella. La fase 7 (edición para Saiz y API oficial de Riot) está planificada el 09/10/2026 y sus decisiones están cerradas. A 13/10/2026: 7.1 a 7.3 hechas y solicitud a Riot enviada; la sincronización va con HenrikDev en las dos ediciones (7.6) y lo de Riot oficial queda aparcado.
+Estado (03/10/2026): las fases 0 a 5 están implementadas. La fase 6 (licencia y avisos legales) también. Antes de publicar la versión 1.0 queda la ronda de pruebas con datos reales y los cambios que salgan de ella. La fase 7 (edición para Saiz y sincronización de partidas) se planificó el 09/10/2026. A 13/10/2026: 7.1, 7.2 y 7.6 hechas; la sincronización va solo con HenrikDev, en las dos ediciones, y la 7.3, la 7.4 y la 7.5 (API oficial de Riot) están retiradas.
 
 ### Fase 0: cimientos
 
@@ -337,11 +337,13 @@ Cómo quedó hecho: los textos de la app están en `src/app/legal.ts` y la tarje
 
 Pendiente de revisar por el usuario, porque no es algo que la app pueda garantizar: esto sigue las prácticas habituales de software libre y la política de Riot para proyectos de fans, pero no es asesoramiento legal. Si la app llegara a tener ingresos o a usar la API de Riot, habría que revisarlo.
 
-### Fase 7: edición para Saiz y sincronización con la API oficial de Riot 
+### Fase 7: edición para Saiz y sincronización de partidas
 
-Pedida por el usuario el 09/10/2026: una versión paralela para Saiz, jugador profesional, **sin el registro de praccs y 10mans** (se quedan sus columnas en la Tabla) y con **ACS, K/D, agente y mapa automáticos** desde la API oficial de Riot. Las decisiones del usuario están en «Decisiones cerradas de la fase 7», al final de la fase.
+Pedida por el usuario el 09/10/2026: una versión paralela para Saiz, jugador profesional, **sin el registro de praccs y 10mans** (se quedan sus columnas en la Tabla) y con **ACS, K/D, agente y mapa automáticos**. Se planificó sobre la API oficial de Riot; el 13/10/2026 el usuario decidió usar solo HenrikDev (7.6) y borrar todo lo de Riot oficial. Las decisiones del usuario están en «Decisiones cerradas de la fase 7», al final de la fase.
 
-#### Qué pide Riot de verdad (revisado el 09/10/2026)
+#### Qué pide Riot de verdad (revisado el 09/10/2026; vía descartada el 13/10/2026)
+
+Se conserva como explicación de por qué no se usa la API oficial: exige clave de producción, un producto público revisado por Riot, inicio de sesión con RSO y un servidor propio. Nada de esto está ya en el repositorio.
 
 Fuentes: [política de VALORANT](https://support-developer.riotgames.com/hc/en-us/articles/22698769097107-VALORANT), [documentación de VALORANT](https://developer.riotgames.com/docs/valorant), [tipos de clave](https://developer.riotgames.com/docs/portal), [preguntas frecuentes](https://developer.riotgames.com/docs/faqs) y [políticas generales](https://developer.riotgames.com/policies/general).
 
@@ -382,7 +384,7 @@ Esta parte no depende de Riot y se puede hacer ya.
 
 Cómo quedó hecho (09/10/2026):
 
-- `src/app/edition.ts` describe las dos ediciones (nombre, línea de la barra lateral, si hay registro de scrims y plantilla de campos) y llega a la app en `services.edition`. `resolveEdition` falla con un `VITE_EDITION` mal escrito, para no compilar la base sin avisar. La sincronización con Riot se añadirá a la edición en la 7.4.
+- `src/app/edition.ts` describe las dos ediciones (nombre, línea de la barra lateral, si hay registro de scrims y plantilla de campos) y llega a la app en `services.edition`. `resolveEdition` falla con un `VITE_EDITION` mal escrito, para no compilar la base sin avisar.
 - `VITE_EDITION` se fija con el modo de Vite: los scripts `dev:saiz` y `build:saiz` pasan `--mode saiz`, y `vite.config.ts` lo convierte en `VITE_EDITION=saiz` con `define` (antes lo hacía un archivo `.env.saiz`, que parecía un archivo de secretos). `tauri.saiz.conf.json` usa esos scripts como `beforeDevCommand` y `beforeBuildCommand`. Así no hace falta ninguna variable de entorno en Windows.
 - `sectionsFor(edition)` da las secciones de la barra lateral; en `saiz` no está la de scrims y el Dashboard se describe sin ellos. Bajo el nombre de la app, donde la base dice "Road to Top 1", `saiz` dice "Saiz Edition".
 - La columna a mano sale de `withManualScrimCount` (`src/domain/fields.ts`). Como es un `number` sin umbral, las gráficas, el Calendario, los Insights y el Dashboard ya la tratan como volumen sin más cambios.
@@ -411,66 +413,29 @@ Cómo quedó hecho (09/10/2026):
 - **Colas**: `RIOT_QUEUES` (competitivo, Premier, no competitivo y Swiftplay; las de rondas, que dan un K/D y un ACS comparables). El ajuste `riot.queues` guarda las añadidas; el competitivo cuenta siempre. La pantalla para elegirlas llega con la tarjeta de Riot de la 7.4.
 - **Campos "Agentes" y "Mapas"**: están en la plantilla y, para las carpetas que ya existían, los añade la migración 4 al final del grupo Rendimiento, sin tocar un campo del usuario que ya usara esa clave. Se pueden escribir a mano, y el botón "Usar estas cifras en el día" de la página del día también los rellena desde Rankeds (`rankedDayValues` en `src/domain/ranked.ts`, que es el mismo resumen que usa la sincronización).
 - `source` admite `riot`. Un JSON con partidas de Riot no se puede importar en la 1.0.0, que no conoce esa fuente; hay que actualizar la app antes.
-- Los nombres de `queueId` son los de la documentación de Riot y, como dice el apartado de endpoints, se confirman contra la referencia del portal al tener la clave.
+- Los nombres de `queueId` son los de la documentación de Riot.
+- Desde el 13/10/2026 este formato ya no viene de ningún servidor: lo produce la fuente de HenrikDev (7.6). `RiotMatch`, `MatchSource`, `planDaySync`, las colas y `riotExternalId` siguen en `src/domain/riotMatches.ts` como formato común de la app. Lo que arriba habla del servidor y de la 7.3 quedó retirado con ella.
 
-#### 7.3 Servidor de sincronización
+#### 7.3 Servidor de sincronización (retirado el 13/10/2026)
 
-Pequeño, sin base de datos de usuarios y en el mismo repositorio (`server/`, TypeScript, licencia GPL, con sus pruebas).
+Se quitó la carpeta `server/` entera: el Worker de Cloudflare que guardaba la clave de Riot y el cliente de RSO, con el inicio de sesión (`/rso/login`, `/rso/callback`, `/rso/result`), `POST /sync`, sus pruebas y los scripts `server:dev` y `server:deploy`. El usuario borró también el Worker `mikalog-sync` en Cloudflare. El código está en el historial de git (commit `2534d54`).
 
-- **Dónde**: Cloudflare Workers (el plan gratuito sobra para esto) con un almacén KV solo para datos de vida corta. La clave de producción y el cliente de RSO se guardan como secretos del Worker, nunca en el repositorio. Coste cero: el subdominio gratuito `workers.dev` (`https://mikalog-sync.miguelangeldiaztic.workers.dev`, reservado el 09/10/2026 con un Worker de ejemplo que la 7.3 sustituye) para el servidor y las URL de RSO, y GitHub Pages para la web del producto y la política de privacidad. Un dominio propio (unos 10 € al año) solo si Riot lo pide al revisar.
-- **Inicio de sesión**:
-  1. La app crea un `state` aleatorio y abre el navegador en `GET /rso/login?state=…`, que redirige a la página de inicio de sesión de Riot.
-  2. Riot vuelve a `GET /rso/callback`. El servidor cambia el código por los tokens con el secreto, pide `accounts/me` y guarda en KV, durante 5 minutos y bajo ese `state`, el `puuid`, el Riot ID y el token de refresco. Muestra "Ya puedes volver a MikaLog".
-  3. La app pregunta `GET /rso/result?state=…` cada pocos segundos; al recibirlo, el servidor lo borra de KV.
-- **Sincronizar** `POST /sync` con el token de refresco y la fecha: el servidor renueva el token, comprueba con `accounts/me` que el `puuid` es de quien pregunta (así solo se leen datos de jugadores que han dado su consentimiento), pide la lista de partidas y cada partida de esa fecha, resuelve agente y mapa con VAL-CONTENT (en caché un día) y devuelve solo lo que la app usa. Devuelve también el token de refresco nuevo si Riot lo cambia.
-- Las partidas no cambian, así que el servidor puede guardarlas en caché para gastar menos peticiones. Respeta `Retry-After` cuando Riot devuelve 429.
-- El servidor no guarda nada de forma permanente: ni cuentas, ni partidas asociadas a nadie, ni registros con datos del jugador.
+#### 7.4 Conectar la cuenta de Riot en la app (retirada el 13/10/2026)
 
-Cómo quedó hecho (09/10/2026). El código está en `server/` y su contrato completo (rutas, cuerpos, errores y despliegue) en [server/README.md](../server/README.md). Lo que cambia respecto a lo de arriba:
+No se llegó a hacer. Era la tarjeta "Cuenta de Riot" con el inicio de sesión de Riot (RSO) y la sincronización a través del servidor; no hay código suyo que quitar. La tarjeta, los botones y la clave en el almacén de credenciales que sí existen son los de HenrikDev (7.6).
 
-- **Recoger el inicio de sesión pide un secreto, no el `state`**. La app crea un secreto (`verifier`) y manda al navegador solo su SHA-256 (`/rso/login?challenge=…`), que es el `state` de Riot. El resultado se recoge con `POST /rso/result` y el secreto. Así, quien vea la URL del navegador o su historial no puede llevarse el token.
-- **`/sync` recibe un intervalo en milisegundos, no una fecha**: el servidor no sabe en qué zona horaria vive el jugador, y el día es el suyo. Como mucho 48 horas y 30 partidas por petición; si hay más, responde `truncated` y la app repite.
-- **Sin caché de partidas**. En su lugar la app manda las partidas que ya tiene (`known`) y el servidor no las vuelve a pedir a Riot. Se gastan las mismas peticiones y el servidor no guarda nada de nadie. En KV solo hay inicios de sesión a medias (5 minutos) y los nombres de agentes y mapas (1 día).
-- **La región sale de la cuenta**: al iniciar sesión el servidor pregunta a Riot el `activeShard` y se lo da a la app, que lo manda en cada `/sync`. El `puuid` no sale del servidor: la app no lo necesita.
-- **Las colas se filtran en el servidor** con la lista de partidas, antes de pedir cada una; `queues` va en la petición.
-- **Sin secretos responde 503** (`not_configured`), así que se puede desplegar ya y `GET /` dice si está configurado.
-- Sin dependencias: no tiene `package.json` propio. Las pruebas simulan a Riot y corren con el `npm test` de la raíz; `npm run typecheck` también lo cubre. Se arranca con `npm run server:dev` y se despliega con `npm run server:deploy` (wrangler por `npx`).
-- Probado en local con el motor de Cloudflare (`wrangler dev`): el arranque, la redirección a Riot, el aviso de permiso denegado y la recogida única. **Sin desplegar y sin probar contra Riot**: lo que hay que confirmar con la clave está al final de `server/README.md`.
+#### 7.5 Solicitud a Riot (retirada el 13/10/2026)
 
-Para la 7.4: `MatchSource.fetchDay` tendrá que recibir las partidas ya guardadas del día (para `known`) y la app debe guardar el `shard` junto al Riot ID.
-
-#### 7.4 Conectar la cuenta y sincronizar en la app
-
-- **Ajustes > "Cuenta de Riot"**: botón "Conectar con Riot", el texto de consentimiento (qué se lee, que solo se usa en tu ordenador, el aviso de Riot de que vincular la cuenta hace públicos tus datos) y, ya conectada, el Riot ID con "Desconectar".
-- **Token de refresco** en el almacén de credenciales de Windows (crate `keyring`, dos comandos de Tauri: guardar y leer), nunca en la base de datos ni en el JSON exportado ni en las copias automáticas.
-- **"Sincronizar"** en la página del día y "Sincronizar los últimos 7 días" en Rankeds. Guarda las partidas nuevas en `ranked_sessions` sin tocar las que ya estaban (para respetar lo corregido a mano) y escribe en el día `rankeds`, `kd`, `acs`, `agents` y `maps`. Todo sigue siendo editable. Sin sincronizar en segundo plano: solo al pulsar.
-- **Red**: vuelve `tauri-plugin-http`, con permiso solo para el dominio del servidor, y `connect-src` de la CSP se amplía solo a ese dominio. Para abrir el navegador, `tauri-plugin-opener` limitado a la URL de inicio de sesión del servidor.
-- **Edición**: la tarjeta y los botones existen en las dos ediciones (es la misma función del producto que se registra en Riot); en la edición base la tarjeta está en Ajustes y la sincronización se activa al conectar la cuenta; en `saiz` viene a la vista y el tutorial añade el paso "Conecta tu cuenta de Riot (opcional)".
-- **Textos legales** (`src/app/legal.ts`, `NOTICE.md`, README): la privacidad pasa de "no envía ningún dato" a "solo se conecta a internet si conectas tu cuenta de Riot, y solo al pulsar Sincronizar; las peticiones pasan por el servidor de MikaLog, que no guarda tus datos". Política de privacidad en una página web (GitHub Pages) para la solicitud de Riot. La regla "Nada de llamadas a internet" de este plan ya recoge esta excepción.
-- Pruebas de interfaz con un servidor simulado: conectar, sincronizar un día, repetir sin duplicar, desconectar borra el token, error de red con aviso claro.
-- **Terminada cuando**: Saiz conecta su cuenta, sincroniza un día y la app da el mismo K/D, ACS, agentes y mapas que su historial del juego, y repetirlo no duplica partidas.
-
-#### 7.5 Solicitud a Riot (la hace el usuario)
-
-La web del producto y la política de privacidad están en `site/` (HTML estático, en español e inglés) y se publican con `.github/workflows/pages.yml` en `https://miguelangeldiaztic.github.io/Player-Tracker-App/` (privacidad en `privacidad.html` y maqueta del flujo para Riot en `maqueta.html`). Si cambia el flujo de la sincronización, la política se actualiza a la vez.
-
-1. Crear en el [portal de desarrolladores](https://developer.riotgames.com/) el producto **MikaLog** (VALORANT, uso: herramienta de entrenamiento para ver tu propio historial y estadísticas). Descripción: app de escritorio gratuita y de código abierto (enlace al repositorio y a la Release), RSO con consentimiento, servidor propio que guarda la clave, sin anuncios ni pagos, sin datos de otros jugadores, sin superposiciones en partida ni MMR.
-2. Adjuntar la maqueta o vídeo del flujo (7.2 y 7.4 con datos de ejemplo), la política de privacidad y la mención de que un jugador profesional ya la usa.
-3. Esperar la respuesta (hasta tres semanas). Si aprueban, pedir el cliente de RSO por el portal, configurar los secretos del servidor y hacer la prueba real con la cuenta de Saiz.
-
-Orden recomendado: 7.1 ya; 7.2 y la maqueta a la vez, y enviar la solicitud; 7.3 y 7.4 mientras Riot responde.
-
-Orden desde el 13/10/2026 (7.1 a 7.3 hechas y solicitud enviada): la 7.6, con HenrikDev en las dos ediciones. La 7.4 queda aparcada hasta que Riot apruebe.
+El usuario retiró la solicitud de clave de producción en el portal de Riot. Se quitaron de la web la maqueta del flujo (`site/maqueta.html`) y el archivo de verificación del producto (`site/riot.txt`); están en el historial de git. La web (`site/`, publicada con `.github/workflows/pages.yml` en `https://miguelangeldiaztic.github.io/Player-Tracker-App/`) se queda, con la política de privacidad reescrita para HenrikDev.
 
 #### 7.6 Sincronización con HenrikDev para todos (decidido el 11/10 y ampliado el 13/10/2026)
 
-El usuario decidió el 11/10/2026 no esperar a Riot y el 13/10/2026 que HenrikDev (API no oficial) sea la fuente de partidas de **las dos ediciones**, con una guía para sacar la clave pensada para cualquier jugador, no solo para Saiz. Lo de Riot oficial (7.2 a 7.5) se mantiene aparcado: el código y el servidor siguen en el repositorio por si Riot aprueba la solicitud.
+El usuario decidió el 11/10/2026 no esperar a Riot y el 13/10/2026 que HenrikDev (API no oficial) sea la **única** fuente de partidas, en **las dos ediciones**, con una guía para sacar la clave pensada para cualquier jugador, no solo para Saiz. Ese mismo día retiró la solicitud a Riot y todo lo de la API oficial (7.3 a 7.5).
 
-- **Riesgo con la solicitud a Riot.** La política general de Riot pide que los productos usen sus servicios para obtener datos ("Products should use supported services from Riot Games for data ingestion"). Con HenrikDev en la app pública, es probable que Riot rechace la solicitud o pida quitarlo. Si Riot aprueba, HenrikDev se sustituye por la fuente oficial (ver "Al aprobar Riot").
 - **Otra `MatchSource`.** `src/domain/henrikMatches.ts` (lógica pura, con pruebas) convierte cada partida de `GET /valorant/v1/stored-matches/{región}/{nombre}/{tag}?mode=competitive&size=60&page=N` en un `RiotMatch`: `matchId` = `meta.id`, `queueId` = `competitive` (se pide solo ese modo; Premier y otros, si se añaden en Ajustes, con una petición por modo), `startedAtMillis` de `meta.started_at`, mapa, agente, resultado y rondas a partir de `teams` y `stats.team`, y kills, muertes y puntuación de `stats`. Se puede partir del código de la fase 4 (`src/domain/henrik.ts` y `src/data/henrikSync.ts`, en el historial hasta el commit `2283552`), quitando la parte de customs y scrims.
-- **El mismo id que Riot.** El id de partida de HenrikDev es el de Riot, así que la fila se guarda con `external_match_id = 'riot:<id>'`: si algún día se pasa a la API oficial, las partidas ya sincronizadas no se duplican. `source` es `henrikdev` para saber de dónde salió: `planDaySync` recibe la fuente en vez de poner siempre `riot`.
+- **El id de la partida.** El id de HenrikDev es el que Riot da a la partida, y la fila se guarda con `external_match_id = 'riot:<id>'`. `source` es `henrikdev`: `planDaySync` recibe la fuente como parámetro.
 - **Páginas**: se piden páginas hasta dejar atrás el día (el historial viene del más reciente al más antiguo). Con la clave básica (30 peticiones por minuto, unos 2 puntos por página) un día o una semana cuestan una o dos peticiones. Si responde 429, se espera lo que diga `Retry-After` y se avisa en la página.
-- **Ajustes > "Sincronizar partidas"**, en las dos ediciones: Riot ID (`Nombre#TAG`), región, clave y "Probar conexión" (`GET /valorant/v2/account/{nombre}/{tag}`). La tarjeta lleva la guía para sacar la clave (ver abajo). El ajuste `sync.source` vale `henrikdev`; la opción "Riot (oficial)" no se muestra mientras Riot no apruebe.
+- **Ajustes > "Sincronizar partidas"**, en las dos ediciones: Riot ID (`Nombre#TAG`), región, clave y "Probar conexión" (`GET /valorant/v2/account/{nombre}/{tag}`). La tarjeta lleva la guía para sacar la clave (ver abajo). El ajuste `sync.source` vale `henrikdev`.
 - **Guía para sacar la clave, para todo el mundo**. Un solo texto en `src/app/henrikGuide.ts` que usan la tarjeta de Ajustes y el tutorial, y la misma guía en [GUIA-HENRIKDEV.md](GUIA-HENRIKDEV.md) y en el README:
   1. Entrar en el Discord de HenrikDev (`https://discord.com/invite/X3GaVkX2YN`; la app lo muestra como texto que se puede copiar, porque no abre enlaces).
   2. Completar la verificación del servidor.
@@ -480,8 +445,7 @@ El usuario decidió el 11/10/2026 no esperar a Riot y el 13/10/2026 que HenrikDe
 - **La clave** va en el almacén de credenciales de Windows (crate `keyring`, dos comandos de Tauri: guardar y leer). Nunca en la base de datos, el JSON exportado ni las copias. Se manda en la cabecera `Authorization`.
 - **Red**: vuelve `tauri-plugin-http`, con permiso solo para `https://api.henrikdev.xyz`, y `connect-src` de la CSP se amplía solo a ese dominio, en las dos ediciones.
 - **Botones**: "Sincronizar" en la página del día y "Sincronizar los últimos 7 días" en Rankeds. Guardan las partidas nuevas sin tocar las que ya estaban y escriben en el día `rankeds`, `kd`, `acs`, `agents` y `maps`. Todo sigue siendo editable. Solo al pulsar, nunca en segundo plano.
-- **Textos legales**: `src/app/legal.ts`, `NOTICE.md`, README y la web (`site/privacidad.html`, y quitar de `site/index.html` y `site/maqueta.html` lo que diga que solo se usa la conexión oficial) pasan a decir que, si el jugador pone su clave de HenrikDev, su Riot ID y su clave se envían a `api.henrikdev.xyz`, un servicio de terceros no oficial, solo al pulsar Sincronizar o Probar conexión. Se cambia a la vez que sale la versión con la sincronización, no antes.
-- **Al aprobar Riot**: se añade la fuente oficial (7.4), `sync.source` pasa a `riot` y, cuando funcione, se decide con el usuario si HenrikDev se quita.
+- **Textos legales**: `src/app/legal.ts`, `NOTICE.md`, README y la web (`site/index.html` y `site/privacidad.html`) dicen que, si el jugador pone su clave de HenrikDev, su Riot ID y su clave se envían a `api.henrikdev.xyz`, un servicio de terceros no oficial, solo al pulsar Sincronizar o Probar conexión.
 - Pruebas: conversión de partidas de ejemplo de HenrikDev (incluida una que empieza antes de medianoche), paginación hasta dejar atrás el día, 429, clave inválida (401/403) con aviso claro, que repetir no duplica, y en las dos ediciones el paso del tutorial y la tarjeta con la guía.
 - **Terminada cuando**: alguien que no conoce la app sigue la guía, pega su clave, sincroniza un día y la app da el mismo K/D, ACS, agentes y mapas que su historial del juego, y repetirlo no duplica partidas.
 
@@ -494,25 +458,25 @@ Cómo quedó hecho (13/10/2026):
 - **Red**: `tauri-plugin-http` con el TLS de Windows (`native-tls`) en vez de `rustls`. Así el instalador no lleva una lista propia de certificados, cuya licencia (CDLA-Permissive-2.0) no estaba en la lista de compatibles de `npm run notices`. **La CSP no se ha tocado**: las peticiones salen por el lado nativo, no por el navegador, y lo que las limita es el permiso `http:default`, solo hacia `https://api.henrikdev.xyz/*`.
 - **429**: no se espera sola. El aviso dice cuántos segundos faltan y el usuario vuelve a pulsar.
 - **Textos**: `src/app/legal.ts` (privacidad y un aviso nuevo, "Sincronización"), `NOTICE.md`, README (con la guía de la clave) y las notas de la Release. La bienvenida del tutorial dice ahora "Lo que apuntas no sale de tu ordenador".
-- **Pendiente a propósito: la web** (`site/`). No se ha tocado, porque se publica al fusionar en `main` y el plan pide cambiarla a la vez que sale la versión. Al publicar hay que actualizar `site/privacidad.html` y quitar de `site/index.html` y `site/maqueta.html` lo que diga que solo se usa la conexión oficial.
+- **La web** (`site/`) se actualizó el 13/10/2026, al retirar lo de Riot oficial: `index.html` y `privacidad.html` describen la sincronización con HenrikDev, y se borraron `maqueta.html` y `riot.txt`.
 - Pruebas: `src/data/henrikSource.test.ts` (conversión, páginas, errores) y `src/App.sync.test.tsx` (la app entera en las dos ediciones: tarjeta, clave, sincronizar un día y la semana, repetir, errores y el paso del tutorial).
 - Comprobado en la app real (modo demo): la clave se guarda, se lee y se borra en el Administrador de credenciales de Windows, y "Probar conexión" llega a HenrikDev y enseña "Clave no válida" con una clave falsa. **Sin comprobar**: una sincronización real con una clave válida, y que Premier, no competitivo y Swiftplay se llamen así en el `mode` de HenrikDev.
 
-#### Plan B si Riot no lo aprueba o no contesta
+#### Si HenrikDev falla o deja de existir
 
-- **B1, HenrikDev**: ya es la fuente de las dos ediciones desde el 13/10/2026 (7.6).
-- **B2, a mano**: como hoy. Rankeds por partida con "Usar estas cifras en el día" y los campos de agentes y mapas escritos a mano. La entrada manual sigue siendo la base en cualquier caso.
+- **A mano**, como siempre: Rankeds por partida con "Usar estas cifras en el día" y los campos de agentes y mapas escritos a mano. La entrada manual es la base en cualquier caso.
+- Otra fuente entraría como otra `MatchSource` que devuelva `RiotMatch`, sin tocar el resto de la app.
 
 #### Decisiones cerradas de la fase 7 (09/10/2026)
 
 1. **Nombre de la edición**: **MikaLog Saiz Edition** (`productName` y título de la ventana en `tauri.saiz.conf.json`; carpeta propuesta `Documentos/MikaLog Saiz Edition`).
 2. **Columna**: se queda una sola, "10mans / scrims", como número a mano.
-3. **Servidor**: sí, pero gratuito: Cloudflare Workers en `workers.dev` y GitHub Pages, sin dominio de pago salvo que Riot lo exija.
-4. **Riot en la edición general**: sí. La sincronización forma parte de MikaLog para cualquier jugador, que es lo que hace que el producto sea público ante Riot.
+3. **Servidor**: no hay. El Worker de Cloudflare se retiró el 13/10/2026 (ver 7.3); GitHub Pages sigue sirviendo la web del producto y la política de privacidad.
+4. **Fuente de partidas** (13/10/2026): solo HenrikDev, en las dos ediciones, con la clave de cada jugador. La API oficial de Riot y su inicio de sesión (RSO) se descartan y se borran del repositorio.
 
 ## Reglas de trabajo
 
 - TypeScript estricto, sin `any`. Lógica de cálculo en funciones puras con pruebas.
-- Nada de telemetría ni llamadas a internet, salvo la sincronización de la fase 7, siempre al pulsar Sincronizar (o Probar conexión): hacia `api.henrikdev.xyz` con la clave del jugador (7.6) y, si Riot aprueba, hacia el servidor de MikaLog con la cuenta de Riot conectada.
+- Nada de telemetría. La única llamada a internet es a `api.henrikdev.xyz`, con la clave del jugador y solo al pulsar Sincronizar o Probar conexión (7.6). No hay servidor de MikaLog ni conexión con la API oficial de Riot.
 - Ante una decisión que cambie lo que el usuario ve o sus datos, pregunta antes.
 - Mantén este plan actualizado si algo cambia.

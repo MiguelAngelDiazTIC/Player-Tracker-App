@@ -14,9 +14,8 @@ App de escritorio (Tauri 2 + React + TypeScript + SQLite) para que un jugador de
 - `src/data/`: SQLite detrás de la interfaz `SqlDriver`, migraciones, repositorio e importación/exportación.
 - `src/app/`: estado de la app (`storeCore.ts`), la interfaz `Platform`, que aísla lo que depende de Tauri, y las ediciones (`edition.ts`: `base` y `saiz`, elegidas al compilar; llegan en `services.edition`).
 - `src/platform/`: implementación de `Platform` con Tauri y el arranque (carpeta de datos).
-- Sincronización de partidas: HenrikDev en las dos ediciones (`src/domain/henrikMatches.ts`, `src/data/henrikSource.ts`, `src/app/sync.ts`). La clave va en el almacén de credenciales (`Platform.secrets`), nunca en la base de datos. La web (`site/`) no se cambia hasta publicar la versión.
+- Sincronización de partidas: solo HenrikDev, en las dos ediciones (`src/domain/henrikMatches.ts`, `src/data/henrikSource.ts`, `src/app/sync.ts`). `src/domain/riotMatches.ts` es el formato común de las partidas, no una conexión con Riot. La clave va en el almacén de credenciales (`Platform.secrets`), nunca en la base de datos.
 - `src/views/` y `src/components/`: pantallas y componentes.
-- `server/`: servidor de sincronización con Riot (Cloudflare Workers, sin dependencias). Su contrato está en `server/README.md` y el formato de cada partida en `src/domain/riotMatches.ts`.
 - `src/test/`: SQLite en memoria (`node:sqlite`) y servicios de prueba; las pruebas de interfaz usan la app entera sobre ellos.
 
 Antes de dar algo por hecho: `npm run lint`, `npm run format:check`, `npm run typecheck` y `npm test`.
