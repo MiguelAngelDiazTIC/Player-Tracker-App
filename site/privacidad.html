@@ -16,68 +16,60 @@
       <nav class="card">
         <a href="./">Inicio</a>
         <a href="privacidad.html">Privacidad</a>
-        <a href="maqueta.html">Maqueta</a>
         <a href="#english">English</a>
       </nav>
 
       <section class="card">
-        <p class="muted">En vigor desde el 9 de octubre de 2026.</p>
+        <p class="muted">En vigor desde el 13 de octubre de 2026.</p>
         <h2>Lo que apuntas en la app</h2>
         <p>
           Todo lo que escribes en MikaLog (días, hábitos, sueño, partidas,
           notas) se guarda solo en la carpeta de datos de tu ordenador. MikaLog
-          no tiene cuentas, no recoge estadísticas de uso y no envía esos datos
-          a nadie.
+          no tiene cuentas ni servidor propio, no recoge estadísticas de uso y
+          no envía esos datos a nadie.
         </p>
 
-        <h2>Si conectas tu cuenta de Riot (opcional)</h2>
+        <h2>Si activas la sincronización de partidas (opcional)</h2>
         <ul>
           <li>
-            Inicias sesión en la página oficial de Riot Games. MikaLog nunca ve
-            tu contraseña.
+            MikaLog puede traer tus partidas con HenrikDev
+            (<code>api.henrikdev.xyz</code>), un servicio de terceros no
+            oficial, ajeno a Riot Games y a MikaLog. Para usarlo sacas tú una
+            clave de HenrikDev y la pones en la app junto a tu Riot ID y tu
+            región.
           </li>
           <li>
-            Riot comparte con MikaLog el identificador de tu cuenta (PUUID) y tu
-            Riot ID. Tu ordenador guarda un token de acceso en el almacén de
-            credenciales de Windows; no va en tus copias ni en las
-            exportaciones.
+            Solo cuando pulsas «Sincronizar» o «Probar conexión», la app envía a
+            HenrikDev tu Riot ID, tu región y tu clave. HenrikDev devuelve a tu
+            ordenador el mapa, el agente, el resultado, las kills, las muertes,
+            la puntuación y las rondas de tus partidas. Nunca se conecta por su
+            cuenta ni en segundo plano.
           </li>
           <li>
-            Solo cuando pulsas «Sincronizar», la app envía ese token, la fecha y
-            los identificadores de las partidas de ese día que ya tiene al
-            servidor de MikaLog
-            (<code>mikalog-sync.miguelangeldiaztic.workers.dev</code>, alojado
-            en Cloudflare). El servidor pide a Riot tus partidas de esa fecha y
-            devuelve a tu ordenador mapa, agente, resultado, kills, muertes,
-            puntuación y rondas de cada una.
+            La clave se guarda en el almacén de credenciales de Windows, no en
+            la carpeta de datos, y no va en tus copias ni en las exportaciones.
+            El Riot ID y la región se guardan con el resto de tus ajustes, en tu
+            ordenador.
           </li>
           <li>
-            El servidor no guarda tu cuenta, tu token, tus partidas ni tus
-            estadísticas, y no escribe registros. Solo conserva, cinco minutos
-            como mucho, los datos del inicio de sesión hasta que la app los
-            recoge. Lo único que guarda en caché son los nombres de los agentes
-            y los mapas del juego, que no son datos de nadie.
+            Las peticiones van directas de tu ordenador a HenrikDev: no pasan
+            por ningún servidor de MikaLog, porque no lo hay. Lo que HenrikDev
+            registre de esas peticiones, como la dirección IP, depende de sus
+            propias condiciones.
           </li>
           <li>
-            Tus estadísticas no se muestran a otros jugadores. Aun así, Riot
-            pide avisar de que vincular tu cuenta hace públicos tus datos de
-            jugador.
-          </li>
-          <li>
-            Cloudflare puede registrar datos técnicos de las peticiones, como la
-            dirección IP, según su propia
-            <a href="https://www.cloudflare.com/privacypolicy/"
-              >política de privacidad</a
-            >.
+            Tus estadísticas no se muestran a otros jugadores y MikaLog no lee
+            datos de nadie más.
           </li>
         </ul>
 
-        <h2>Desconectar</h2>
+        <h2>Dejar de sincronizar</h2>
         <p>
-          En Ajustes &gt; «Cuenta de Riot» &gt; «Desconectar» se borra el token
-          de tu ordenador. También puedes retirar el acceso de MikaLog desde la
-          configuración de tu cuenta de Riot. Las partidas ya sincronizadas
-          siguen en tu carpeta de datos y puedes borrarlas desde la app.
+          En Ajustes &gt; «Sincronizar partidas», borra la clave: se elimina del
+          almacén de credenciales de Windows y la app deja de conectarse. Las
+          partidas ya sincronizadas siguen en tu carpeta de datos y puedes
+          borrarlas desde la app. La clave es tuya: puedes anularla o pedir otra
+          en HenrikDev cuando quieras.
         </p>
 
         <h2>Lo que no hace</h2>
@@ -98,34 +90,33 @@
 
       <section class="card" id="english" lang="en">
         <h2>English</h2>
-        <p class="muted">Effective 9 October 2026.</p>
+        <p class="muted">Effective 13 October 2026.</p>
         <p>
           <strong>Your logs.</strong> Everything you enter in MikaLog stays in
-          the data folder on your computer. MikaLog has no accounts, collects no
-          usage analytics and sends that data nowhere.
+          the data folder on your computer. MikaLog has no accounts and no
+          server of its own, collects no usage analytics and sends that data
+          nowhere.
         </p>
         <p>
-          <strong>Optional Riot account link.</strong> You sign in on Riot
-          Games' official page; MikaLog never sees your password. Riot shares
-          your account identifier (PUUID) and Riot ID. Your computer keeps an
-          access token in the Windows Credential Manager, never in backups or
-          exports. Only when you press "Sync" does the app send that token, a
-          date and the ids of that day's matches it already has to the MikaLog
-          server (mikalog-sync.miguelangeldiaztic.workers.dev, hosted on
-          Cloudflare), which asks Riot for your matches on that date and returns
-          map, agent, result, kills, deaths, score and rounds for each one. The
-          server does not store your account, token, matches or stats, and
-          writes no logs; it keeps sign-in data for at most five minutes until
-          the app collects it, and only caches the names of the game's agents
-          and maps. Your stats are not shown to other players; as Riot requires,
-          note that linking your account makes your player data public.
-          Cloudflare may log technical request data such as IP addresses under
-          its own privacy policy.
+          <strong>Optional match sync.</strong> MikaLog can fetch your matches
+          through HenrikDev (api.henrikdev.xyz), an unofficial third-party
+          service that is not affiliated with Riot Games or MikaLog. You get
+          your own HenrikDev API key and enter it in the app with your Riot ID
+          and region. Only when you press "Sync" or "Test connection" does the
+          app send your Riot ID, region and key to HenrikDev, which returns map,
+          agent, result, kills, deaths, score and rounds for your matches. The
+          app never connects on its own or in the background. The key is kept in
+          the Windows Credential Manager, never in the data folder, backups or
+          exports. Requests go straight from your computer to HenrikDev; there
+          is no MikaLog server. Whatever HenrikDev logs about those requests,
+          such as IP addresses, is governed by its own terms. Your stats are not
+          shown to other players.
         </p>
         <p>
-          <strong>Unlinking.</strong> Settings &gt; "Riot account" &gt;
-          "Disconnect" deletes the token from your computer. You can also revoke
-          MikaLog's access from your Riot account settings.
+          <strong>Stopping sync.</strong> Delete the key in Settings &gt; "Sync
+          matches": it is removed from the Windows Credential Manager and the
+          app stops connecting. Matches already synced stay in your data folder
+          and can be deleted from the app.
         </p>
         <p>
           <strong>What it doesn't do.</strong> No selling of data, no ads, no
