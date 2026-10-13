@@ -3,8 +3,15 @@ import react from "@vitejs/plugin-react";
 import { defineConfig } from "vitest/config";
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   plugins: [react(), tailwindcss()],
+
+  // La edición sale del modo de Vite (`--mode saiz` en `dev:saiz` y
+  // `build:saiz`), sin archivos `.env` ni variables de entorno en Windows.
+  define:
+    mode === "saiz"
+      ? { "import.meta.env.VITE_EDITION": JSON.stringify("saiz") }
+      : {},
 
   // Vite options tailored for Tauri development and only applied in `tauri dev` or `tauri build`
   //
@@ -24,4 +31,4 @@ export default defineConfig({
     environment: "jsdom",
     setupFiles: ["./src/test/setup.ts"],
   },
-});
+}));

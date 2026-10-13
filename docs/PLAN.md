@@ -16,7 +16,7 @@ No las cambies sin preguntar al usuario.
 - **10mans y scrims** van en un registro aparte, una entrada por partida. Sus estadísticas no se mezclan con las de rankeds; la fila del día solo muestra el recuento.
 - **Una gráfica por estadística** debajo de cada tabla (la diaria y la de scrims), siguiendo los filtros y el rango de fechas de la tabla.
 - Estilo **glassmorphism** según la skill `glassmorphism` de [bergside/awesome-design-skills](https://github.com/bergside/awesome-design-skills) (archivos `skills/glassmorphism/SKILL.md` y `DESIGN.md`).
-- K/D y ACS automáticos: solo serían posibles con la API no oficial de [HenrikDev](https://docs.henrikdev.xyz). Se hizo en la fase 4 y se retiró el 03/10/2026 (ver "Sincronización con HenrikDev"). Tracker.gg no da acceso a Valorant y Riot no aprueba apps de uso personal. La fase 7 usa la API oficial de Riot registrando MikaLog como producto público, con un servidor propio gratuito y RSO. La entrada manual es siempre la base.
+- K/D y ACS automáticos: solo serían posibles con la API no oficial de [HenrikDev](https://docs.henrikdev.xyz). Se hizo en la fase 4 y se retiró el 03/10/2026 (ver "Sincronización con HenrikDev"). Vuelve el 11/10/2026 y desde el 13/10/2026 es la fuente de partidas de las dos ediciones (fase 7.6); la API oficial de Riot queda aparcada. Tracker.gg no da acceso a Valorant y Riot no aprueba apps de uso personal. La fase 7 usa la API oficial de Riot registrando MikaLog como producto público, con un servidor propio gratuito y RSO. La entrada manual es siempre la base.
 - Interfaz en español.
 
 ## Tecnologías
@@ -172,7 +172,7 @@ Cómo funciona:
 
 Trabaja una fase cada vez. Al acabar cada fase: pruebas en verde y un commit por bloque lógico en su propia rama. El usuario decidió el 02/10/2026 encadenar las fases sin parar a probar entre una y otra: las pruebas con datos reales y los cambios se harán cuando haya una versión 1.0. Los criterios "Terminada cuando" que dependen del uso real quedan para entonces.
 
-Estado (03/10/2026): las fases 0 a 5 están implementadas. La fase 6 (licencia y avisos legales) también. Antes de publicar la versión 1.0 queda la ronda de pruebas con datos reales y los cambios que salgan de ella. La fase 7 (edición para Saiz y API oficial de Riot) está planificada el 09/10/2026 y sus decisiones están cerradas.
+Estado (03/10/2026): las fases 0 a 5 están implementadas. La fase 6 (licencia y avisos legales) también. Antes de publicar la versión 1.0 queda la ronda de pruebas con datos reales y los cambios que salgan de ella. La fase 7 (edición para Saiz y API oficial de Riot) está planificada el 09/10/2026 y sus decisiones están cerradas. A 13/10/2026: 7.1 a 7.3 hechas y solicitud a Riot enviada; la sincronización va con HenrikDev en las dos ediciones (7.6) y lo de Riot oficial queda aparcado.
 
 ### Fase 0: cimientos
 
@@ -383,7 +383,7 @@ Esta parte no depende de Riot y se puede hacer ya.
 Cómo quedó hecho (09/10/2026):
 
 - `src/app/edition.ts` describe las dos ediciones (nombre, línea de la barra lateral, si hay registro de scrims y plantilla de campos) y llega a la app en `services.edition`. `resolveEdition` falla con un `VITE_EDITION` mal escrito, para no compilar la base sin avisar. La sincronización con Riot se añadirá a la edición en la 7.4.
-- `VITE_EDITION` se fija con el modo de Vite: `.env.saiz` y los scripts `dev:saiz` y `build:saiz`, que `tauri.saiz.conf.json` usa como `beforeDevCommand` y `beforeBuildCommand`. Así no hace falta ninguna variable de entorno en Windows.
+- `VITE_EDITION` se fija con el modo de Vite: los scripts `dev:saiz` y `build:saiz` pasan `--mode saiz`, y `vite.config.ts` lo convierte en `VITE_EDITION=saiz` con `define` (antes lo hacía un archivo `.env.saiz`, que parecía un archivo de secretos). `tauri.saiz.conf.json` usa esos scripts como `beforeDevCommand` y `beforeBuildCommand`. Así no hace falta ninguna variable de entorno en Windows.
 - `sectionsFor(edition)` da las secciones de la barra lateral; en `saiz` no está la de scrims y el Dashboard se describe sin ellos. Bajo el nombre de la app, donde la base dice "Road to Top 1", `saiz` dice "Saiz Edition".
 - La columna a mano sale de `withManualScrimCount` (`src/domain/fields.ts`). Como es un `number` sin umbral, las gráficas, el Calendario, los Insights y el Dashboard ya la tratan como volumen sin más cambios.
 - **Datos que vienen de la base**: `foldScrimLogIntoDays` (`src/data/scrimColumn.ts`) se ejecuta en `saiz` cada vez que la app lee los datos (al abrir y tras importar). Si encuentra la columna calculada, la pasa a número y apunta en cada día sus partidas del registro, sin pisar un valor ya escrito. Vale igual para un JSON de la base que para abrir su carpeta de datos. Las partidas se quedan en `scrim_matches` y siguen saliendo en el JSON.
@@ -460,11 +460,35 @@ La web del producto y la política de privacidad están en `site/` (HTML estáti
 
 Orden recomendado: 7.1 ya; 7.2 y la maqueta a la vez, y enviar la solicitud; 7.3 y 7.4 mientras Riot responde.
 
+Orden desde el 13/10/2026 (7.1 a 7.3 hechas y solicitud enviada): la 7.6, con HenrikDev en las dos ediciones. La 7.4 queda aparcada hasta que Riot apruebe.
+
+#### 7.6 Sincronización con HenrikDev para todos (decidido el 11/10 y ampliado el 13/10/2026)
+
+El usuario decidió el 11/10/2026 no esperar a Riot y el 13/10/2026 que HenrikDev (API no oficial) sea la fuente de partidas de **las dos ediciones**, con una guía para sacar la clave pensada para cualquier jugador, no solo para Saiz. Lo de Riot oficial (7.2 a 7.5) se mantiene aparcado: el código y el servidor siguen en el repositorio por si Riot aprueba la solicitud.
+
+- **Riesgo con la solicitud a Riot.** La política general de Riot pide que los productos usen sus servicios para obtener datos ("Products should use supported services from Riot Games for data ingestion"). Con HenrikDev en la app pública, es probable que Riot rechace la solicitud o pida quitarlo. Si Riot aprueba, HenrikDev se sustituye por la fuente oficial (ver "Al aprobar Riot").
+- **Otra `MatchSource`.** `src/domain/henrikMatches.ts` (lógica pura, con pruebas) convierte cada partida de `GET /valorant/v1/stored-matches/{región}/{nombre}/{tag}?mode=competitive&size=60&page=N` en un `RiotMatch`: `matchId` = `meta.id`, `queueId` = `competitive` (se pide solo ese modo; Premier y otros, si se añaden en Ajustes, con una petición por modo), `startedAtMillis` de `meta.started_at`, mapa, agente, resultado y rondas a partir de `teams` y `stats.team`, y kills, muertes y puntuación de `stats`. Se puede partir del código de la fase 4 (`src/domain/henrik.ts` y `src/data/henrikSync.ts`, en el historial hasta el commit `2283552`), quitando la parte de customs y scrims.
+- **El mismo id que Riot.** El id de partida de HenrikDev es el de Riot, así que la fila se guarda con `external_match_id = 'riot:<id>'`: si algún día se pasa a la API oficial, las partidas ya sincronizadas no se duplican. `source` es `henrikdev` para saber de dónde salió: `planDaySync` recibe la fuente en vez de poner siempre `riot`.
+- **Páginas**: se piden páginas hasta dejar atrás el día (el historial viene del más reciente al más antiguo). Con la clave básica (30 peticiones por minuto, unos 2 puntos por página) un día o una semana cuestan una o dos peticiones. Si responde 429, se espera lo que diga `Retry-After` y se avisa en la página.
+- **Ajustes > "Sincronizar partidas"**, en las dos ediciones: Riot ID (`Nombre#TAG`), región, clave y "Probar conexión" (`GET /valorant/v2/account/{nombre}/{tag}`). La tarjeta lleva la guía para sacar la clave (ver abajo). El ajuste `sync.source` vale `henrikdev`; la opción "Riot (oficial)" no se muestra mientras Riot no apruebe.
+- **Guía para sacar la clave, para todo el mundo**. Un solo texto en `src/app/henrikGuide.ts` que usan la tarjeta de Ajustes y el tutorial, y la misma guía en [GUIA-HENRIKDEV.md](GUIA-HENRIKDEV.md) y en el README:
+  1. Entrar en el Discord de HenrikDev (`https://discord.com/invite/X3GaVkX2YN`; la app lo muestra como texto que se puede copiar, porque no abre enlaces).
+  2. Completar la verificación del servidor.
+  3. En el canal `#get-a-key`, elegir VALORANT y la clave Basic.
+  4. Copiar la clave (empieza por `HDEV-`) y pegarla en la tarjeta, con el Riot ID y la región, y pulsar "Probar conexión".
+- **Tutorial**: un paso nuevo, "Rellena tus partidas solo (opcional)", después de "Cómo empezar", con esos cuatro pasos en corto y un botón "Configurar ahora" que lleva a la tarjeta de Ajustes. Se puede saltar; sin clave la app funciona igual, a mano.
+- **La clave** va en el almacén de credenciales de Windows (crate `keyring`, dos comandos de Tauri: guardar y leer). Nunca en la base de datos, el JSON exportado ni las copias. Se manda en la cabecera `Authorization`.
+- **Red**: vuelve `tauri-plugin-http`, con permiso solo para `https://api.henrikdev.xyz`, y `connect-src` de la CSP se amplía solo a ese dominio, en las dos ediciones.
+- **Botones**: "Sincronizar" en la página del día y "Sincronizar los últimos 7 días" en Rankeds. Guardan las partidas nuevas sin tocar las que ya estaban y escriben en el día `rankeds`, `kd`, `acs`, `agents` y `maps`. Todo sigue siendo editable. Solo al pulsar, nunca en segundo plano.
+- **Textos legales**: `src/app/legal.ts`, `NOTICE.md`, README y la web (`site/privacidad.html`, y quitar de `site/index.html` y `site/maqueta.html` lo que diga que solo se usa la conexión oficial) pasan a decir que, si el jugador pone su clave de HenrikDev, su Riot ID y su clave se envían a `api.henrikdev.xyz`, un servicio de terceros no oficial, solo al pulsar Sincronizar o Probar conexión. Se cambia a la vez que sale la versión con la sincronización, no antes.
+- **Al aprobar Riot**: se añade la fuente oficial (7.4), `sync.source` pasa a `riot` y, cuando funcione, se decide con el usuario si HenrikDev se quita.
+- Pruebas: conversión de partidas de ejemplo de HenrikDev (incluida una que empieza antes de medianoche), paginación hasta dejar atrás el día, 429, clave inválida (401/403) con aviso claro, que repetir no duplica, y en las dos ediciones el paso del tutorial y la tarjeta con la guía.
+- **Terminada cuando**: alguien que no conoce la app sigue la guía, pega su clave, sincroniza un día y la app da el mismo K/D, ACS, agentes y mapas que su historial del juego, y repetirlo no duplica partidas.
+
 #### Plan B si Riot no lo aprueba o no contesta
 
-- **B1, HenrikDev** (API no oficial). Funcionó en la fase 4 con la cuenta del usuario y se retiró el 03/10/2026; el código está en el historial (hasta el PR #14). Se reactivaría solo como otra `MatchSource`, con la clave gratuita del propio Saiz, sin servidor. Trae lo mismo (mapa, agente, kills, muertes, puntuación y rondas), pero depende de un tercero y de su clave.
+- **B1, HenrikDev**: ya es la fuente de las dos ediciones desde el 13/10/2026 (7.6).
 - **B2, a mano**: como hoy. Rankeds por partida con "Usar estas cifras en el día" y los campos de agentes y mapas escritos a mano. La entrada manual sigue siendo la base en cualquier caso.
-- Recomendación: si Riot rechaza la solicitud, B1 solo en la edición `saiz`, con aviso de que es una fuente no oficial.
 
 #### Decisiones cerradas de la fase 7 (09/10/2026)
 
@@ -476,6 +500,6 @@ Orden recomendado: 7.1 ya; 7.2 y la maqueta a la vez, y enviar la solicitud; 7.3
 ## Reglas de trabajo
 
 - TypeScript estricto, sin `any`. Lógica de cálculo en funciones puras con pruebas.
-- Nada de telemetría ni llamadas a internet, salvo la sincronización con Riot de la fase 7: solo hacia el servidor de MikaLog, solo con la cuenta conectada y solo al pulsar Sincronizar. HenrikDev se retiró el 03/10/2026.
+- Nada de telemetría ni llamadas a internet, salvo la sincronización de la fase 7, siempre al pulsar Sincronizar (o Probar conexión): hacia `api.henrikdev.xyz` con la clave del jugador (7.6) y, si Riot aprueba, hacia el servidor de MikaLog con la cuenta de Riot conectada.
 - Ante una decisión que cambie lo que el usuario ve o sus datos, pregunta antes.
 - Mantén este plan actualizado si algo cambia.
