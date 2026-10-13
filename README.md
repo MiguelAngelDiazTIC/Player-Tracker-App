@@ -106,7 +106,6 @@ Cada una tiene su identificador (`com.playertracker.desktop` y `com.playertracke
 Documentación del proyecto:
 
 - [La idea](docs/IDEA.md): el concepto original y sus vistas.
-- [El plan](docs/PLAN.md): tecnologías, modelo de datos, fases y cómo quedó hecha cada una.
 - [El diseño](docs/DESIGN.md): tokens, componentes y reglas de accesibilidad.
 
 ### Cómo está organizado
