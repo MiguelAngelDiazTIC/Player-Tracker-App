@@ -5,7 +5,7 @@
   "author": "Miguel Ángel Díaz Gutiérrez (MikaEl) <miguelangeldiaztic@gmail.com>",
   "license": "GPL-3.0-or-later",
   "repository": "github:MiguelAngelDiazTIC/Player-Tracker-App",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
