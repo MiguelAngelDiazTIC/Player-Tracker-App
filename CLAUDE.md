@@ -6,6 +6,7 @@ App de escritorio (Tauri 2 + React + TypeScript + SQLite) para que un jugador de
 - Plan de desarrollo, decisiones cerradas y fases: [docs/PLAN.md](docs/PLAN.md). Síguelo fase a fase y para al final de cada una para que el usuario la revise.
 - Diseño: antes de cualquier trabajo visual, carga la skill `typeui-glassmorphism` y aplica [docs/DESIGN.md](docs/DESIGN.md).
 - Habla con el usuario en español.
+- Commits y PRs sin firmas de Claude: nada de `Co-Authored-By`, `Claude-Session` ni «Generated with Claude Code». Lo pidió el usuario el 13/10/2026; `.claude/settings.json` lo desactiva también en Claude Code.
 
 ## Cómo está organizado
 
