@@ -129,9 +129,8 @@ export function accountUrl(account: RiotId): string {
 const whole = (value: number) => Math.max(0, Math.round(value));
 
 /**
- * La partida en el formato común de la app. El id de HenrikDev es el de Riot,
- * así que una partida sincronizada por aquí no se duplica si un día llega por
- * la API oficial. `null` si la fecha de inicio no se entiende.
+ * La partida en el formato común de la app. El id de HenrikDev es el que Riot
+ * da a la partida. `null` si la fecha de inicio no se entiende.
  */
 export function toRiotMatch(
   match: StoredMatch,

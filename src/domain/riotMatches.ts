@@ -46,9 +46,9 @@ export function readRiotQueues(
 const count = z.number().int().min(0);
 
 /**
- * Una partida tal como la entrega el servidor de sincronización: ya reducida
- * a lo que la app usa, con el mapa y el agente por su nombre y solo las cifras
- * del jugador que ha iniciado sesión.
+ * Una partida en el formato común de la app, venga de la fuente que venga: ya
+ * reducida a lo que la app usa, con el mapa y el agente por su nombre y solo
+ * las cifras del jugador.
  */
 export const riotMatchSchema = z.object({
   matchId: z.string().min(1),
@@ -72,8 +72,8 @@ export const riotMatchesSchema = z.array(riotMatchSchema);
 
 /**
  * De dónde salen las partidas de un día. La app solo conoce esta interfaz, así
- * que cambiar de fuente (el servidor de MikaLog, datos de ejemplo u otra API)
- * no toca nada más.
+ * que cambiar de fuente (HenrikDev, datos de ejemplo u otra API) no toca nada
+ * más.
  */
 export interface MatchSource {
   /** Con qué `source` se guardan las partidas que trae. */
