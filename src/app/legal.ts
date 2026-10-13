@@ -13,7 +13,7 @@ export const APP_REPOSITORY_URL =
   "https://github.com/MiguelAngelDiazTIC/Player-Tracker-App";
 export const APP_CONTACT_EMAIL = "miguelangeldiaztic@gmail.com";
 
-export const PRIVACY_SHORT = "Tus datos no salen de tu ordenador.";
+export const PRIVACY_SHORT = "Lo que apuntas no sale de tu ordenador.";
 
 export const LEGAL_NOTICES: { title: string; text: string }[] = [
   {
@@ -22,7 +22,11 @@ export const LEGAL_NOTICES: { title: string; text: string }[] = [
   },
   {
     title: "Privacidad",
-    text: `${APP_NAME} no recoge ni envía ningún dato. Todo lo que apuntas se queda en la carpeta de datos de tu ordenador.`,
+    text: `${APP_NAME} no recoge ningún dato. Todo lo que apuntas se queda en la carpeta de datos de tu ordenador. Solo se conecta a internet si pones tu clave de HenrikDev y pulsas Sincronizar o Probar conexión.`,
+  },
+  {
+    title: "Sincronización",
+    text: "Es opcional y usa HenrikDev (api.henrikdev.xyz), un servicio de terceros no oficial, ajeno a Riot Games y a esta app. Al sincronizar recibe tu Riot ID y tu clave, que se guarda en el almacén de credenciales de Windows.",
   },
   {
     title: "Riot Games",

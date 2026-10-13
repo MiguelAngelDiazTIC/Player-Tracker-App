@@ -1541,7 +1541,7 @@ describe("tutorial del primer arranque", () => {
     const dialog = screen.getByRole("dialog", {
       name: "Te doy la bienvenida a MikaLog",
     });
-    expect(dialog).toHaveTextContent("Paso 1 de 3");
+    expect(dialog).toHaveTextContent("Paso 1 de 4");
     expect(screen.getByRole("button", { name: "Empezar" })).toHaveFocus();
   });
 
@@ -1582,6 +1582,14 @@ describe("tutorial del primer arranque", () => {
     await next(user, "Empezar");
 
     await next(user);
+    const sync = screen.getByRole("dialog", {
+      name: "Rellena tus partidas solo (opcional)",
+    });
+    expect(sync).toHaveTextContent("Paso 3 de 4");
+    expect(sync).toHaveTextContent(
+      "En #get-a-key, elige VALORANT y la clave Basic.",
+    );
+    await next(user);
     const titles = [];
     for (let stop = 0; stop < 6; stop += 1) {
       const balloon = screen.getByRole("dialog");
@@ -1617,6 +1625,7 @@ describe("tutorial del primer arranque", () => {
     await next(user, "Empezar");
     await user.click(screen.getByRole("radio", { name: /Importar mi hoja/ }));
     await next(user);
+    await next(user);
     for (let stop = 0; stop < 5; stop += 1) await next(user);
     await next(user, "Terminar");
 
@@ -1632,6 +1641,7 @@ describe("tutorial del primer arranque", () => {
   it("Escape sale del recorrido sin crear nada", async () => {
     const { services, user } = await renderFirstRun();
     await next(user, "Empezar");
+    await next(user);
     await next(user);
     expect(screen.getByRole("dialog", { name: "Tabla" })).toBeInTheDocument();
 
@@ -1678,8 +1688,11 @@ describe("Acerca de", () => {
     expect(panel.getByText(/Software libre bajo la GPL-3.0/)).toHaveTextContent(
       "conservar estos créditos",
     );
+    expect(panel.getByText(/no recoge ningún dato/)).toHaveTextContent(
+      "Solo se conecta a internet si pones tu clave",
+    );
     expect(
-      panel.getByText(/no recoge ni envía ningún dato/),
+      panel.getByText(/un servicio de terceros no oficial/),
     ).toBeInTheDocument();
     expect(
       panel.getByText(/no está avalado por Riot Games/),
@@ -1728,6 +1741,6 @@ describe("Acerca de", () => {
     const dialog = await screen.findByRole("dialog", {
       name: "Te doy la bienvenida a MikaLog",
     });
-    expect(dialog).toHaveTextContent("Tus datos no salen de tu ordenador.");
+    expect(dialog).toHaveTextContent("Lo que apuntas no sale de tu ordenador.");
   });
 });

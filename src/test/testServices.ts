@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { EDITIONS, type EditionId } from "../app/edition";
 import type { PickedFile, Platform, Services } from "../app/services";
+import type { HttpResponse } from "../data/henrikSource";
 import { createRepository } from "../data/repository";
 import { createMemoryAttachments, createMemoryDriver } from "./memoryDriver";
 
@@ -25,6 +26,11 @@ export interface TestServices extends Services {
   /** Contenido de la carpeta `copias/`, por nombre de archivo. */
   copies: Map<string, string>;
   backups: number;
+  /** Respuesta de HenrikDev para cada petición; por defecto, sin partidas. */
+  httpResponses: HttpResponse[];
+  httpCalls: { url: string; headers: Record<string, string> }[];
+  /** Contenido del almacén de credenciales. */
+  secrets: Map<string, string>;
 }
 
 /** Servicios en memoria: SQLite de `node:sqlite` y un sistema sin diálogos. */
@@ -45,8 +51,18 @@ export async function createTestServices({
 
   const test: Pick<
     TestServices,
-    "filesToPick" | "savedFiles" | "savedBinaries" | "copies" | "backups"
+    | "filesToPick"
+    | "savedFiles"
+    | "savedBinaries"
+    | "copies"
+    | "backups"
+    | "httpResponses"
+    | "httpCalls"
+    | "secrets"
   > = {
+    httpResponses: [],
+    httpCalls: [],
+    secrets: new Map(),
     filesToPick: [],
     savedFiles: [],
     savedBinaries: [],
@@ -57,6 +73,27 @@ export async function createTestServices({
   const platform: Platform = {
     dataFolder: "C:/datos-de-prueba",
     attachments: createMemoryAttachments(),
+    http: {
+      async get(url, headers) {
+        test.httpCalls.push({ url, headers });
+        return (
+          test.httpResponses.shift() ?? {
+            status: 200,
+            body: { results: { after: 0 }, data: [] },
+            retryAfterSeconds: null,
+          }
+        );
+      },
+    },
+    secrets: {
+      async get(name) {
+        return test.secrets.get(name) ?? null;
+      },
+      async set(name, value) {
+        if (value === null) test.secrets.delete(name);
+        else test.secrets.set(name, value);
+      },
+    },
     attachmentUrl: (name) => `asset://attachments/${name}`,
     async pickFile() {
       return test.filesToPick.shift() ?? null;

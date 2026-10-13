@@ -16,13 +16,18 @@ import {
   ResultsChart,
   ValueChart,
 } from "../../components/charts/CategoryCharts";
+import {
+  SyncButton,
+  SyncNotice,
+  useMatchSync,
+} from "../../components/matchSync";
 import { ariaSort } from "../../components/sort";
 import { SortButton } from "../../components/SortButton";
 import { Button } from "../../components/ui/Button";
 import { Dialog } from "../../components/ui/Dialog";
 import { Labeled, Select, TextInput } from "../../components/ui/fields";
 import { Chip } from "../../components/ui/surfaces";
-import { formatDate, isIsoDate, todayIso } from "../../domain/dates";
+import { addDays, formatDate, isIsoDate, todayIso } from "../../domain/dates";
 import {
   inRange,
   presetRange,
@@ -125,10 +130,15 @@ interface RankedsFilter {
 interface RankedsViewProps {
   /** Al venir de la página de un día, solo se muestran sus partidas. */
   focusDate?: string | null;
+  /** Lleva a Ajustes > Sincronizar partidas. */
+  onOpenSync: () => void;
 }
 
 /** Registro de rankeds partida a partida, con sus cifras por mapa y agente. */
-export function RankedsView({ focusDate = null }: RankedsViewProps) {
+export function RankedsView({
+  focusDate = null,
+  onOpenSync,
+}: RankedsViewProps) {
   const { sessions, addSession, updateSession, deleteSession } = useStore();
   const today = todayIso();
   const [filter, setFilter] = useState<RankedsFilter>(() =>
@@ -140,6 +150,7 @@ export function RankedsView({ focusDate = null }: RankedsViewProps) {
     { id: "date", desc: true },
   ]);
   const [deleting, setDeleting] = useState<RankedSession | null>(null);
+  const sync = useMatchSync(addDays(today, -6), today);
 
   const rows = useMemo(
     () => sessions.filter((session) => inRange(session.date, filter.range)),
@@ -173,6 +184,11 @@ export function RankedsView({ focusDate = null }: RankedsViewProps) {
           <Plus aria-hidden="true" className="size-4" />
           Añadir partida
         </Button>
+        <SyncButton
+          state={sync.state}
+          label="Sincronizar los últimos 7 días"
+          onRun={() => void sync.run()}
+        />
         <div className="flex-1" />
         <Labeled label="Fechas" className="w-44">
           <Select
@@ -233,6 +249,12 @@ export function RankedsView({ focusDate = null }: RankedsViewProps) {
           }
         />
       </div>
+
+      <SyncNotice
+        state={sync.state}
+        period="los últimos 7 días"
+        onOpenSettings={onOpenSync}
+      />
 
       {sessions.length === 0 ? (
         <div className="glass flex flex-1 items-center justify-center rounded-md p-4 text-center">

@@ -4,7 +4,7 @@ MikaLog se reparte con el software de esta lista. Cada uno conserva su
 licencia y su copyright. Este archivo lo genera `npm run notices`; no se
 edita a mano.
 
-## Paquetes (427)
+## Paquetes (452)
 
 - @floating-ui/core 1.8.0 (npm): MIT. https://floating-ui.com
 - @floating-ui/dom 1.8.0 (npm): MIT. https://floating-ui.com
@@ -21,6 +21,7 @@ edita a mano.
 - @tauri-apps/api 2.12.1 (npm): Apache-2.0 OR MIT. https://github.com/tauri-apps/tauri#readme
 - @tauri-apps/plugin-dialog 2.8.1 (npm): MIT OR Apache-2.0. https://github.com/tauri-apps/plugins-workspace
 - @tauri-apps/plugin-fs 2.6.0 (npm): MIT OR Apache-2.0. https://github.com/tauri-apps/plugins-workspace
+- @tauri-apps/plugin-http 2.8.2 (npm): MIT OR Apache-2.0. https://github.com/tauri-apps/plugins-workspace
 - @tauri-apps/plugin-sql 2.5.0 (npm): MIT OR Apache-2.0. https://github.com/tauri-apps/plugins-workspace
 - @tiptap/core 3.31.4 (npm): MIT. https://tiptap.dev
 - @tiptap/extension-blockquote 3.31.4 (npm): MIT. https://tiptap.dev
@@ -72,6 +73,7 @@ edita a mano.
 - anyhow 1.0.104 (Rust): MIT OR Apache-2.0. https://github.com/dtolnay/anyhow
 - arrayvec 0.7.8 (Rust): MIT OR Apache-2.0. https://github.com/bluss/arrayvec
 - atoi 2.0.0 (Rust): MIT. https://github.com/pacman82/atoi-rs
+- atomic-waker 1.1.2 (Rust): Apache-2.0 OR MIT. https://github.com/smol-rs/atomic-waker
 - base64 0.22.1 (Rust): MIT OR Apache-2.0. https://github.com/marshallpierce/rust-base64
 - base64 0.23.1 (Rust): MIT OR Apache-2.0. https://github.com/marshallpierce/rust-base64
 - base64ct 1.8.3 (Rust): Apache-2.0 OR MIT. https://github.com/RustCrypto/formats
@@ -122,6 +124,7 @@ edita a mano.
 - darling 0.24.1 (Rust): MIT. https://github.com/TedDriggs/darling
 - darling_core 0.24.1 (Rust): MIT. https://github.com/TedDriggs/darling
 - darling_macro 0.24.1 (Rust): MIT. https://github.com/TedDriggs/darling
+- data-url 0.3.2 (Rust): MIT OR Apache-2.0. https://github.com/servo/rust-url
 - decimal.js-light 2.5.1 (npm): MIT. https://github.com/MikeMcl/decimal.js-light.git
 - defmt 1.1.1 (Rust): MIT OR Apache-2.0. https://github.com/knurling-rs/defmt
 - defmt-macros 1.1.1 (Rust): MIT OR Apache-2.0. https://github.com/knurling-rs/defmt
@@ -182,7 +185,13 @@ edita a mano.
 - home 0.5.12 (Rust): MIT OR Apache-2.0. https://github.com/rust-lang/cargo
 - html5ever 0.39.0 (Rust): MIT OR Apache-2.0. https://github.com/servo/html5ever
 - http 1.5.0 (Rust): MIT OR Apache-2.0. https://github.com/hyperium/http
+- http-body 1.1.0 (Rust): MIT. https://github.com/hyperium/http-body
+- http-body-util 0.1.5 (Rust): MIT. https://github.com/hyperium/http-body
 - http-range 0.1.5 (Rust): MIT. https://github.com/bancek/rust-http-range.git
+- httparse 1.10.1 (Rust): MIT OR Apache-2.0. https://github.com/seanmonstar/httparse
+- hyper 1.11.1 (Rust): MIT. https://github.com/hyperium/hyper
+- hyper-tls 0.6.0 (Rust): MIT/Apache-2.0. https://github.com/hyperium/hyper-tls
+- hyper-util 0.1.21 (Rust): MIT. https://github.com/hyperium/hyper-util
 - ico 0.5.0 (Rust): MIT. https://github.com/mdsteele/rust-ico
 - icu_collections 2.3.0 (Rust): Unicode-3.0. https://github.com/unicode-org/icu4x
 - icu_locale_core 2.3.0 (Rust): Unicode-3.0. https://github.com/unicode-org/icu4x
@@ -199,6 +208,7 @@ edita a mano.
 - indexmap 2.14.2 (Rust): Apache-2.0 OR MIT. https://github.com/indexmap-rs/indexmap
 - infer 0.22.0 (Rust): MIT. https://github.com/bojand/infer
 - internmap 2.0.3 (npm): ISC. https://github.com/mbostock/internmap/
+- ipnet 2.12.2 (Rust): MIT OR Apache-2.0. https://github.com/krisprice/ipnet
 - itoa 1.0.18 (Rust): MIT OR Apache-2.0. https://github.com/dtolnay/itoa
 - jiff 0.2.37 (Rust): Unlicense OR MIT. https://github.com/BurntSushi/jiff
 - jiff-core 0.1.1 (Rust): Unlicense OR MIT. https://github.com/BurntSushi/jiff
@@ -207,6 +217,7 @@ edita a mano.
 - json-patch 4.2.0 (Rust): MIT/Apache-2.0. https://github.com/idubrov/json-patch
 - jsonptr 0.7.1 (Rust): MIT OR Apache-2.0. https://github.com/chanced/jsonptr
 - keyboard-types 0.8.3 (Rust): MIT OR Apache-2.0. https://github.com/rust-windowing/keyboard-types
+- keyring 3.6.3 (Rust): MIT OR Apache-2.0. https://github.com/hwchen/keyring-rs.git
 - lazy_static 1.5.1 (Rust): MIT OR Apache-2.0. https://github.com/rust-lang-nursery/lazy-static.rs
 - libc 0.2.189 (Rust): MIT OR Apache-2.0. https://github.com/rust-lang/libc
 - libm 0.2.16 (Rust): MIT. https://github.com/rust-lang/compiler-builtins
@@ -225,6 +236,7 @@ edita a mano.
 - miniz_oxide 0.9.1 (Rust): MIT OR Zlib OR Apache-2.0. https://github.com/Frommi/miniz_oxide/tree/master/miniz_oxide
 - mio 1.2.3 (Rust): MIT. https://github.com/tokio-rs/mio
 - muda 0.20.0 (Rust): Apache-2.0 OR MIT. https://github.com/tauri-apps/muda
+- native-tls 0.2.18 (Rust): MIT OR Apache-2.0. https://github.com/rust-native-tls/rust-native-tls
 - new_debug_unreachable 1.0.6 (Rust): MIT. https://github.com/mbrubeck/rust-debug-unreachable
 - num-bigint-dig 0.8.6 (Rust): MIT/Apache-2.0. https://github.com/dignifiedquire/num-bigint
 - num-conv 0.2.2 (Rust): MIT OR Apache-2.0. https://github.com/jhpratt/num-conv
@@ -289,14 +301,17 @@ edita a mano.
 - regex 1.13.1 (Rust): MIT OR Apache-2.0. https://github.com/rust-lang/regex
 - regex-automata 0.4.18 (Rust): MIT OR Apache-2.0. https://github.com/rust-lang/regex
 - regex-syntax 0.8.11 (Rust): MIT OR Apache-2.0. https://github.com/rust-lang/regex
+- reqwest 0.12.28 (Rust): MIT OR Apache-2.0. https://github.com/seanmonstar/reqwest
 - reselect 5.2.0 (npm): MIT. https://github.com/reduxjs/reselect.git
 - rfd 0.16.0 (Rust): MIT. https://github.com/PolyMeilex/rfd
 - rope-sequence 1.3.4 (npm): MIT. https://github.com/marijnh/rope-sequence.git
 - rsa 0.9.10 (Rust): MIT OR Apache-2.0. https://github.com/RustCrypto/RSA
 - rust_decimal 1.43.0 (Rust): MIT. https://github.com/paupino/rust-decimal
 - rustc-hash 2.1.3 (Rust): Apache-2.0 OR MIT. https://github.com/rust-lang/rustc-hash
+- rustls-pki-types 1.15.1 (Rust): MIT OR Apache-2.0. https://github.com/rustls/pki-types
 - ryu 1.0.23 (Rust): Apache-2.0 OR BSL-1.0. https://github.com/dtolnay/ryu
 - same-file 1.0.6 (Rust): Unlicense/MIT. https://github.com/BurntSushi/same-file
+- schannel 0.1.29 (Rust): MIT. https://github.com/steffengy/schannel-rs
 - scheduler 0.28.0 (npm): MIT. https://react.dev/
 - schemars 0.8.22 (Rust): MIT. https://github.com/GREsau/schemars
 - schemars 0.9.0 (Rust): MIT. https://github.com/GREsau/schemars
@@ -344,6 +359,7 @@ edita a mano.
 - subtle 2.6.1 (Rust): BSD-3-Clause. https://github.com/dalek-cryptography/subtle
 - syn 2.0.119 (Rust): MIT OR Apache-2.0. https://github.com/dtolnay/syn
 - syn 3.0.6 (Rust): MIT OR Apache-2.0. https://github.com/dtolnay/syn
+- sync_wrapper 1.0.2 (Rust): Apache-2.0. https://github.com/Actyx/sync_wrapper
 - synstructure 0.14.0 (Rust): MIT. https://github.com/mystor/synstructure
 - tao 0.37.1 (Rust): Apache-2.0. https://github.com/tauri-apps/tao
 - tauri 2.12.1 (Rust): Apache-2.0 OR MIT. https://github.com/tauri-apps/tauri
@@ -351,6 +367,7 @@ edita a mano.
 - tauri-macros 2.7.1 (Rust): Apache-2.0 OR MIT. https://github.com/tauri-apps/tauri
 - tauri-plugin-dialog 2.8.1 (Rust): Apache-2.0 OR MIT. https://github.com/tauri-apps/plugins-workspace
 - tauri-plugin-fs 2.6.0 (Rust): Apache-2.0 OR MIT. https://github.com/tauri-apps/plugins-workspace
+- tauri-plugin-http 2.8.1 (Rust): Apache-2.0 OR MIT. https://github.com/tauri-apps/plugins-workspace
 - tauri-plugin-sql 2.5.0 (Rust): Apache-2.0 OR MIT. https://github.com/tauri-apps/plugins-workspace
 - tauri-runtime 2.12.1 (Rust): Apache-2.0 OR MIT. https://github.com/tauri-apps/tauri
 - tauri-runtime-wry 2.12.1 (Rust): Apache-2.0 OR MIT. https://github.com/tauri-apps/tauri
@@ -365,16 +382,23 @@ edita a mano.
 - tinystr 0.8.4 (Rust): Unicode-3.0. https://github.com/unicode-org/icu4x
 - tinyvec 1.13.3 (Rust): Zlib OR Apache-2.0 OR MIT. https://github.com/Lokathor/tinyvec
 - tokio 1.53.1 (Rust): MIT. https://github.com/tokio-rs/tokio
+- tokio-macros 2.7.2 (Rust): MIT. https://github.com/tokio-rs/tokio
+- tokio-native-tls 0.3.1 (Rust): MIT. https://github.com/tokio-rs/tls
 - tokio-stream 0.1.19 (Rust): MIT. https://github.com/tokio-rs/tokio
 - toml 1.1.6+spec-1.1.0 (Rust): MIT OR Apache-2.0. https://github.com/toml-rs/toml
 - toml_datetime 1.1.1+spec-1.1.0 (Rust): MIT OR Apache-2.0. https://github.com/toml-rs/toml
 - toml_edit 0.25.15+spec-1.1.0 (Rust): MIT OR Apache-2.0. https://github.com/toml-rs/toml
 - toml_parser 1.1.3+spec-1.1.0 (Rust): MIT OR Apache-2.0. https://github.com/toml-rs/toml
 - toml_writer 1.1.2+spec-1.1.0 (Rust): MIT OR Apache-2.0. https://github.com/toml-rs/toml
+- tower 0.5.3 (Rust): MIT. https://github.com/tower-rs/tower
+- tower-http 0.6.11 (Rust): MIT. https://github.com/tower-rs/tower-http
+- tower-layer 0.3.3 (Rust): MIT. https://github.com/tower-rs/tower
+- tower-service 0.3.3 (Rust): MIT. https://github.com/tower-rs/tower
 - tracing 0.1.44 (Rust): MIT. https://github.com/tokio-rs/tracing
 - tracing-attributes 0.1.31 (Rust): MIT. https://github.com/tokio-rs/tracing
 - tracing-core 0.1.36 (Rust): MIT. https://github.com/tokio-rs/tracing
 - tray-icon 0.25.1 (Rust): MIT OR Apache-2.0. https://github.com/tauri-apps/tray-icon
+- try-lock 0.2.5 (Rust): MIT. https://github.com/seanmonstar/try-lock
 - typeid 1.0.3 (Rust): MIT OR Apache-2.0. https://github.com/dtolnay/typeid
 - typenum 1.20.1 (Rust): MIT OR Apache-2.0. https://github.com/paholg/typenum
 - unicode-bidi 0.3.18 (Rust): MIT OR Apache-2.0. https://github.com/servo/unicode-bidi
@@ -390,6 +414,7 @@ edita a mano.
 - victory-vendor 37.3.6 (npm): MIT AND ISC. https://commerce.nearform.com/open-source/victory
 - w3c-keyname 2.2.8 (npm): MIT. https://github.com/marijnh/w3c-keyname#readme
 - walkdir 2.5.0 (Rust): Unlicense/MIT. https://github.com/BurntSushi/walkdir
+- want 0.3.1 (Rust): MIT. https://github.com/seanmonstar/want
 - web_atoms 0.2.6 (Rust): MIT OR Apache-2.0. https://github.com/servo/html5ever
 - web-time 1.1.0 (Rust): MIT OR Apache-2.0. https://github.com/daxpedda/web-time
 - webview2-com 0.39.1 (Rust): MIT. https://github.com/wravery/webview2-rs
@@ -438,7 +463,7 @@ edita a mano.
 
 ### Texto 1
 
-Lo usan: arrayvec 0.7.8, base64 0.22.1, base64 0.23.1, bitflags 1.3.2, bitflags 2.13.2, bs58 0.5.1, camino 1.2.6, cfg-if 1.0.5, crossbeam-channel 0.5.17, crossbeam-queue 0.3.14, crossbeam-utils 0.8.23, displaydoc 0.2.7, either 1.18.0, equivalent 1.0.2, event-listener 5.4.2, fastrand 2.5.0, flate2 1.1.10, fnv 1.0.7, form_urlencoded 1.2.2, glob 0.3.4, hashbrown 0.12.3, hashbrown 0.15.5, hashbrown 0.17.1, heck 0.5.0, html5ever 0.39.0, idna 1.1.0, idna_adapter 1.2.2, indexmap 1.9.3, indexmap 2.14.2, keyboard-types 0.8.3, lazy_static 1.5.1, lock_api 0.4.14, log 0.4.34, markup5ever 0.39.0, mime 0.3.17, muda 0.20.0, num-bigint-dig 0.8.6, num-integer 0.1.47, num-iter 0.1.46, num-traits 0.2.19, once_cell 1.21.4, parking 2.2.1, parking_lot 0.12.5, parking_lot_core 0.9.12, percent-encoding 2.3.2, png 0.17.16, png 0.18.1, regex 1.13.1, regex-automata 0.4.18, regex-syntax 0.8.11, rsa 0.9.10, scopeguard 1.2.0, serde_with 3.24.0, serde_with_macros 3.24.0, servo_arc 0.4.3, smallvec 1.16.2, socket2 0.6.5, stable_deref_trait 1.2.1, string_cache 0.9.0, tendril 0.5.1, tray-icon 0.25.1, unicode-bidi 0.3.18, unicode-normalization 0.1.25, unicode-properties 0.1.4, unicode-segmentation 1.13.3, url 2.5.8, uuid 1.26.1, web_atoms 0.2.6, window-vibrancy 0.8.1, wry 0.57.0.
+Lo usan: arrayvec 0.7.8, atomic-waker 1.1.2, base64 0.22.1, base64 0.23.1, bitflags 1.3.2, bitflags 2.13.2, bs58 0.5.1, camino 1.2.6, cfg-if 1.0.5, crossbeam-channel 0.5.17, crossbeam-queue 0.3.14, crossbeam-utils 0.8.23, data-url 0.3.2, displaydoc 0.2.7, either 1.18.0, equivalent 1.0.2, event-listener 5.4.2, fastrand 2.5.0, flate2 1.1.10, fnv 1.0.7, form_urlencoded 1.2.2, glob 0.3.4, hashbrown 0.12.3, hashbrown 0.15.5, hashbrown 0.17.1, heck 0.5.0, html5ever 0.39.0, httparse 1.10.1, hyper-tls 0.6.0, idna 1.1.0, idna_adapter 1.2.2, indexmap 1.9.3, indexmap 2.14.2, keyboard-types 0.8.3, lazy_static 1.5.1, lock_api 0.4.14, log 0.4.34, markup5ever 0.39.0, mime 0.3.17, muda 0.20.0, num-bigint-dig 0.8.6, num-integer 0.1.47, num-iter 0.1.46, num-traits 0.2.19, once_cell 1.21.4, parking 2.2.1, parking_lot 0.12.5, parking_lot_core 0.9.12, percent-encoding 2.3.2, png 0.17.16, png 0.18.1, regex 1.13.1, regex-automata 0.4.18, regex-syntax 0.8.11, rsa 0.9.10, scopeguard 1.2.0, serde_with 3.24.0, serde_with_macros 3.24.0, servo_arc 0.4.3, smallvec 1.16.2, socket2 0.6.5, stable_deref_trait 1.2.1, string_cache 0.9.0, tendril 0.5.1, tray-icon 0.25.1, unicode-bidi 0.3.18, unicode-normalization 0.1.25, unicode-properties 0.1.4, unicode-segmentation 1.13.3, url 2.5.8, uuid 1.26.1, web_atoms 0.2.6, window-vibrancy 0.8.1, wry 0.57.0.
 
     Apache License
                             Version 2.0, January 2004
@@ -644,7 +669,7 @@ Lo usan: arrayvec 0.7.8, base64 0.22.1, base64 0.23.1, bitflags 1.3.2, bitflags 
 
 ### Texto 2
 
-Lo usan: adler2 2.0.1, allocator-api2 0.2.21, anyhow 1.0.104, borsh 1.8.1, borsh-derive 1.8.1, camino 1.2.6, cargo_metadata 0.19.2, cargo-platform 0.1.9, displaydoc 0.2.7, dtoa 1.0.11, dyn-clone 1.0.20, erased-serde 0.4.10, etcetera 0.8.0, event-listener 5.4.2, fastrand 2.5.0, flume 0.11.1, home 0.5.12, itoa 1.0.18, lazy_static 1.5.1, once_cell 1.21.4, parking 2.2.1, pin-project-lite 0.2.17, proc-macro-crate 3.5.0, proc-macro2 1.0.107, quote 1.0.47, ref-cast 1.0.27, ref-cast-impl 1.0.27, rsa 0.9.10, rustc-hash 2.1.3, semver 1.0.28, serde 1.0.229, serde_core 1.0.229, serde_derive 1.0.229, serde_derive_internals 0.29.1, serde_json 1.0.151, serde_repr 0.1.21, serde-untagged 0.1.9, servo_arc 0.4.3, syn 2.0.119, syn 3.0.6, thiserror 2.0.21, thiserror-impl 2.0.21, typeid 1.0.3, unicode-ident 1.0.26, zmij 1.0.23.
+Lo usan: adler2 2.0.1, allocator-api2 0.2.21, anyhow 1.0.104, atomic-waker 1.1.2, borsh 1.8.1, borsh-derive 1.8.1, camino 1.2.6, cargo_metadata 0.19.2, cargo-platform 0.1.9, displaydoc 0.2.7, dtoa 1.0.11, dyn-clone 1.0.20, erased-serde 0.4.10, etcetera 0.8.0, event-listener 5.4.2, fastrand 2.5.0, flume 0.11.1, home 0.5.12, itoa 1.0.18, lazy_static 1.5.1, once_cell 1.21.4, parking 2.2.1, pin-project-lite 0.2.17, proc-macro-crate 3.5.0, proc-macro2 1.0.107, quote 1.0.47, ref-cast 1.0.27, ref-cast-impl 1.0.27, rsa 0.9.10, rustc-hash 2.1.3, semver 1.0.28, serde 1.0.229, serde_core 1.0.229, serde_derive 1.0.229, serde_derive_internals 0.29.1, serde_json 1.0.151, serde_repr 0.1.21, serde-untagged 0.1.9, servo_arc 0.4.3, syn 2.0.119, syn 3.0.6, thiserror 2.0.21, thiserror-impl 2.0.21, typeid 1.0.3, unicode-ident 1.0.26, zmij 1.0.23.
 
     Permission is hereby granted, free of charge, to any
     person obtaining a copy of this software and associated
@@ -905,7 +930,7 @@ Lo usan: allocator-api2 0.2.21, anyhow 1.0.104, dtoa 1.0.11, dyn-clone 1.0.20, e
 
 ### Texto 6
 
-Lo usan: @tauri-apps/api 2.12.1, fdeflate 0.3.7, miniz_oxide 0.8.9, miniz_oxide 0.9.1, num-conv 0.2.2, pin-project-lite 0.2.17, raw-window-handle 0.6.2, tauri 2.12.1, tauri-codegen 2.7.1, tauri-macros 2.7.1, tauri-plugin-dialog 2.8.1, tauri-plugin-fs 2.6.0, tauri-plugin-sql 2.5.0, tauri-runtime 2.12.1, tauri-runtime-wry 2.12.1, tauri-utils 2.10.1, time 0.3.55, time-core 0.1.9, time-macros 0.2.32.
+Lo usan: @tauri-apps/api 2.12.1, fdeflate 0.3.7, miniz_oxide 0.8.9, miniz_oxide 0.9.1, num-conv 0.2.2, pin-project-lite 0.2.17, raw-window-handle 0.6.2, sync_wrapper 1.0.2, tauri 2.12.1, tauri-codegen 2.7.1, tauri-macros 2.7.1, tauri-plugin-dialog 2.8.1, tauri-plugin-fs 2.6.0, tauri-plugin-http 2.8.1, tauri-plugin-sql 2.5.0, tauri-runtime 2.12.1, tauri-runtime-wry 2.12.1, tauri-utils 2.10.1, time 0.3.55, time-core 0.1.9, time-macros 0.2.32.
 
     Apache License
                                Version 2.0, January 2004
@@ -1549,7 +1574,7 @@ Lo usan: base64ct 1.8.3, block-buffer 0.10.4, const-oid 0.9.6, cpufeatures 0.2.1
 
 ### Texto 10
 
-Lo usan: crc32fast 1.5.2, ctor 1.0.13, dpi 0.1.2, hex 0.4.3, json-patch 4.2.0, serde_spanned 1.1.1, stringprep 0.1.5, tao 0.37.1, toml 1.1.6+spec-1.1.0, toml_datetime 1.1.1+spec-1.1.0, toml_edit 0.25.15+spec-1.1.0, toml_parser 1.1.3+spec-1.1.0, toml_writer 1.1.2+spec-1.1.0.
+Lo usan: crc32fast 1.5.2, ctor 1.0.13, dpi 0.1.2, hex 0.4.3, json-patch 4.2.0, native-tls 0.2.18, serde_spanned 1.1.1, stringprep 0.1.5, tao 0.37.1, toml 1.1.6+spec-1.1.0, toml_datetime 1.1.1+spec-1.1.0, toml_edit 0.25.15+spec-1.1.0, toml_parser 1.1.3+spec-1.1.0, toml_writer 1.1.2+spec-1.1.0.
 
     Apache License
                                Version 2.0, January 2004
@@ -1755,6 +1780,32 @@ Lo usan: crc32fast 1.5.2, ctor 1.0.13, dpi 0.1.2, hex 0.4.3, json-patch 4.2.0, s
 
 ### Texto 11
 
+Lo usan: @tauri-apps/api 2.12.1, tauri 2.12.1, tauri-codegen 2.7.1, tauri-macros 2.7.1, tauri-plugin-dialog 2.8.1, tauri-plugin-fs 2.6.0, tauri-plugin-http 2.8.1, tauri-plugin-sql 2.5.0, tauri-runtime 2.12.1, tauri-runtime-wry 2.12.1, tauri-utils 2.10.1.
+
+    MIT License
+
+    Copyright (c) 2017 - Present Tauri Apps Contributors
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
+
+### Texto 12
+
 Lo usan: bitflags 1.3.2, bitflags 2.13.2, glob 0.3.4, log 0.4.34, num-bigint-dig 0.8.6, num-integer 0.1.47, num-iter 0.1.46, num-traits 0.2.19, regex 1.13.1, regex-automata 0.4.18, regex-syntax 0.8.11.
 
     Copyright (c) 2014 The Rust Project Developers
@@ -1783,7 +1834,7 @@ Lo usan: bitflags 1.3.2, bitflags 2.13.2, glob 0.3.4, log 0.4.34, num-bigint-dig
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-### Texto 12
+### Texto 13
 
 Lo usan: prosemirror-commands 1.7.2, prosemirror-dropcursor 1.8.4, prosemirror-gapcursor 1.4.1, prosemirror-history 1.5.1, prosemirror-inputrules 1.5.1, prosemirror-keymap 1.2.3, prosemirror-model 1.25.12, prosemirror-schema-list 1.5.1, prosemirror-state 1.4.4, prosemirror-transform 1.12.2, prosemirror-view 1.42.6.
 
@@ -1806,32 +1857,6 @@ Lo usan: prosemirror-commands 1.7.2, prosemirror-dropcursor 1.8.4, prosemirror-g
     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
     THE SOFTWARE.
-
-### Texto 13
-
-Lo usan: @tauri-apps/api 2.12.1, tauri 2.12.1, tauri-codegen 2.7.1, tauri-macros 2.7.1, tauri-plugin-dialog 2.8.1, tauri-plugin-fs 2.6.0, tauri-plugin-sql 2.5.0, tauri-runtime 2.12.1, tauri-runtime-wry 2.12.1, tauri-utils 2.10.1.
-
-    MIT License
-
-    Copyright (c) 2017 - Present Tauri Apps Contributors
-
-    Permission is hereby granted, free of charge, to any person obtaining a copy
-    of this software and associated documentation files (the "Software"), to deal
-    in the Software without restriction, including without limitation the rights
-    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-    copies of the Software, and to permit persons to whom the Software is
-    furnished to do so, subject to the following conditions:
-
-    The above copyright notice and this permission notice shall be included in all
-    copies or substantial portions of the Software.
-
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-    SOFTWARE.
 
 ### Texto 14
 
@@ -1872,6 +1897,31 @@ Lo usan: aho-corasick 1.1.5, byteorder 1.5.0, jiff 0.2.37, jiff-core 0.1.1, jiff
 
 ### Texto 16
 
+Lo usan: @tauri-apps/plugin-dialog 2.8.1, @tauri-apps/plugin-fs 2.6.0, @tauri-apps/plugin-http 2.8.2, @tauri-apps/plugin-sql 2.5.0, tauri-plugin-dialog 2.8.1, tauri-plugin-fs 2.6.0, tauri-plugin-http 2.8.1, tauri-plugin-sql 2.5.0.
+
+    SPDXVersion: SPDX-2.1
+    DataLicense: CC0-1.0
+    PackageName: tauri
+    DataFormat: SPDXRef-1
+    PackageSupplier: Organization: The Tauri Programme in the Commons Conservancy
+    PackageHomePage: https://tauri.app
+    PackageLicenseDeclared: Apache-2.0
+    PackageLicenseDeclared: MIT
+    PackageCopyrightText: 2019-2022, The Tauri Programme in the Commons Conservancy
+    PackageSummary: <text>Tauri is a rust project that enables developers to make secure
+    and small desktop applications using a web frontend.
+                    </text>
+    PackageComment: <text>The package includes the following libraries; see
+    Relationship information.
+                    </text>
+    Created: 2019-05-20T09:00:00Z
+    PackageDownloadLocation: git://github.com/tauri-apps/tauri
+    PackageDownloadLocation: git+https://github.com/tauri-apps/tauri.git
+    PackageDownloadLocation: git+ssh://github.com/tauri-apps/tauri.git
+    Creator: Person: Daniel Thompson-Yvetot
+
+### Texto 17
+
 Lo usan: aho-corasick 1.1.5, byteorder 1.5.0, jiff 0.2.37, jiff-core 0.1.1, jiff-tzdb 0.1.8, jiff-tzdb-platform 0.1.3, memchr 2.8.3, walkdir 2.5.0.
 
     The MIT License (MIT)
@@ -1896,7 +1946,7 @@ Lo usan: aho-corasick 1.1.5, byteorder 1.5.0, jiff 0.2.37, jiff-core 0.1.1, jiff
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
     THE SOFTWARE.
 
-### Texto 17
+### Texto 18
 
 Lo usan: futures-channel 0.3.34, futures-core 0.3.34, futures-executor 0.3.34, futures-io 0.3.34, futures-macro 0.3.34, futures-sink 0.3.34, futures-task 0.3.34, futures-util 0.3.34.
 
@@ -2103,7 +2153,7 @@ Lo usan: futures-channel 0.3.34, futures-core 0.3.34, futures-executor 0.3.34, f
     See the License for the specific language governing permissions and
     limitations under the License.
 
-### Texto 18
+### Texto 19
 
 Lo usan: futures-channel 0.3.34, futures-core 0.3.34, futures-executor 0.3.34, futures-io 0.3.34, futures-macro 0.3.34, futures-sink 0.3.34, futures-task 0.3.34, futures-util 0.3.34.
 
@@ -2134,7 +2184,7 @@ Lo usan: futures-channel 0.3.34, futures-core 0.3.34, futures-executor 0.3.34, f
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-### Texto 19
+### Texto 20
 
 Lo usan: flume 0.11.1, serialize-to-javascript 0.1.2, serialize-to-javascript-impl 0.1.2, siphasher 1.0.4, tinyvec 1.13.3, utf8_iter 1.0.4, zeroize 1.9.0.
 
@@ -2340,7 +2390,7 @@ Lo usan: flume 0.11.1, serialize-to-javascript 0.1.2, serialize-to-javascript-im
        See the License for the specific language governing permissions and
        limitations under the License.
 
-### Texto 20
+### Texto 21
 
 Lo usan: sqlx 0.8.6, sqlx-core 0.8.6, sqlx-macros 0.8.6, sqlx-macros-core 0.8.6, sqlx-mysql 0.8.6, sqlx-postgres 0.8.6, sqlx-sqlite 0.8.6.
 
@@ -2546,7 +2596,7 @@ Lo usan: sqlx 0.8.6, sqlx-core 0.8.6, sqlx-macros 0.8.6, sqlx-macros-core 0.8.6,
     See the License for the specific language governing permissions and
     limitations under the License.
 
-### Texto 21
+### Texto 22
 
 Lo usan: sqlx 0.8.6, sqlx-core 0.8.6, sqlx-macros 0.8.6, sqlx-macros-core 0.8.6, sqlx-mysql 0.8.6, sqlx-postgres 0.8.6, sqlx-sqlite 0.8.6.
 
@@ -2575,31 +2625,6 @@ Lo usan: sqlx 0.8.6, sqlx-core 0.8.6, sqlx-macros 0.8.6, sqlx-macros-core 0.8.6,
     OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
-
-### Texto 22
-
-Lo usan: @tauri-apps/plugin-dialog 2.8.1, @tauri-apps/plugin-fs 2.6.0, @tauri-apps/plugin-sql 2.5.0, tauri-plugin-dialog 2.8.1, tauri-plugin-fs 2.6.0, tauri-plugin-sql 2.5.0.
-
-    SPDXVersion: SPDX-2.1
-    DataLicense: CC0-1.0
-    PackageName: tauri
-    DataFormat: SPDXRef-1
-    PackageSupplier: Organization: The Tauri Programme in the Commons Conservancy
-    PackageHomePage: https://tauri.app
-    PackageLicenseDeclared: Apache-2.0
-    PackageLicenseDeclared: MIT
-    PackageCopyrightText: 2019-2022, The Tauri Programme in the Commons Conservancy
-    PackageSummary: <text>Tauri is a rust project that enables developers to make secure
-    and small desktop applications using a web frontend.
-                    </text>
-    PackageComment: <text>The package includes the following libraries; see
-    Relationship information.
-                    </text>
-    Created: 2019-05-20T09:00:00Z
-    PackageDownloadLocation: git://github.com/tauri-apps/tauri
-    PackageDownloadLocation: git+https://github.com/tauri-apps/tauri.git
-    PackageDownloadLocation: git+ssh://github.com/tauri-apps/tauri.git
-    Creator: Person: Daniel Thompson-Yvetot
 
 ### Texto 23
 
@@ -3118,6 +3143,36 @@ Lo usan: d3-interpolate 3.0.1, d3-scale 4.0.2, d3-time-format 4.1.0, d3-timer 3.
 
 ### Texto 29
 
+Lo usan: data-url 0.3.2, idna 1.1.0, percent-encoding 2.3.2, url 2.5.8.
+
+    Copyright (c) 2013-2025 The rust-url developers
+
+    Permission is hereby granted, free of charge, to any
+    person obtaining a copy of this software and associated
+    documentation files (the "Software"), to deal in the
+    Software without restriction, including without
+    limitation the rights to use, copy, modify, merge,
+    publish, distribute, sublicense, and/or sell copies of
+    the Software, and to permit persons to whom the Software
+    is furnished to do so, subject to the following
+    conditions:
+
+    The above copyright notice and this permission notice
+    shall be included in all copies or substantial portions
+    of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF
+    ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+    TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+    PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT
+    SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+    CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+    OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
+    IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+    DEALINGS IN THE SOFTWARE.
+
+### Texto 30
+
 Lo usan: getrandom 0.2.17, getrandom 0.3.4, getrandom 0.4.3, rand_chacha 0.3.1.
 
     Apache License
@@ -3322,7 +3377,7 @@ Lo usan: getrandom 0.2.17, getrandom 0.3.4, getrandom 0.4.3, rand_chacha 0.3.1.
     See the License for the specific language governing permissions and
     limitations under the License.
 
-### Texto 30
+### Texto 31
 
 Lo usan: phf 0.13.1, phf_generator 0.13.1, phf_macros 0.13.1, phf_shared 0.13.1.
 
@@ -3347,7 +3402,7 @@ Lo usan: phf 0.13.1, phf_generator 0.13.1, phf_macros 0.13.1, phf_shared 0.13.1.
     IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
     CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-### Texto 31
+### Texto 32
 
 Lo usan: react 19.3.0, react-dom 19.3.0, scheduler 0.28.0, use-sync-external-store 1.7.0.
 
@@ -3373,7 +3428,7 @@ Lo usan: react 19.3.0, react-dom 19.3.0, scheduler 0.28.0, use-sync-external-sto
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 32
+### Texto 33
 
 Lo usan: schemars 0.8.22, schemars 0.9.0, schemars 1.2.2, schemars_derive 0.8.22.
 
@@ -3399,7 +3454,37 @@ Lo usan: schemars 0.8.22, schemars 0.9.0, schemars 1.2.2, schemars_derive 0.8.22
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 33
+### Texto 34
+
+Lo usan: tokio-native-tls 0.3.1, tracing 0.1.44, tracing-attributes 0.1.31, tracing-core 0.1.36.
+
+    Copyright (c) 2019 Tokio Contributors
+
+    Permission is hereby granted, free of charge, to any
+    person obtaining a copy of this software and associated
+    documentation files (the "Software"), to deal in the
+    Software without restriction, including without
+    limitation the rights to use, copy, modify, merge,
+    publish, distribute, sublicense, and/or sell copies of
+    the Software, and to permit persons to whom the Software
+    is furnished to do so, subject to the following
+    conditions:
+
+    The above copyright notice and this permission notice
+    shall be included in all copies or substantial portions
+    of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF
+    ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+    TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+    PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT
+    SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+    CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+    OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
+    IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+    DEALINGS IN THE SOFTWARE.
+
+### Texto 35
 
 Lo usan: @floating-ui/core 1.8.0, @floating-ui/dom 1.8.0, @floating-ui/utils 0.2.12.
 
@@ -3424,7 +3509,7 @@ Lo usan: @floating-ui/core 1.8.0, @floating-ui/dom 1.8.0, @floating-ui/utils 0.2
     IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
     CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-### Texto 34
+### Texto 36
 
 Lo usan: alloc-no-stdlib 3.0.0, brotli 9.0.0, brotli-decompressor 6.0.1.
 
@@ -3441,7 +3526,7 @@ Lo usan: alloc-no-stdlib 3.0.0, brotli 9.0.0, brotli-decompressor 6.0.1.
 
     THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-### Texto 35
+### Texto 37
 
 Lo usan: crossbeam-channel 0.5.17, crossbeam-queue 0.3.14, crossbeam-utils 0.8.23.
 
@@ -3473,7 +3558,7 @@ Lo usan: crossbeam-channel 0.5.17, crossbeam-queue 0.3.14, crossbeam-utils 0.8.2
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-### Texto 36
+### Texto 38
 
 Lo usan: cssparser 0.37.0, cssparser-macros 0.7.1, dtoa-short 0.3.5.
 
@@ -3851,7 +3936,7 @@ Lo usan: cssparser 0.37.0, cssparser-macros 0.7.1, dtoa-short 0.3.5.
       This Source Code Form is "Incompatible With Secondary Licenses", as
       defined by the Mozilla Public License, v. 2.0.
 
-### Texto 37
+### Texto 39
 
 Lo usan: d3-color 3.1.0, d3-shape 3.2.0, d3-time 3.1.0.
 
@@ -3869,7 +3954,7 @@ Lo usan: d3-color 3.1.0, d3-shape 3.2.0, d3-time 3.1.0.
     TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF
     THIS SOFTWARE.
 
-### Texto 38
+### Texto 40
 
 Lo usan: darling 0.24.1, darling_core 0.24.1, darling_macro 0.24.1.
 
@@ -3895,7 +3980,7 @@ Lo usan: darling 0.24.1, darling_core 0.24.1, darling_macro 0.24.1.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 39
+### Texto 41
 
 Lo usan: either 1.18.0, serde_with 3.24.0, serde_with_macros 3.24.0.
 
@@ -3925,7 +4010,7 @@ Lo usan: either 1.18.0, serde_with 3.24.0, serde_with_macros 3.24.0.
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-### Texto 40
+### Texto 42
 
 Lo usan: hashbrown 0.12.3, hashbrown 0.15.5, hashbrown 0.17.1.
 
@@ -3955,7 +4040,7 @@ Lo usan: hashbrown 0.12.3, hashbrown 0.15.5, hashbrown 0.17.1.
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-### Texto 41
+### Texto 43
 
 Lo usan: html5ever 0.39.0, markup5ever 0.39.0, web_atoms 0.2.6.
 
@@ -3985,37 +4070,7 @@ Lo usan: html5ever 0.39.0, markup5ever 0.39.0, web_atoms 0.2.6.
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-### Texto 42
-
-Lo usan: idna 1.1.0, percent-encoding 2.3.2, url 2.5.8.
-
-    Copyright (c) 2013-2025 The rust-url developers
-
-    Permission is hereby granted, free of charge, to any
-    person obtaining a copy of this software and associated
-    documentation files (the "Software"), to deal in the
-    Software without restriction, including without
-    limitation the rights to use, copy, modify, merge,
-    publish, distribute, sublicense, and/or sell copies of
-    the Software, and to permit persons to whom the Software
-    is furnished to do so, subject to the following
-    conditions:
-
-    The above copyright notice and this permission notice
-    shall be included in all copies or substantial portions
-    of the Software.
-
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF
-    ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
-    TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
-    PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT
-    SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-    CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-    OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
-    IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
-    DEALINGS IN THE SOFTWARE.
-
-### Texto 43
+### Texto 44
 
 Lo usan: lock_api 0.4.14, parking_lot 0.12.5, parking_lot_core 0.9.12.
 
@@ -4045,7 +4100,7 @@ Lo usan: lock_api 0.4.14, parking_lot 0.12.5, parking_lot_core 0.9.12.
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-### Texto 44
+### Texto 45
 
 Lo usan: md-5 0.10.6, sha1 0.10.7, sha2 0.10.9.
 
@@ -4077,7 +4132,7 @@ Lo usan: md-5 0.10.6, sha1 0.10.7, sha2 0.10.9.
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-### Texto 45
+### Texto 46
 
 Lo usan: rand 0.8.8, rand 0.9.5, rand_chacha 0.9.0.
 
@@ -4258,7 +4313,7 @@ Lo usan: rand 0.8.8, rand 0.9.5, rand_chacha 0.9.0.
 
     END OF TERMS AND CONDITIONS
 
-### Texto 46
+### Texto 47
 
 Lo usan: react-redux 9.3.0, redux 5.0.1, redux-thunk 3.1.0.
 
@@ -4284,7 +4339,7 @@ Lo usan: react-redux 9.3.0, redux 5.0.1, redux-thunk 3.1.0.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 47
+### Texto 48
 
 Lo usan: time 0.3.55, time-core 0.1.9, time-macros 0.2.32.
 
@@ -4308,11 +4363,11 @@ Lo usan: time 0.3.55, time-core 0.1.9, time-macros 0.2.32.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 48
+### Texto 49
 
-Lo usan: tracing 0.1.44, tracing-attributes 0.1.31, tracing-core 0.1.36.
+Lo usan: tower 0.5.3, tower-layer 0.3.3, tower-service 0.3.3.
 
-    Copyright (c) 2019 Tokio Contributors
+    Copyright (c) 2019 Tower Contributors
 
     Permission is hereby granted, free of charge, to any
     person obtaining a copy of this software and associated
@@ -4338,7 +4393,7 @@ Lo usan: tracing 0.1.44, tracing-attributes 0.1.31, tracing-core 0.1.36.
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-### Texto 49
+### Texto 50
 
 Lo usan: @tanstack/react-store 0.11.2, @tanstack/store 0.11.2.
 
@@ -4364,7 +4419,7 @@ Lo usan: @tanstack/react-store 0.11.2, @tanstack/store 0.11.2.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 50
+### Texto 51
 
 Lo usan: @tanstack/react-table 9.2.4, @tanstack/table-core 9.2.4.
 
@@ -4390,7 +4445,7 @@ Lo usan: @tanstack/react-table 9.2.4, @tanstack/table-core 9.2.4.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 51
+### Texto 52
 
 Lo usan: bit-set 0.8.0, bit-vec 0.8.0.
 
@@ -4420,7 +4475,7 @@ Lo usan: bit-set 0.8.0, bit-vec 0.8.0.
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-### Texto 52
+### Texto 53
 
 Lo usan: borsh 1.8.1, borsh-derive 1.8.1.
 
@@ -4626,7 +4681,7 @@ Lo usan: borsh 1.8.1, borsh-derive 1.8.1.
        See the License for the specific language governing permissions and
        limitations under the License.
 
-### Texto 53
+### Texto 54
 
 Lo usan: cfg-if 1.0.5, socket2 0.6.5.
 
@@ -4656,7 +4711,7 @@ Lo usan: cfg-if 1.0.5, socket2 0.6.5.
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-### Texto 54
+### Texto 55
 
 Lo usan: ctor 1.0.13, tinyvec 1.13.3.
 
@@ -4666,7 +4721,7 @@ Lo usan: ctor 1.0.13, tinyvec 1.13.3.
 
     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-### Texto 55
+### Texto 56
 
 Lo usan: defmt 1.1.1, defmt-macros 1.1.1.
 
@@ -4696,7 +4751,7 @@ Lo usan: defmt 1.1.1, defmt-macros 1.1.1.
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-### Texto 56
+### Texto 57
 
 Lo usan: der 0.7.10, pkcs8 0.10.2.
 
@@ -4726,7 +4781,7 @@ Lo usan: der 0.7.10, pkcs8 0.10.2.
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-### Texto 57
+### Texto 58
 
 Lo usan: derive_more 2.1.1, derive_more-impl 2.1.1.
 
@@ -4752,7 +4807,7 @@ Lo usan: derive_more 2.1.1, derive_more-impl 2.1.1.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 58
+### Texto 59
 
 Lo usan: digest 0.10.7, hmac 0.12.1.
 
@@ -4782,7 +4837,7 @@ Lo usan: digest 0.10.7, hmac 0.12.1.
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-### Texto 59
+### Texto 60
 
 Lo usan: dirs 7.0.0, dirs-sys 0.5.0.
 
@@ -4961,7 +5016,7 @@ Lo usan: dirs 7.0.0, dirs-sys 0.5.0.
        incurred by, or claims asserted against, such Contributor by reason
        of your accepting any such warranty or additional liability.
 
-### Texto 60
+### Texto 61
 
 Lo usan: dirs 7.0.0, dirs-sys 0.5.0.
 
@@ -4985,7 +5040,7 @@ Lo usan: dirs 7.0.0, dirs-sys 0.5.0.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 61
+### Texto 62
 
 Lo usan: foldhash 0.1.5, foldhash 0.2.0.
 
@@ -5009,7 +5064,37 @@ Lo usan: foldhash 0.1.5, foldhash 0.2.0.
 
     3. This notice may not be removed or altered from any source distribution.
 
-### Texto 62
+### Texto 63
+
+Lo usan: http-body 1.1.0, http-body-util 0.1.5.
+
+    Copyright (c) 2019-2026 Sean McArthur & Hyper Contributors
+
+    Permission is hereby granted, free of charge, to any
+    person obtaining a copy of this software and associated
+    documentation files (the "Software"), to deal in the
+    Software without restriction, including without
+    limitation the rights to use, copy, modify, merge,
+    publish, distribute, sublicense, and/or sell copies of
+    the Software, and to permit persons to whom the Software
+    is furnished to do so, subject to the following
+    conditions:
+
+    The above copyright notice and this permission notice
+    shall be included in all copies or substantial portions
+    of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF
+    ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+    TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+    PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT
+    SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+    CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+    OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
+    IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+    DEALINGS IN THE SOFTWARE.
+
+### Texto 64
 
 Lo usan: ident_case 1.0.1, whoami 1.6.1.
 
@@ -5033,7 +5118,7 @@ Lo usan: ident_case 1.0.1, whoami 1.6.1.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 63
+### Texto 65
 
 Lo usan: indexmap 1.9.3, indexmap 2.14.2.
 
@@ -5063,66 +5148,66 @@ Lo usan: indexmap 1.9.3, indexmap 2.14.2.
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-### Texto 64
-
-Lo usan: miniz_oxide 0.8.9, miniz_oxide 0.9.1.
-
-    MIT License
-
-    Copyright 2013-2014 RAD Game Tools and Valve Software
-    Copyright 2010-2014 Rich Geldreich and Tenacious Software LLC
-    Copyright (c) 2017 Frommi
-    Copyright (c) 2017-2024 oyvindln
-
-
-    Permission is hereby granted, free of charge, to any person obtaining a copy
-    of this software and associated documentation files (the "Software"), to deal
-    in the Software without restriction, including without limitation the rights
-    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-    copies of the Software, and to permit persons to whom the Software is
-    furnished to do so, subject to the following conditions:
-
-    The above copyright notice and this permission notice shall be included in all
-    copies or substantial portions of the Software.
-
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-    SOFTWARE.
-
-### Texto 65
-
-Lo usan: miniz_oxide 0.8.9, miniz_oxide 0.9.1.
-
-    MIT License
-
-    Copyright 2013-2014 RAD Game Tools and Valve Software
-    Copyright 2010-2014 Rich Geldreich and Tenacious Software LLC
-    Copyright (c) 2017 Frommi
-    Copyright (c) 2017-2024 oyvindln
-
-    Permission is hereby granted, free of charge, to any person obtaining a copy
-    of this software and associated documentation files (the "Software"), to deal
-    in the Software without restriction, including without limitation the rights
-    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-    copies of the Software, and to permit persons to whom the Software is
-    furnished to do so, subject to the following conditions:
-
-    The above copyright notice and this permission notice shall be included in all
-    copies or substantial portions of the Software.
-
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-    SOFTWARE.
-
 ### Texto 66
+
+Lo usan: miniz_oxide 0.8.9, miniz_oxide 0.9.1.
+
+    MIT License
+
+    Copyright 2013-2014 RAD Game Tools and Valve Software
+    Copyright 2010-2014 Rich Geldreich and Tenacious Software LLC
+    Copyright (c) 2017 Frommi
+    Copyright (c) 2017-2024 oyvindln
+
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
+
+### Texto 67
+
+Lo usan: miniz_oxide 0.8.9, miniz_oxide 0.9.1.
+
+    MIT License
+
+    Copyright 2013-2014 RAD Game Tools and Valve Software
+    Copyright 2010-2014 Rich Geldreich and Tenacious Software LLC
+    Copyright (c) 2017 Frommi
+    Copyright (c) 2017-2024 oyvindln
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
+
+### Texto 68
 
 Lo usan: miniz_oxide 0.8.9, miniz_oxide 0.9.1.
 
@@ -5141,7 +5226,7 @@ Lo usan: miniz_oxide 0.8.9, miniz_oxide 0.9.1.
 
     3. This notice may not be removed or altered from any source distribution.
 
-### Texto 67
+### Texto 69
 
 Lo usan: muda 0.20.0, tray-icon 0.25.1.
 
@@ -5167,7 +5252,7 @@ Lo usan: muda 0.20.0, tray-icon 0.25.1.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 68
+### Texto 70
 
 Lo usan: orderedmap 2.1.1, w3c-keyname 2.2.8.
 
@@ -5191,7 +5276,7 @@ Lo usan: orderedmap 2.1.1, w3c-keyname 2.2.8.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
     THE SOFTWARE.
 
-### Texto 69
+### Texto 71
 
 Lo usan: pkcs1 0.7.5, spki 0.7.3.
 
@@ -5221,7 +5306,7 @@ Lo usan: pkcs1 0.7.5, spki 0.7.3.
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-### Texto 70
+### Texto 72
 
 Lo usan: png 0.17.16, png 0.18.1.
 
@@ -5251,7 +5336,7 @@ Lo usan: png 0.17.16, png 0.18.1.
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-### Texto 71
+### Texto 73
 
 Lo usan: rand_core 0.6.4, rand_core 0.9.5.
 
@@ -5443,7 +5528,7 @@ Lo usan: rand_core 0.6.4, rand_core 0.9.5.
        same "printed page" as the copyright notice for easier
        identification within third-party archives.
 
-### Texto 72
+### Texto 74
 
 Lo usan: ryu 1.0.23, whoami 1.6.1.
 
@@ -5471,7 +5556,7 @@ Lo usan: ryu 1.0.23, whoami 1.6.1.
     ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-### Texto 73
+### Texto 75
 
 Lo usan: same-file 1.0.6, winapi-util 0.1.11.
 
@@ -5497,7 +5582,7 @@ Lo usan: same-file 1.0.6, winapi-util 0.1.11.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
     THE SOFTWARE.
 
-### Texto 74
+### Texto 76
 
 Lo usan: serialize-to-javascript 0.1.2, serialize-to-javascript-impl 0.1.2.
 
@@ -5523,7 +5608,7 @@ Lo usan: serialize-to-javascript 0.1.2, serialize-to-javascript-impl 0.1.2.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 75
+### Texto 77
 
 Lo usan: tokio 1.53.1, tokio-stream 0.1.19.
 
@@ -5549,7 +5634,7 @@ Lo usan: tokio 1.53.1, tokio-stream 0.1.19.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 76
+### Texto 78
 
 Lo usan: @fontsource-variable/jetbrains-mono 5.3.0.
 
@@ -5647,7 +5732,7 @@ Lo usan: @fontsource-variable/jetbrains-mono 5.3.0.
     FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM
     OTHER DEALINGS IN THE FONT SOFTWARE.
 
-### Texto 77
+### Texto 79
 
 Lo usan: @fontsource-variable/plus-jakarta-sans 5.3.0.
 
@@ -5745,7 +5830,7 @@ Lo usan: @fontsource-variable/plus-jakarta-sans 5.3.0.
     FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM
     OTHER DEALINGS IN THE FONT SOFTWARE.
 
-### Texto 78
+### Texto 80
 
 Lo usan: @reduxjs/toolkit 2.13.0.
 
@@ -5771,7 +5856,7 @@ Lo usan: @reduxjs/toolkit 2.13.0.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 79
+### Texto 81
 
 Lo usan: @standard-schema/spec 1.1.0.
 
@@ -5797,7 +5882,7 @@ Lo usan: @standard-schema/spec 1.1.0.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 80
+### Texto 82
 
 Lo usan: @standard-schema/utils 0.3.0.
 
@@ -5823,7 +5908,7 @@ Lo usan: @standard-schema/utils 0.3.0.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 81
+### Texto 83
 
 Lo usan: @tauri-apps/api 2.12.1.
 
@@ -5848,7 +5933,7 @@ Lo usan: @tauri-apps/api 2.12.1.
     PackageDownloadLocation: git+ssh://github.com/tauri-apps/tauri.git
     Creator: Person: Daniel Thompson-Yvetot
 
-### Texto 82
+### Texto 84
 
 Lo usan: adler2 2.0.1.
 
@@ -5865,7 +5950,7 @@ Lo usan: adler2 2.0.1.
     AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT
     OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-### Texto 83
+### Texto 85
 
 Lo usan: arrayvec 0.7.8.
 
@@ -5895,7 +5980,7 @@ Lo usan: arrayvec 0.7.8.
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-### Texto 84
+### Texto 86
 
 Lo usan: atoi 2.0.0.
 
@@ -5921,7 +6006,57 @@ Lo usan: atoi 2.0.0.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 85
+### Texto 87
+
+Lo usan: atomic-waker 1.1.2.
+
+    ===============================================================================
+
+    Copyright (c) 2016 Alex Crichton
+    Copyright (c) 2017 The Tokio Authors
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    	http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+    ===============================================================================
+
+    Copyright (c) 2016 Alex Crichton
+    Copyright (c) 2017 The Tokio Authors
+
+    Permission is hereby granted, free of charge, to any
+    person obtaining a copy of this software and associated
+    documentation files (the "Software"), to deal in the
+    Software without restriction, including without
+    limitation the rights to use, copy, modify, merge,
+    publish, distribute, sublicense, and/or sell copies of
+    the Software, and to permit persons to whom the Software
+    is furnished to do so, subject to the following
+    conditions:
+
+    The above copyright notice and this permission notice
+    shall be included in all copies or substantial portions
+    of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF
+    ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+    TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+    PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT
+    SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+    CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+    OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
+    IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+    DEALINGS IN THE SOFTWARE.
+
+### Texto 88
 
 Lo usan: base64 0.22.1.
 
@@ -5947,7 +6082,7 @@ Lo usan: base64 0.22.1.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
     THE SOFTWARE.
 
-### Texto 86
+### Texto 89
 
 Lo usan: base64 0.23.1.
 
@@ -5973,7 +6108,7 @@ Lo usan: base64 0.23.1.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
     THE SOFTWARE.
 
-### Texto 87
+### Texto 90
 
 Lo usan: base64ct 1.8.3.
 
@@ -6004,7 +6139,7 @@ Lo usan: base64ct 1.8.3.
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-### Texto 88
+### Texto 91
 
 Lo usan: block-buffer 0.10.4.
 
@@ -6034,7 +6169,7 @@ Lo usan: block-buffer 0.10.4.
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-### Texto 89
+### Texto 92
 
 Lo usan: brotli 9.0.0.
 
@@ -6058,7 +6193,7 @@ Lo usan: brotli 9.0.0.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
     THE SOFTWARE.
 
-### Texto 90
+### Texto 93
 
 Lo usan: bs58 0.5.1.
 
@@ -6083,7 +6218,7 @@ Lo usan: bs58 0.5.1.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 91
+### Texto 94
 
 Lo usan: bytes 1.12.1.
 
@@ -6113,7 +6248,7 @@ Lo usan: bytes 1.12.1.
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-### Texto 92
+### Texto 95
 
 Lo usan: cfb 0.14.0.
 
@@ -6139,7 +6274,7 @@ Lo usan: cfb 0.14.0.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 93
+### Texto 96
 
 Lo usan: chrono 0.4.45.
 
@@ -6383,7 +6518,7 @@ Lo usan: chrono 0.4.45.
     limitations under the License.
     ~~~~
 
-### Texto 94
+### Texto 97
 
 Lo usan: clsx 2.1.1.
 
@@ -6397,7 +6532,7 @@ Lo usan: clsx 2.1.1.
 
     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-### Texto 95
+### Texto 98
 
 Lo usan: const-oid 0.9.6.
 
@@ -6427,7 +6562,7 @@ Lo usan: const-oid 0.9.6.
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-### Texto 96
+### Texto 99
 
 Lo usan: cookie 0.18.2.
 
@@ -6634,7 +6769,7 @@ Lo usan: cookie 0.18.2.
     See the License for the specific language governing permissions and
     limitations under the License.
 
-### Texto 97
+### Texto 100
 
 Lo usan: cookie 0.18.2.
 
@@ -6665,7 +6800,7 @@ Lo usan: cookie 0.18.2.
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-### Texto 98
+### Texto 101
 
 Lo usan: cpufeatures 0.2.17.
 
@@ -6695,7 +6830,7 @@ Lo usan: cpufeatures 0.2.17.
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-### Texto 99
+### Texto 102
 
 Lo usan: crc 3.4.0.
 
@@ -6901,7 +7036,7 @@ Lo usan: crc 3.4.0.
     See the License for the specific language governing permissions and
     limitations under the License.
 
-### Texto 100
+### Texto 103
 
 Lo usan: crc 3.4.0.
 
@@ -6927,7 +7062,7 @@ Lo usan: crc 3.4.0.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 101
+### Texto 104
 
 Lo usan: crc32fast 1.5.2.
 
@@ -6953,7 +7088,7 @@ Lo usan: crc32fast 1.5.2.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 102
+### Texto 105
 
 Lo usan: crossbeam-channel 0.5.17.
 
@@ -7551,7 +7686,7 @@ Lo usan: crossbeam-channel 0.5.17.
     See the License for the specific language governing permissions and
     limitations under the License.
 
-### Texto 103
+### Texto 106
 
 Lo usan: crypto-common 0.1.7.
 
@@ -7581,7 +7716,7 @@ Lo usan: crypto-common 0.1.7.
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-### Texto 104
+### Texto 107
 
 Lo usan: csstype 3.2.3.
 
@@ -7605,7 +7740,7 @@ Lo usan: csstype 3.2.3.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 105
+### Texto 108
 
 Lo usan: d3-array 3.2.4.
 
@@ -7623,7 +7758,7 @@ Lo usan: d3-array 3.2.4.
     TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF
     THIS SOFTWARE.
 
-### Texto 106
+### Texto 109
 
 Lo usan: d3-ease 3.0.1.
 
@@ -7656,7 +7791,7 @@ Lo usan: d3-ease 3.0.1.
     (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-### Texto 107
+### Texto 110
 
 Lo usan: d3-format 3.1.2.
 
@@ -7674,7 +7809,7 @@ Lo usan: d3-format 3.1.2.
     TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF
     THIS SOFTWARE.
 
-### Texto 108
+### Texto 111
 
 Lo usan: d3-path 3.1.0.
 
@@ -7692,7 +7827,7 @@ Lo usan: d3-path 3.1.0.
     TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF
     THIS SOFTWARE.
 
-### Texto 109
+### Texto 112
 
 Lo usan: decimal.js-light 2.5.1.
 
@@ -7719,7 +7854,7 @@ Lo usan: decimal.js-light 2.5.1.
     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-### Texto 110
+### Texto 113
 
 Lo usan: deranged 0.5.8.
 
@@ -7925,7 +8060,7 @@ Lo usan: deranged 0.5.8.
        See the License for the specific language governing permissions and
        limitations under the License.
 
-### Texto 111
+### Texto 114
 
 Lo usan: deranged 0.5.8.
 
@@ -7949,7 +8084,7 @@ Lo usan: deranged 0.5.8.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 112
+### Texto 115
 
 Lo usan: dom_query 0.28.0.
 
@@ -7981,7 +8116,7 @@ Lo usan: dom_query 0.28.0.
     derived from the "nipper" project (https://github.com/importcjj/nipper),
     developed by Chen Jiaju, licensed under the MIT License and the Apache License 2.0 (dual licensed).
 
-### Texto 113
+### Texto 116
 
 Lo usan: dotenvy 0.15.7.
 
@@ -8007,7 +8142,7 @@ Lo usan: dotenvy 0.15.7.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
     THE SOFTWARE.
 
-### Texto 114
+### Texto 117
 
 Lo usan: dpi 0.1.2.
 
@@ -8063,7 +8198,7 @@ Lo usan: dpi 0.1.2.
     have been licensed under extremely permissive terms.
     ------------------------------------------------------------------------------
 
-### Texto 115
+### Texto 118
 
 Lo usan: dunce 1.0.5.
 
@@ -8189,7 +8324,7 @@ Lo usan: dunce 1.0.5.
         party to this document and has no duty or obligation with respect to
         this CC0 or use of the Work.
 
-### Texto 116
+### Texto 119
 
 Lo usan: equivalent 1.0.2.
 
@@ -8219,7 +8354,7 @@ Lo usan: equivalent 1.0.2.
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-### Texto 117
+### Texto 120
 
 Lo usan: es-toolkit 1.52.0.
 
@@ -8245,7 +8380,7 @@ Lo usan: es-toolkit 1.52.0.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 118
+### Texto 121
 
 Lo usan: es-toolkit 1.52.0.
 
@@ -8289,7 +8424,7 @@ Lo usan: es-toolkit 1.52.0.
     OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
     WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-### Texto 119
+### Texto 122
 
 Lo usan: eventemitter3 5.0.4.
 
@@ -8315,7 +8450,7 @@ Lo usan: eventemitter3 5.0.4.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 120
+### Texto 123
 
 Lo usan: fast-equals 5.4.3.
 
@@ -8341,7 +8476,7 @@ Lo usan: fast-equals 5.4.3.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 121
+### Texto 124
 
 Lo usan: fdeflate 0.3.7.
 
@@ -8371,7 +8506,7 @@ Lo usan: fdeflate 0.3.7.
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-### Texto 122
+### Texto 125
 
 Lo usan: flate2 1.1.10.
 
@@ -8401,7 +8536,7 @@ Lo usan: flate2 1.1.10.
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-### Texto 123
+### Texto 126
 
 Lo usan: fnv 1.0.7.
 
@@ -8431,7 +8566,7 @@ Lo usan: fnv 1.0.7.
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-### Texto 124
+### Texto 127
 
 Lo usan: form_urlencoded 1.2.2.
 
@@ -8461,7 +8596,7 @@ Lo usan: form_urlencoded 1.2.2.
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-### Texto 125
+### Texto 128
 
 Lo usan: futures-intrusive 0.5.0.
 
@@ -8667,7 +8802,7 @@ Lo usan: futures-intrusive 0.5.0.
     See the License for the specific language governing permissions and
     limitations under the License.
 
-### Texto 126
+### Texto 129
 
 Lo usan: futures-intrusive 0.5.0.
 
@@ -8697,7 +8832,7 @@ Lo usan: futures-intrusive 0.5.0.
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-### Texto 127
+### Texto 130
 
 Lo usan: generic-array 0.14.7.
 
@@ -8723,7 +8858,7 @@ Lo usan: generic-array 0.14.7.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 128
+### Texto 131
 
 Lo usan: getrandom 0.2.17.
 
@@ -8754,7 +8889,7 @@ Lo usan: getrandom 0.2.17.
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-### Texto 129
+### Texto 132
 
 Lo usan: getrandom 0.3.4.
 
@@ -8785,7 +8920,7 @@ Lo usan: getrandom 0.3.4.
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-### Texto 130
+### Texto 133
 
 Lo usan: getrandom 0.4.3.
 
@@ -8816,7 +8951,7 @@ Lo usan: getrandom 0.4.3.
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-### Texto 131
+### Texto 134
 
 Lo usan: hashlink 0.10.0.
 
@@ -8847,7 +8982,7 @@ Lo usan: hashlink 0.10.0.
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-### Texto 132
+### Texto 135
 
 Lo usan: hex 0.4.3.
 
@@ -8872,7 +9007,7 @@ Lo usan: hex 0.4.3.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 133
+### Texto 136
 
 Lo usan: hkdf 0.12.4.
 
@@ -8903,7 +9038,7 @@ Lo usan: hkdf 0.12.4.
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-### Texto 134
+### Texto 137
 
 Lo usan: http 1.5.0.
 
@@ -9109,7 +9244,7 @@ Lo usan: http 1.5.0.
     See the License for the specific language governing permissions and
     limitations under the License.
 
-### Texto 135
+### Texto 138
 
 Lo usan: http 1.5.0.
 
@@ -9139,7 +9274,7 @@ Lo usan: http 1.5.0.
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-### Texto 136
+### Texto 139
 
 Lo usan: http-range 0.1.5.
 
@@ -9165,7 +9300,103 @@ Lo usan: http-range 0.1.5.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 137
+### Texto 140
+
+Lo usan: httparse 1.10.1.
+
+    Copyright (c) 2015-2025 Sean McArthur
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in
+    all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+    THE SOFTWARE.
+
+### Texto 141
+
+Lo usan: hyper 1.11.1.
+
+    Copyright (c) 2014-2026 Sean McArthur
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in
+    all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+    THE SOFTWARE.
+
+### Texto 142
+
+Lo usan: hyper-tls 0.6.0.
+
+    Copyright (c) 2017 Sean McArthur
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in
+    all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+    THE SOFTWARE.
+
+### Texto 143
+
+Lo usan: hyper-util 0.1.21.
+
+    Copyright (c) 2023-2025 Sean McArthur
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in
+    all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+    THE SOFTWARE.
+
+### Texto 144
 
 Lo usan: ico 0.5.0.
 
@@ -9191,7 +9422,7 @@ Lo usan: ico 0.5.0.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 138
+### Texto 145
 
 Lo usan: idna_adapter 1.2.2.
 
@@ -9221,7 +9452,7 @@ Lo usan: idna_adapter 1.2.2.
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-### Texto 139
+### Texto 146
 
 Lo usan: immer 11.1.18.
 
@@ -9247,7 +9478,7 @@ Lo usan: immer 11.1.18.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 140
+### Texto 147
 
 Lo usan: infer 0.22.0.
 
@@ -9273,7 +9504,7 @@ Lo usan: infer 0.22.0.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 141
+### Texto 148
 
 Lo usan: internmap 2.0.3.
 
@@ -9291,7 +9522,225 @@ Lo usan: internmap 2.0.3.
     TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF
     THIS SOFTWARE.
 
-### Texto 142
+### Texto 149
+
+Lo usan: ipnet 2.12.2.
+
+    Apache License
+                               Version 2.0, January 2004
+                            http://www.apache.org/licenses/
+
+       TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+       1. Definitions.
+
+          "License" shall mean the terms and conditions for use, reproduction,
+          and distribution as defined by Sections 1 through 9 of this document.
+
+          "Licensor" shall mean the copyright owner or entity authorized by
+          the copyright owner that is granting the License.
+
+          "Legal Entity" shall mean the union of the acting entity and all
+          other entities that control, are controlled by, or are under common
+          control with that entity. For the purposes of this definition,
+          "control" means (i) the power, direct or indirect, to cause the
+          direction or management of such entity, whether by contract or
+          otherwise, or (ii) ownership of fifty percent (50%) or more of the
+          outstanding shares, or (iii) beneficial ownership of such entity.
+
+          "You" (or "Your") shall mean an individual or Legal Entity
+          exercising permissions granted by this License.
+
+          "Source" form shall mean the preferred form for making modifications,
+          including but not limited to software source code, documentation
+          source, and configuration files.
+
+          "Object" form shall mean any form resulting from mechanical
+          transformation or translation of a Source form, including but
+          not limited to compiled object code, generated documentation,
+          and conversions to other media types.
+
+          "Work" shall mean the work of authorship, whether in Source or
+          Object form, made available under the License, as indicated by a
+          copyright notice that is included in or attached to the work
+          (an example is provided in the Appendix below).
+
+          "Derivative Works" shall mean any work, whether in Source or Object
+          form, that is based on (or derived from) the Work and for which the
+          editorial revisions, annotations, elaborations, or other modifications
+          represent, as a whole, an original work of authorship. For the purposes
+          of this License, Derivative Works shall not include works that remain
+          separable from, or merely link (or bind by name) to the interfaces of,
+          the Work and Derivative Works thereof.
+
+          "Contribution" shall mean any work of authorship, including
+          the original version of the Work and any modifications or additions
+          to that Work or Derivative Works thereof, that is intentionally
+          submitted to Licensor for inclusion in the Work by the copyright owner
+          or by an individual or Legal Entity authorized to submit on behalf of
+          the copyright owner. For the purposes of this definition, "submitted"
+          means any form of electronic, verbal, or written communication sent
+          to the Licensor or its representatives, including but not limited to
+          communication on electronic mailing lists, source code control systems,
+          and issue tracking systems that are managed by, or on behalf of, the
+          Licensor for the purpose of discussing and improving the Work, but
+          excluding communication that is conspicuously marked or otherwise
+          designated in writing by the copyright owner as "Not a Contribution."
+
+          "Contributor" shall mean Licensor and any individual or Legal Entity
+          on behalf of whom a Contribution has been received by Licensor and
+          subsequently incorporated within the Work.
+
+       2. Grant of Copyright License. Subject to the terms and conditions of
+          this License, each Contributor hereby grants to You a perpetual,
+          worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+          copyright license to reproduce, prepare Derivative Works of,
+          publicly display, publicly perform, sublicense, and distribute the
+          Work and such Derivative Works in Source or Object form.
+
+       3. Grant of Patent License. Subject to the terms and conditions of
+          this License, each Contributor hereby grants to You a perpetual,
+          worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+          (except as stated in this section) patent license to make, have made,
+          use, offer to sell, sell, import, and otherwise transfer the Work,
+          where such license applies only to those patent claims licensable
+          by such Contributor that are necessarily infringed by their
+          Contribution(s) alone or by combination of their Contribution(s)
+          with the Work to which such Contribution(s) was submitted. If You
+          institute patent litigation against any entity (including a
+          cross-claim or counterclaim in a lawsuit) alleging that the Work
+          or a Contribution incorporated within the Work constitutes direct
+          or contributory patent infringement, then any patent licenses
+          granted to You under this License for that Work shall terminate
+          as of the date such litigation is filed.
+
+       4. Redistribution. You may reproduce and distribute copies of the
+          Work or Derivative Works thereof in any medium, with or without
+          modifications, and in Source or Object form, provided that You
+          meet the following conditions:
+
+          (a) You must give any other recipients of the Work or
+              Derivative Works a copy of this License; and
+
+          (b) You must cause any modified files to carry prominent notices
+              stating that You changed the files; and
+
+          (c) You must retain, in the Source form of any Derivative Works
+              that You distribute, all copyright, patent, trademark, and
+              attribution notices from the Source form of the Work,
+              excluding those notices that do not pertain to any part of
+              the Derivative Works; and
+
+          (d) If the Work includes a "NOTICE" text file as part of its
+              distribution, then any Derivative Works that You distribute must
+              include a readable copy of the attribution notices contained
+              within such NOTICE file, excluding those notices that do not
+              pertain to any part of the Derivative Works, in at least one
+              of the following places: within a NOTICE text file distributed
+              as part of the Derivative Works; within the Source form or
+              documentation, if provided along with the Derivative Works; or,
+              within a display generated by the Derivative Works, if and
+              wherever such third-party notices normally appear. The contents
+              of the NOTICE file are for informational purposes only and
+              do not modify the License. You may add Your own attribution
+              notices within Derivative Works that You distribute, alongside
+              or as an addendum to the NOTICE text from the Work, provided
+              that such additional attribution notices cannot be construed
+              as modifying the License.
+
+          You may add Your own copyright statement to Your modifications and
+          may provide additional or different license terms and conditions
+          for use, reproduction, or distribution of Your modifications, or
+          for any such Derivative Works as a whole, provided Your use,
+          reproduction, and distribution of the Work otherwise complies with
+          the conditions stated in this License.
+
+       5. Submission of Contributions. Unless You explicitly state otherwise,
+          any Contribution intentionally submitted for inclusion in the Work
+          by You to the Licensor shall be under the terms and conditions of
+          this License, without any additional terms or conditions.
+          Notwithstanding the above, nothing herein shall supersede or modify
+          the terms of any separate license agreement you may have executed
+          with Licensor regarding such Contributions.
+
+       6. Trademarks. This License does not grant permission to use the trade
+          names, trademarks, service marks, or product names of the Licensor,
+          except as required for reasonable and customary use in describing the
+          origin of the Work and reproducing the content of the NOTICE file.
+
+       7. Disclaimer of Warranty. Unless required by applicable law or
+          agreed to in writing, Licensor provides the Work (and each
+          Contributor provides its Contributions) on an "AS IS" BASIS,
+          WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+          implied, including, without limitation, any warranties or conditions
+          of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+          PARTICULAR PURPOSE. You are solely responsible for determining the
+          appropriateness of using or redistributing the Work and assume any
+          risks associated with Your exercise of permissions under this License.
+
+       8. Limitation of Liability. In no event and under no legal theory,
+          whether in tort (including negligence), contract, or otherwise,
+          unless required by applicable law (such as deliberate and grossly
+          negligent acts) or agreed to in writing, shall any Contributor be
+          liable to You for damages, including any direct, indirect, special,
+          incidental, or consequential damages of any character arising as a
+          result of this License or out of the use or inability to use the
+          Work (including but not limited to damages for loss of goodwill,
+          work stoppage, computer failure or malfunction, or any and all
+          other commercial damages or losses), even if such Contributor
+          has been advised of the possibility of such damages.
+
+       9. Accepting Warranty or Additional Liability. While redistributing
+          the Work or Derivative Works thereof, You may choose to offer,
+          and charge a fee for, acceptance of support, warranty, indemnity,
+          or other liability obligations and/or rights consistent with this
+          License. However, in accepting such obligations, You may act only
+          on Your own behalf and on Your sole responsibility, not on behalf
+          of any other Contributor, and only if You agree to indemnify,
+          defend, and hold each Contributor harmless for any liability
+          incurred by, or claims asserted against, such Contributor by reason
+          of your accepting any such warranty or additional liability.
+
+       END OF TERMS AND CONDITIONS
+
+       APPENDIX: How to apply the Apache License to your work.
+
+          To apply the Apache License to your work, attach the following
+          boilerplate notice, with the fields enclosed by brackets "{}"
+          replaced with your own identifying information. (Don't include
+          the brackets!)  The text should be enclosed in the appropriate
+          comment syntax for the file format. We also recommend that a
+          file or class name and description of purpose be included on the
+          same "printed page" as the copyright notice for easier
+          identification within third-party archives.
+
+       Copyright 2017 Juniper Networks, Inc.
+
+       Licensed under the Apache License, Version 2.0 (the "License");
+       you may not use this file except in compliance with the License.
+       You may obtain a copy of the License at
+
+           http://www.apache.org/licenses/LICENSE-2.0
+
+       Unless required by applicable law or agreed to in writing, software
+       distributed under the License is distributed on an "AS IS" BASIS,
+       WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+       See the License for the specific language governing permissions and
+       limitations under the License.
+
+### Texto 150
+
+Lo usan: ipnet 2.12.2.
+
+    Copyright 2017 Juniper Networks, Inc.
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+### Texto 151
 
 Lo usan: json-patch 4.2.0.
 
@@ -9317,7 +9766,7 @@ Lo usan: json-patch 4.2.0.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 143
+### Texto 152
 
 Lo usan: jsonptr 0.7.1.
 
@@ -9523,7 +9972,7 @@ Lo usan: jsonptr 0.7.1.
     See the License for the specific language governing permissions and
     limitations under the License.
 
-### Texto 144
+### Texto 153
 
 Lo usan: jsonptr 0.7.1.
 
@@ -9549,7 +9998,7 @@ Lo usan: jsonptr 0.7.1.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 145
+### Texto 154
 
 Lo usan: keyboard-types 0.8.3.
 
@@ -9573,7 +10022,243 @@ Lo usan: keyboard-types 0.8.3.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
     THE SOFTWARE.
 
-### Texto 146
+### Texto 155
+
+Lo usan: keyring 3.6.3.
+
+    Apache License
+                            Version 2.0, January 2004
+                         http://www.apache.org/licenses/
+
+    TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+    1. Definitions.
+
+       "License" shall mean the terms and conditions for use, reproduction,
+       and distribution as defined by Sections 1 through 9 of this document.
+
+       "Licensor" shall mean the copyright owner or entity authorized by
+       the copyright owner that is granting the License.
+
+       "Legal Entity" shall mean the union of the acting entity and all
+       other entities that control, are controlled by, or are under common
+       control with that entity. For the purposes of this definition,
+       "control" means (i) the power, direct or indirect, to cause the
+       direction or management of such entity, whether by contract or
+       otherwise, or (ii) ownership of fifty percent (50%) or more of the
+       outstanding shares, or (iii) beneficial ownership of such entity.
+
+       "You" (or "Your") shall mean an individual or Legal Entity
+       exercising permissions granted by this License.
+
+       "Source" form shall mean the preferred form for making modifications,
+       including but not limited to software source code, documentation
+       source, and configuration files.
+
+       "Object" form shall mean any form resulting from mechanical
+       transformation or translation of a Source form, including but
+       not limited to compiled object code, generated documentation,
+       and conversions to other media types.
+
+       "Work" shall mean the work of authorship, whether in Source or
+       Object form, made available under the License, as indicated by a
+       copyright notice that is included in or attached to the work
+       (an example is provided in the Appendix below).
+
+       "Derivative Works" shall mean any work, whether in Source or Object
+       form, that is based on (or derived from) the Work and for which the
+       editorial revisions, annotations, elaborations, or other modifications
+       represent, as a whole, an original work of authorship. For the purposes
+       of this License, Derivative Works shall not include works that remain
+       separable from, or merely link (or bind by name) to the interfaces of,
+       the Work and Derivative Works thereof.
+
+       "Contribution" shall mean any work of authorship, including
+       the original version of the Work and any modifications or additions
+       to that Work or Derivative Works thereof, that is intentionally
+       submitted to Licensor for inclusion in the Work by the copyright owner
+       or by an individual or Legal Entity authorized to submit on behalf of
+       the copyright owner. For the purposes of this definition, "submitted"
+       means any form of electronic, verbal, or written communication sent
+       to the Licensor or its representatives, including but not limited to
+       communication on electronic mailing lists, source code control systems,
+       and issue tracking systems that are managed by, or on behalf of, the
+       Licensor for the purpose of discussing and improving the Work, but
+       excluding communication that is conspicuously marked or otherwise
+       designated in writing by the copyright owner as "Not a Contribution."
+
+       "Contributor" shall mean Licensor and any individual or Legal Entity
+       on behalf of whom a Contribution has been received by Licensor and
+       subsequently incorporated within the Work.
+
+    2. Grant of Copyright License. Subject to the terms and conditions of
+       this License, each Contributor hereby grants to You a perpetual,
+       worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+       copyright license to reproduce, prepare Derivative Works of,
+       publicly display, publicly perform, sublicense, and distribute the
+       Work and such Derivative Works in Source or Object form.
+
+    3. Grant of Patent License. Subject to the terms and conditions of
+       this License, each Contributor hereby grants to You a perpetual,
+       worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+       (except as stated in this section) patent license to make, have made,
+       use, offer to sell, sell, import, and otherwise transfer the Work,
+       where such license applies only to those patent claims licensable
+       by such Contributor that are necessarily infringed by their
+       Contribution(s) alone or by combination of their Contribution(s)
+       with the Work to which such Contribution(s) was submitted. If You
+       institute patent litigation against any entity (including a
+       cross-claim or counterclaim in a lawsuit) alleging that the Work
+       or a Contribution incorporated within the Work constitutes direct
+       or contributory patent infringement, then any patent licenses
+       granted to You under this License for that Work shall terminate
+       as of the date such litigation is filed.
+
+    4. Redistribution. You may reproduce and distribute copies of the
+       Work or Derivative Works thereof in any medium, with or without
+       modifications, and in Source or Object form, provided that You
+       meet the following conditions:
+
+       (a) You must give any other recipients of the Work or
+           Derivative Works a copy of this License; and
+
+       (b) You must cause any modified files to carry prominent notices
+           stating that You changed the files; and
+
+       (c) You must retain, in the Source form of any Derivative Works
+           that You distribute, all copyright, patent, trademark, and
+           attribution notices from the Source form of the Work,
+           excluding those notices that do not pertain to any part of
+           the Derivative Works; and
+
+       (d) If the Work includes a "NOTICE" text file as part of its
+           distribution, then any Derivative Works that You distribute must
+           include a readable copy of the attribution notices contained
+           within such NOTICE file, excluding those notices that do not
+           pertain to any part of the Derivative Works, in at least one
+           of the following places: within a NOTICE text file distributed
+           as part of the Derivative Works; within the Source form or
+           documentation, if provided along with the Derivative Works; or,
+           within a display generated by the Derivative Works, if and
+           wherever such third-party notices normally appear. The contents
+           of the NOTICE file are for informational purposes only and
+           do not modify the License. You may add Your own attribution
+           notices within Derivative Works that You distribute, alongside
+           or as an addendum to the NOTICE text from the Work, provided
+           that such additional attribution notices cannot be construed
+           as modifying the License.
+
+       You may add Your own copyright statement to Your modifications and
+       may provide additional or different license terms and conditions
+       for use, reproduction, or distribution of Your modifications, or
+       for any such Derivative Works as a whole, provided Your use,
+       reproduction, and distribution of the Work otherwise complies with
+       the conditions stated in this License.
+
+    5. Submission of Contributions. Unless You explicitly state otherwise,
+       any Contribution intentionally submitted for inclusion in the Work
+       by You to the Licensor shall be under the terms and conditions of
+       this License, without any additional terms or conditions.
+       Notwithstanding the above, nothing herein shall supersede or modify
+       the terms of any separate license agreement you may have executed
+       with Licensor regarding such Contributions.
+
+    6. Trademarks. This License does not grant permission to use the trade
+       names, trademarks, service marks, or product names of the Licensor,
+       except as required for reasonable and customary use in describing the
+       origin of the Work and reproducing the content of the NOTICE file.
+
+    7. Disclaimer of Warranty. Unless required by applicable law or
+       agreed to in writing, Licensor provides the Work (and each
+       Contributor provides its Contributions) on an "AS IS" BASIS,
+       WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+       implied, including, without limitation, any warranties or conditions
+       of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+       PARTICULAR PURPOSE. You are solely responsible for determining the
+       appropriateness of using or redistributing the Work and assume any
+       risks associated with Your exercise of permissions under this License.
+
+    8. Limitation of Liability. In no event and under no legal theory,
+       whether in tort (including negligence), contract, or otherwise,
+       unless required by applicable law (such as deliberate and grossly
+       negligent acts) or agreed to in writing, shall any Contributor be
+       liable to You for damages, including any direct, indirect, special,
+       incidental, or consequential damages of any character arising as a
+       result of this License or out of the use or inability to use the
+       Work (including but not limited to damages for loss of goodwill,
+       work stoppage, computer failure or malfunction, or any and all
+       other commercial damages or losses), even if such Contributor
+       has been advised of the possibility of such damages.
+
+    9. Accepting Warranty or Additional Liability. While redistributing
+       the Work or Derivative Works thereof, You may choose to offer,
+       and charge a fee for, acceptance of support, warranty, indemnity,
+       or other liability obligations and/or rights consistent with this
+       License. However, in accepting such obligations, You may act only
+       on Your own behalf and on Your sole responsibility, not on behalf
+       of any other Contributor, and only if You agree to indemnify,
+       defend, and hold each Contributor harmless for any liability
+       incurred by, or claims asserted against, such Contributor by reason
+       of your accepting any such warranty or additional liability.
+
+    END OF TERMS AND CONDITIONS
+
+    APPENDIX: How to apply the Apache License to your work.
+
+       To apply the Apache License to your work, attach the following
+       boilerplate notice, with the fields enclosed by brackets "[]"
+       replaced with your own identifying information. (Don't include
+       the brackets!)  The text should be enclosed in the appropriate
+       comment syntax for the file format. We also recommend that a
+       file or class name and description of purpose be included on the
+       same "printed page" as the copyright notice for easier
+       identification within third-party archives.
+
+    Copyright [2017] [keyring developers]
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    	http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+### Texto 156
+
+Lo usan: keyring 3.6.3.
+
+    Copyright (c) 2016 keyring Developers
+
+    Permission is hereby granted, free of charge, to any
+    person obtaining a copy of this software and associated
+    documentation files (the "Software"), to deal in the
+    Software without restriction, including without
+    limitation the rights to use, copy, modify, merge,
+    publish, distribute, sublicense, and/or sell copies of
+    the Software, and to permit persons to whom the Software
+    is furnished to do so, subject to the following
+    conditions:
+
+    The above copyright notice and this permission notice
+    shall be included in all copies or substantial portions
+    of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF
+    ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+    TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+    PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT
+    SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+    CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+    OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
+    IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+    DEALINGS IN THE SOFTWARE.
+
+### Texto 157
 
 Lo usan: libc 0.2.189.
 
@@ -9603,7 +10288,7 @@ Lo usan: libc 0.2.189.
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-### Texto 147
+### Texto 158
 
 Lo usan: libm 0.2.16.
 
@@ -9866,7 +10551,7 @@ Lo usan: libm 0.2.16.
 
     Copyright notices are retained in src/* files where relevant.
 
-### Texto 148
+### Texto 159
 
 Lo usan: libsqlite3-sys 0.30.1.
 
@@ -9890,7 +10575,7 @@ Lo usan: libsqlite3-sys 0.30.1.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
     THE SOFTWARE.
 
-### Texto 149
+### Texto 160
 
 Lo usan: linkifyjs 4.3.3.
 
@@ -9914,7 +10599,7 @@ Lo usan: linkifyjs 4.3.3.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
     THE SOFTWARE.
 
-### Texto 150
+### Texto 161
 
 Lo usan: lucide-react 1.49.0.
 
@@ -9962,7 +10647,7 @@ Lo usan: lucide-react 1.49.0.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 151
+### Texto 162
 
 Lo usan: marked 17.0.6.
 
@@ -10011,7 +10696,7 @@ Lo usan: marked 17.0.6.
 
     This software is provided by the copyright holders and contributors “as is” and any express or implied warranties, including, but not limited to, the implied warranties of merchantability and fitness for a particular purpose are disclaimed. In no event shall the copyright owner or contributors be liable for any direct, indirect, incidental, special, exemplary, or consequential damages (including, but not limited to, procurement of substitute goods or services; loss of use, data, or profits; or business interruption) however caused and on any theory of liability, whether in contract, strict liability, or tort (including negligence or otherwise) arising in any way out of the use of this software, even if advised of the possibility of such damage.
 
-### Texto 152
+### Texto 163
 
 Lo usan: mime 0.3.17.
 
@@ -10035,7 +10720,7 @@ Lo usan: mime 0.3.17.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
     THE SOFTWARE.
 
-### Texto 153
+### Texto 164
 
 Lo usan: mio 1.2.3.
 
@@ -10059,7 +10744,7 @@ Lo usan: mio 1.2.3.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
     THE SOFTWARE.
 
-### Texto 154
+### Texto 165
 
 Lo usan: muda 0.20.0.
 
@@ -10083,7 +10768,31 @@ Lo usan: muda 0.20.0.
     PackageDownloadLocation: git+ssh://github.com/tauri-apps/muda.git
     Creator: Person: Daniel Thompson-Yvetot
 
-### Texto 155
+### Texto 166
+
+Lo usan: native-tls 0.2.18.
+
+    Copyright (c) 2016 The rust-native-tls Developers
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
+
+### Texto 167
 
 Lo usan: new_debug_unreachable 1.0.6.
 
@@ -10113,7 +10822,7 @@ Lo usan: new_debug_unreachable 1.0.6.
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-### Texto 156
+### Texto 168
 
 Lo usan: num-conv 0.2.2.
 
@@ -10137,7 +10846,7 @@ Lo usan: num-conv 0.2.2.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 157
+### Texto 169
 
 Lo usan: option-ext 0.2.0.
 
@@ -10515,7 +11224,7 @@ Lo usan: option-ext 0.2.0.
       This Source Code Form is "Incompatible With Secondary Licenses", as
       defined by the Mozilla Public License, v. 2.0.
 
-### Texto 158
+### Texto 170
 
 Lo usan: parking 2.2.1.
 
@@ -10529,7 +11238,7 @@ Lo usan: parking 2.2.1.
     option. All files in the project carrying such notice may not be
     copied, modified, or distributed except according to those terms.
 
-### Texto 159
+### Texto 171
 
 Lo usan: pem-rfc7468 0.7.0.
 
@@ -10559,7 +11268,7 @@ Lo usan: pem-rfc7468 0.7.0.
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-### Texto 160
+### Texto 172
 
 Lo usan: plist 1.10.1.
 
@@ -10583,7 +11292,7 @@ Lo usan: plist 1.10.1.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 161
+### Texto 173
 
 Lo usan: powerfmt 0.2.0.
 
@@ -10789,7 +11498,7 @@ Lo usan: powerfmt 0.2.0.
        See the License for the specific language governing permissions and
        limitations under the License.
 
-### Texto 162
+### Texto 174
 
 Lo usan: powerfmt 0.2.0.
 
@@ -10813,7 +11522,7 @@ Lo usan: powerfmt 0.2.0.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 163
+### Texto 175
 
 Lo usan: ppv-lite86 0.2.21.
 
@@ -11019,7 +11728,7 @@ Lo usan: ppv-lite86 0.2.21.
     See the License for the specific language governing permissions and
     limitations under the License.
 
-### Texto 164
+### Texto 176
 
 Lo usan: ppv-lite86 0.2.21.
 
@@ -11049,7 +11758,7 @@ Lo usan: ppv-lite86 0.2.21.
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-### Texto 165
+### Texto 177
 
 Lo usan: precomputed-hash 0.1.1.
 
@@ -11075,7 +11784,7 @@ Lo usan: precomputed-hash 0.1.1.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 166
+### Texto 178
 
 Lo usan: prosemirror-changeset 2.4.4.
 
@@ -11099,7 +11808,7 @@ Lo usan: prosemirror-changeset 2.4.4.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
     THE SOFTWARE.
 
-### Texto 167
+### Texto 179
 
 Lo usan: prosemirror-tables 1.8.5.
 
@@ -11123,7 +11832,7 @@ Lo usan: prosemirror-tables 1.8.5.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
     THE SOFTWARE.
 
-### Texto 168
+### Texto 180
 
 Lo usan: quick-xml 0.42.0.
 
@@ -11151,7 +11860,7 @@ Lo usan: quick-xml 0.42.0.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
     THE SOFTWARE.
 
-### Texto 169
+### Texto 181
 
 Lo usan: raw-window-handle 0.6.2.
 
@@ -11177,7 +11886,7 @@ Lo usan: raw-window-handle 0.6.2.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 170
+### Texto 182
 
 Lo usan: raw-window-handle 0.6.2.
 
@@ -11193,7 +11902,7 @@ Lo usan: raw-window-handle 0.6.2.
 
     3. This notice may not be removed or altered from any source distribution.
 
-### Texto 171
+### Texto 183
 
 Lo usan: react-is 17.0.2.
 
@@ -11219,7 +11928,7 @@ Lo usan: react-is 17.0.2.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 172
+### Texto 184
 
 Lo usan: recharts 3.10.1.
 
@@ -11245,7 +11954,237 @@ Lo usan: recharts 3.10.1.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 173
+### Texto 185
+
+Lo usan: reqwest 0.12.28.
+
+    Apache License
+                            Version 2.0, January 2004
+                         http://www.apache.org/licenses/
+
+    TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+    1. Definitions.
+
+       "License" shall mean the terms and conditions for use, reproduction,
+       and distribution as defined by Sections 1 through 9 of this document.
+
+       "Licensor" shall mean the copyright owner or entity authorized by
+       the copyright owner that is granting the License.
+
+       "Legal Entity" shall mean the union of the acting entity and all
+       other entities that control, are controlled by, or are under common
+       control with that entity. For the purposes of this definition,
+       "control" means (i) the power, direct or indirect, to cause the
+       direction or management of such entity, whether by contract or
+       otherwise, or (ii) ownership of fifty percent (50%) or more of the
+       outstanding shares, or (iii) beneficial ownership of such entity.
+
+       "You" (or "Your") shall mean an individual or Legal Entity
+       exercising permissions granted by this License.
+
+       "Source" form shall mean the preferred form for making modifications,
+       including but not limited to software source code, documentation
+       source, and configuration files.
+
+       "Object" form shall mean any form resulting from mechanical
+       transformation or translation of a Source form, including but
+       not limited to compiled object code, generated documentation,
+       and conversions to other media types.
+
+       "Work" shall mean the work of authorship, whether in Source or
+       Object form, made available under the License, as indicated by a
+       copyright notice that is included in or attached to the work
+       (an example is provided in the Appendix below).
+
+       "Derivative Works" shall mean any work, whether in Source or Object
+       form, that is based on (or derived from) the Work and for which the
+       editorial revisions, annotations, elaborations, or other modifications
+       represent, as a whole, an original work of authorship. For the purposes
+       of this License, Derivative Works shall not include works that remain
+       separable from, or merely link (or bind by name) to the interfaces of,
+       the Work and Derivative Works thereof.
+
+       "Contribution" shall mean any work of authorship, including
+       the original version of the Work and any modifications or additions
+       to that Work or Derivative Works thereof, that is intentionally
+       submitted to Licensor for inclusion in the Work by the copyright owner
+       or by an individual or Legal Entity authorized to submit on behalf of
+       the copyright owner. For the purposes of this definition, "submitted"
+       means any form of electronic, verbal, or written communication sent
+       to the Licensor or its representatives, including but not limited to
+       communication on electronic mailing lists, source code control systems,
+       and issue tracking systems that are managed by, or on behalf of, the
+       Licensor for the purpose of discussing and improving the Work, but
+       excluding communication that is conspicuously marked or otherwise
+       designated in writing by the copyright owner as "Not a Contribution."
+
+       "Contributor" shall mean Licensor and any individual or Legal Entity
+       on behalf of whom a Contribution has been received by Licensor and
+       subsequently incorporated within the Work.
+
+    2. Grant of Copyright License. Subject to the terms and conditions of
+       this License, each Contributor hereby grants to You a perpetual,
+       worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+       copyright license to reproduce, prepare Derivative Works of,
+       publicly display, publicly perform, sublicense, and distribute the
+       Work and such Derivative Works in Source or Object form.
+
+    3. Grant of Patent License. Subject to the terms and conditions of
+       this License, each Contributor hereby grants to You a perpetual,
+       worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+       (except as stated in this section) patent license to make, have made,
+       use, offer to sell, sell, import, and otherwise transfer the Work,
+       where such license applies only to those patent claims licensable
+       by such Contributor that are necessarily infringed by their
+       Contribution(s) alone or by combination of their Contribution(s)
+       with the Work to which such Contribution(s) was submitted. If You
+       institute patent litigation against any entity (including a
+       cross-claim or counterclaim in a lawsuit) alleging that the Work
+       or a Contribution incorporated within the Work constitutes direct
+       or contributory patent infringement, then any patent licenses
+       granted to You under this License for that Work shall terminate
+       as of the date such litigation is filed.
+
+    4. Redistribution. You may reproduce and distribute copies of the
+       Work or Derivative Works thereof in any medium, with or without
+       modifications, and in Source or Object form, provided that You
+       meet the following conditions:
+
+       (a) You must give any other recipients of the Work or
+           Derivative Works a copy of this License; and
+
+       (b) You must cause any modified files to carry prominent notices
+           stating that You changed the files; and
+
+       (c) You must retain, in the Source form of any Derivative Works
+           that You distribute, all copyright, patent, trademark, and
+           attribution notices from the Source form of the Work,
+           excluding those notices that do not pertain to any part of
+           the Derivative Works; and
+
+       (d) If the Work includes a "NOTICE" text file as part of its
+           distribution, then any Derivative Works that You distribute must
+           include a readable copy of the attribution notices contained
+           within such NOTICE file, excluding those notices that do not
+           pertain to any part of the Derivative Works, in at least one
+           of the following places: within a NOTICE text file distributed
+           as part of the Derivative Works; within the Source form or
+           documentation, if provided along with the Derivative Works; or,
+           within a display generated by the Derivative Works, if and
+           wherever such third-party notices normally appear. The contents
+           of the NOTICE file are for informational purposes only and
+           do not modify the License. You may add Your own attribution
+           notices within Derivative Works that You distribute, alongside
+           or as an addendum to the NOTICE text from the Work, provided
+           that such additional attribution notices cannot be construed
+           as modifying the License.
+
+       You may add Your own copyright statement to Your modifications and
+       may provide additional or different license terms and conditions
+       for use, reproduction, or distribution of Your modifications, or
+       for any such Derivative Works as a whole, provided Your use,
+       reproduction, and distribution of the Work otherwise complies with
+       the conditions stated in this License.
+
+    5. Submission of Contributions. Unless You explicitly state otherwise,
+       any Contribution intentionally submitted for inclusion in the Work
+       by You to the Licensor shall be under the terms and conditions of
+       this License, without any additional terms or conditions.
+       Notwithstanding the above, nothing herein shall supersede or modify
+       the terms of any separate license agreement you may have executed
+       with Licensor regarding such Contributions.
+
+    6. Trademarks. This License does not grant permission to use the trade
+       names, trademarks, service marks, or product names of the Licensor,
+       except as required for reasonable and customary use in describing the
+       origin of the Work and reproducing the content of the NOTICE file.
+
+    7. Disclaimer of Warranty. Unless required by applicable law or
+       agreed to in writing, Licensor provides the Work (and each
+       Contributor provides its Contributions) on an "AS IS" BASIS,
+       WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+       implied, including, without limitation, any warranties or conditions
+       of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+       PARTICULAR PURPOSE. You are solely responsible for determining the
+       appropriateness of using or redistributing the Work and assume any
+       risks associated with Your exercise of permissions under this License.
+
+    8. Limitation of Liability. In no event and under no legal theory,
+       whether in tort (including negligence), contract, or otherwise,
+       unless required by applicable law (such as deliberate and grossly
+       negligent acts) or agreed to in writing, shall any Contributor be
+       liable to You for damages, including any direct, indirect, special,
+       incidental, or consequential damages of any character arising as a
+       result of this License or out of the use or inability to use the
+       Work (including but not limited to damages for loss of goodwill,
+       work stoppage, computer failure or malfunction, or any and all
+       other commercial damages or losses), even if such Contributor
+       has been advised of the possibility of such damages.
+
+    9. Accepting Warranty or Additional Liability. While redistributing
+       the Work or Derivative Works thereof, You may choose to offer,
+       and charge a fee for, acceptance of support, warranty, indemnity,
+       or other liability obligations and/or rights consistent with this
+       License. However, in accepting such obligations, You may act only
+       on Your own behalf and on Your sole responsibility, not on behalf
+       of any other Contributor, and only if You agree to indemnify,
+       defend, and hold each Contributor harmless for any liability
+       incurred by, or claims asserted against, such Contributor by reason
+       of your accepting any such warranty or additional liability.
+
+    END OF TERMS AND CONDITIONS
+
+    APPENDIX: How to apply the Apache License to your work.
+
+       To apply the Apache License to your work, attach the following
+       boilerplate notice, with the fields enclosed by brackets "[]"
+       replaced with your own identifying information. (Don't include
+       the brackets!)  The text should be enclosed in the appropriate
+       comment syntax for the file format. We also recommend that a
+       file or class name and description of purpose be included on the
+       same "printed page" as the copyright notice for easier
+       identification within third-party archives.
+
+    Copyright 2016 Sean McArthur
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    	http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+### Texto 186
+
+Lo usan: reqwest 0.12.28.
+
+    Copyright (c) 2016-2025 Sean McArthur
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in
+    all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+    THE SOFTWARE.
+
+### Texto 187
 
 Lo usan: reselect 5.2.0.
 
@@ -11271,7 +12210,7 @@ Lo usan: reselect 5.2.0.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 174
+### Texto 188
 
 Lo usan: rfd 0.16.0.
 
@@ -11297,7 +12236,7 @@ Lo usan: rfd 0.16.0.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 175
+### Texto 189
 
 Lo usan: rope-sequence 1.3.4.
 
@@ -11321,7 +12260,7 @@ Lo usan: rope-sequence 1.3.4.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
     THE SOFTWARE.
 
-### Texto 176
+### Texto 190
 
 Lo usan: rust_decimal 1.43.0.
 
@@ -11347,7 +12286,255 @@ Lo usan: rust_decimal 1.43.0.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 177
+### Texto 191
+
+Lo usan: rustls-pki-types 1.15.1.
+
+    Apache License
+                            Version 2.0, January 2004
+                         http://www.apache.org/licenses/
+
+    TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+    1. Definitions.
+
+       "License" shall mean the terms and conditions for use, reproduction,
+       and distribution as defined by Sections 1 through 9 of this document.
+
+       "Licensor" shall mean the copyright owner or entity authorized by
+       the copyright owner that is granting the License.
+
+       "Legal Entity" shall mean the union of the acting entity and all
+       other entities that control, are controlled by, or are under common
+       control with that entity. For the purposes of this definition,
+       "control" means (i) the power, direct or indirect, to cause the
+       direction or management of such entity, whether by contract or
+       otherwise, or (ii) ownership of fifty percent (50%) or more of the
+       outstanding shares, or (iii) beneficial ownership of such entity.
+
+       "You" (or "Your") shall mean an individual or Legal Entity
+       exercising permissions granted by this License.
+
+       "Source" form shall mean the preferred form for making modifications,
+       including but not limited to software source code, documentation
+       source, and configuration files.
+
+       "Object" form shall mean any form resulting from mechanical
+       transformation or translation of a Source form, including but
+       not limited to compiled object code, generated documentation,
+       and conversions to other media types.
+
+       "Work" shall mean the work of authorship, whether in Source or
+       Object form, made available under the License, as indicated by a
+       copyright notice that is included in or attached to the work
+       (an example is provided in the Appendix below).
+
+       "Derivative Works" shall mean any work, whether in Source or Object
+       form, that is based on (or derived from) the Work and for which the
+       editorial revisions, annotations, elaborations, or other modifications
+       represent, as a whole, an original work of authorship. For the purposes
+       of this License, Derivative Works shall not include works that remain
+       separable from, or merely link (or bind by name) to the interfaces of,
+       the Work and Derivative Works thereof.
+
+       "Contribution" shall mean any work of authorship, including
+       the original version of the Work and any modifications or additions
+       to that Work or Derivative Works thereof, that is intentionally
+       submitted to Licensor for inclusion in the Work by the copyright owner
+       or by an individual or Legal Entity authorized to submit on behalf of
+       the copyright owner. For the purposes of this definition, "submitted"
+       means any form of electronic, verbal, or written communication sent
+       to the Licensor or its representatives, including but not limited to
+       communication on electronic mailing lists, source code control systems,
+       and issue tracking systems that are managed by, or on behalf of, the
+       Licensor for the purpose of discussing and improving the Work, but
+       excluding communication that is conspicuously marked or otherwise
+       designated in writing by the copyright owner as "Not a Contribution."
+
+       "Contributor" shall mean Licensor and any individual or Legal Entity
+       on behalf of whom a Contribution has been received by Licensor and
+       subsequently incorporated within the Work.
+
+    2. Grant of Copyright License. Subject to the terms and conditions of
+       this License, each Contributor hereby grants to You a perpetual,
+       worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+       copyright license to reproduce, prepare Derivative Works of,
+       publicly display, publicly perform, sublicense, and distribute the
+       Work and such Derivative Works in Source or Object form.
+
+    3. Grant of Patent License. Subject to the terms and conditions of
+       this License, each Contributor hereby grants to You a perpetual,
+       worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+       (except as stated in this section) patent license to make, have made,
+       use, offer to sell, sell, import, and otherwise transfer the Work,
+       where such license applies only to those patent claims licensable
+       by such Contributor that are necessarily infringed by their
+       Contribution(s) alone or by combination of their Contribution(s)
+       with the Work to which such Contribution(s) was submitted. If You
+       institute patent litigation against any entity (including a
+       cross-claim or counterclaim in a lawsuit) alleging that the Work
+       or a Contribution incorporated within the Work constitutes direct
+       or contributory patent infringement, then any patent licenses
+       granted to You under this License for that Work shall terminate
+       as of the date such litigation is filed.
+
+    4. Redistribution. You may reproduce and distribute copies of the
+       Work or Derivative Works thereof in any medium, with or without
+       modifications, and in Source or Object form, provided that You
+       meet the following conditions:
+
+       (a) You must give any other recipients of the Work or
+           Derivative Works a copy of this License; and
+
+       (b) You must cause any modified files to carry prominent notices
+           stating that You changed the files; and
+
+       (c) You must retain, in the Source form of any Derivative Works
+           that You distribute, all copyright, patent, trademark, and
+           attribution notices from the Source form of the Work,
+           excluding those notices that do not pertain to any part of
+           the Derivative Works; and
+
+       (d) If the Work includes a "NOTICE" text file as part of its
+           distribution, then any Derivative Works that You distribute must
+           include a readable copy of the attribution notices contained
+           within such NOTICE file, excluding those notices that do not
+           pertain to any part of the Derivative Works, in at least one
+           of the following places: within a NOTICE text file distributed
+           as part of the Derivative Works; within the Source form or
+           documentation, if provided along with the Derivative Works; or,
+           within a display generated by the Derivative Works, if and
+           wherever such third-party notices normally appear. The contents
+           of the NOTICE file are for informational purposes only and
+           do not modify the License. You may add Your own attribution
+           notices within Derivative Works that You distribute, alongside
+           or as an addendum to the NOTICE text from the Work, provided
+           that such additional attribution notices cannot be construed
+           as modifying the License.
+
+       You may add Your own copyright statement to Your modifications and
+       may provide additional or different license terms and conditions
+       for use, reproduction, or distribution of Your modifications, or
+       for any such Derivative Works as a whole, provided Your use,
+       reproduction, and distribution of the Work otherwise complies with
+       the conditions stated in this License.
+
+    5. Submission of Contributions. Unless You explicitly state otherwise,
+       any Contribution intentionally submitted for inclusion in the Work
+       by You to the Licensor shall be under the terms and conditions of
+       this License, without any additional terms or conditions.
+       Notwithstanding the above, nothing herein shall supersede or modify
+       the terms of any separate license agreement you may have executed
+       with Licensor regarding such Contributions.
+
+    6. Trademarks. This License does not grant permission to use the trade
+       names, trademarks, service marks, or product names of the Licensor,
+       except as required for reasonable and customary use in describing the
+       origin of the Work and reproducing the content of the NOTICE file.
+
+    7. Disclaimer of Warranty. Unless required by applicable law or
+       agreed to in writing, Licensor provides the Work (and each
+       Contributor provides its Contributions) on an "AS IS" BASIS,
+       WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+       implied, including, without limitation, any warranties or conditions
+       of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+       PARTICULAR PURPOSE. You are solely responsible for determining the
+       appropriateness of using or redistributing the Work and assume any
+       risks associated with Your exercise of permissions under this License.
+
+    8. Limitation of Liability. In no event and under no legal theory,
+       whether in tort (including negligence), contract, or otherwise,
+       unless required by applicable law (such as deliberate and grossly
+       negligent acts) or agreed to in writing, shall any Contributor be
+       liable to You for damages, including any direct, indirect, special,
+       incidental, or consequential damages of any character arising as a
+       result of this License or out of the use or inability to use the
+       Work (including but not limited to damages for loss of goodwill,
+       work stoppage, computer failure or malfunction, or any and all
+       other commercial damages or losses), even if such Contributor
+       has been advised of the possibility of such damages.
+
+    9. Accepting Warranty or Additional Liability. While redistributing
+       the Work or Derivative Works thereof, You may choose to offer,
+       and charge a fee for, acceptance of support, warranty, indemnity,
+       or other liability obligations and/or rights consistent with this
+       License. However, in accepting such obligations, You may act only
+       on Your own behalf and on Your sole responsibility, not on behalf
+       of any other Contributor, and only if You agree to indemnify,
+       defend, and hold each Contributor harmless for any liability
+       incurred by, or claims asserted against, such Contributor by reason
+       of your accepting any such warranty or additional liability.
+
+    END OF TERMS AND CONDITIONS
+
+    APPENDIX: How to apply the Apache License to your work.
+
+       To apply the Apache License to your work, attach the following
+       boilerplate notice, with the fields enclosed by brackets "[]"
+       replaced with your own identifying information. (Don't include
+       the brackets!)  The text should be enclosed in the appropriate
+       comment syntax for the file format. We also recommend that a
+       file or class name and description of purpose be included on the
+       same "printed page" as the copyright notice for easier
+       identification within third-party archives.
+
+    Copyright 2023 Dirkjan Ochtman
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    	http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+### Texto 192
+
+Lo usan: rustls-pki-types 1.15.1.
+
+    Copyright (c) 2023 Dirkjan Ochtman <dirkjan@ochtman.nl>
+
+    Permission is hereby granted, free of charge, to any
+    person obtaining a copy of this software and associated
+    documentation files (the "Software"), to deal in the
+    Software without restriction, including without
+    limitation the rights to use, copy, modify, merge,
+    publish, distribute, sublicense, and/or sell copies of
+    the Software, and to permit persons to whom the Software
+    is furnished to do so, subject to the following
+    conditions:
+
+    The above copyright notice and this permission notice
+    shall be included in all copies or substantial portions
+    of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF
+    ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+    TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+    PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT
+    SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+    CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+    OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
+    IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+    DEALINGS IN THE SOFTWARE.
+
+### Texto 193
+
+Lo usan: schannel 0.1.29.
+
+    Copyright (c) 2015 steffengy
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+### Texto 194
 
 Lo usan: scopeguard 1.2.0.
 
@@ -11377,7 +12564,7 @@ Lo usan: scopeguard 1.2.0.
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-### Texto 178
+### Texto 195
 
 Lo usan: serde_urlencoded 0.7.1.
 
@@ -11407,7 +12594,7 @@ Lo usan: serde_urlencoded 0.7.1.
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-### Texto 179
+### Texto 196
 
 Lo usan: signature 2.2.0.
 
@@ -11437,7 +12624,7 @@ Lo usan: signature 2.2.0.
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-### Texto 180
+### Texto 197
 
 Lo usan: simd-adler32 0.3.10.
 
@@ -11463,7 +12650,7 @@ Lo usan: simd-adler32 0.3.10.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 181
+### Texto 198
 
 Lo usan: siphasher 1.0.4.
 
@@ -11475,7 +12662,7 @@ Lo usan: siphasher 1.0.4.
     <LICENSE-MIT or http://opensource.org/licenses/MIT>, at your
     option.
 
-### Texto 182
+### Texto 199
 
 Lo usan: siphasher 1.0.4.
 
@@ -11497,7 +12684,7 @@ Lo usan: siphasher 1.0.4.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 183
+### Texto 200
 
 Lo usan: slab 0.4.12.
 
@@ -11527,7 +12714,7 @@ Lo usan: slab 0.4.12.
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-### Texto 184
+### Texto 201
 
 Lo usan: smallvec 1.16.2.
 
@@ -11557,7 +12744,7 @@ Lo usan: smallvec 1.16.2.
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-### Texto 185
+### Texto 202
 
 Lo usan: softbuffer 0.4.8.
 
@@ -11763,7 +12950,7 @@ Lo usan: softbuffer 0.4.8.
        See the License for the specific language governing permissions and
        limitations under the License.
 
-### Texto 186
+### Texto 203
 
 Lo usan: softbuffer 0.4.8.
 
@@ -11787,7 +12974,7 @@ Lo usan: softbuffer 0.4.8.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 187
+### Texto 204
 
 Lo usan: spin 0.9.9.
 
@@ -11813,7 +13000,7 @@ Lo usan: spin 0.9.9.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 188
+### Texto 205
 
 Lo usan: stable_deref_trait 1.2.1.
 
@@ -11843,7 +13030,7 @@ Lo usan: stable_deref_trait 1.2.1.
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-### Texto 189
+### Texto 206
 
 Lo usan: string_cache 0.9.0.
 
@@ -11873,7 +13060,7 @@ Lo usan: string_cache 0.9.0.
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-### Texto 190
+### Texto 207
 
 Lo usan: stringprep 0.1.5.
 
@@ -11897,7 +13084,7 @@ Lo usan: stringprep 0.1.5.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 191
+### Texto 208
 
 Lo usan: strsim 0.11.1.
 
@@ -11925,7 +13112,7 @@ Lo usan: strsim 0.11.1.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 192
+### Texto 209
 
 Lo usan: subtle 2.6.1.
 
@@ -11959,7 +13146,7 @@ Lo usan: subtle 2.6.1.
     NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-### Texto 193
+### Texto 210
 
 Lo usan: synstructure 0.14.0.
 
@@ -11971,7 +13158,7 @@ Lo usan: synstructure 0.14.0.
 
     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-### Texto 194
+### Texto 211
 
 Lo usan: tao 0.37.1.
 
@@ -11994,7 +13181,7 @@ Lo usan: tao 0.37.1.
     PackageDownloadLocation: git+ssh://github.com/tauri-apps/tao.git
     Creator: Person: Daniel Thompson-Yvetot
 
-### Texto 195
+### Texto 212
 
 Lo usan: tendril 0.5.1.
 
@@ -12024,7 +13211,7 @@ Lo usan: tendril 0.5.1.
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-### Texto 196
+### Texto 213
 
 Lo usan: tiny-invariant 1.3.3.
 
@@ -12050,7 +13237,7 @@ Lo usan: tiny-invariant 1.3.3.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 197
+### Texto 214
 
 Lo usan: tinyvec 1.13.3.
 
@@ -12066,7 +13253,64 @@ Lo usan: tinyvec 1.13.3.
 
     3. This notice may not be removed or altered from any source distribution.
 
-### Texto 198
+### Texto 215
+
+Lo usan: tokio-macros 2.7.2.
+
+    MIT License
+
+    Copyright (c) 2019 Yoshua Wuyts
+    Copyright (c) Tokio Contributors
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
+
+### Texto 216
+
+Lo usan: tower-http 0.6.11.
+
+    Copyright (c) 2019-2021 Tower Contributors
+
+    Permission is hereby granted, free of charge, to any
+    person obtaining a copy of this software and associated
+    documentation files (the "Software"), to deal in the
+    Software without restriction, including without
+    limitation the rights to use, copy, modify, merge,
+    publish, distribute, sublicense, and/or sell copies of
+    the Software, and to permit persons to whom the Software
+    is furnished to do so, subject to the following
+    conditions:
+
+    The above copyright notice and this permission notice
+    shall be included in all copies or substantial portions
+    of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF
+    ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+    TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+    PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT
+    SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+    CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+    OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
+    IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+    DEALINGS IN THE SOFTWARE.
+
+### Texto 217
 
 Lo usan: tray-icon 0.25.1.
 
@@ -12090,13 +13334,38 @@ Lo usan: tray-icon 0.25.1.
     PackageDownloadLocation: git+ssh://github.com/tauri-apps/tray-icon.git
     Creator: Person: Daniel Thompson-Yvetot
 
-### Texto 199
+### Texto 218
+
+Lo usan: try-lock 0.2.5.
+
+    Copyright (c) 2018-2023 Sean McArthur
+    Copyright (c) 2016 Alex Crichton
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in
+    all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+    THE SOFTWARE.
+
+### Texto 219
 
 Lo usan: typenum 1.20.1.
 
     MIT OR Apache-2.0
 
-### Texto 200
+### Texto 220
 
 Lo usan: typenum 1.20.1.
 
@@ -12302,7 +13571,7 @@ Lo usan: typenum 1.20.1.
     See the License for the specific language governing permissions and
     limitations under the License.
 
-### Texto 201
+### Texto 221
 
 Lo usan: typenum 1.20.1.
 
@@ -12328,7 +13597,7 @@ Lo usan: typenum 1.20.1.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 202
+### Texto 222
 
 Lo usan: unicode-ident 1.0.26.
 
@@ -12372,7 +13641,7 @@ Lo usan: unicode-ident 1.0.26.
     dealings in these Data Files or Software without prior written
     authorization of the copyright holder.
 
-### Texto 203
+### Texto 223
 
 Lo usan: urlpattern 0.6.0.
 
@@ -12398,7 +13667,7 @@ Lo usan: urlpattern 0.6.0.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 204
+### Texto 224
 
 Lo usan: utf8_iter 1.0.4.
 
@@ -12428,7 +13697,7 @@ Lo usan: utf8_iter 1.0.4.
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-### Texto 205
+### Texto 225
 
 Lo usan: uuid 1.26.1.
 
@@ -12459,7 +13728,31 @@ Lo usan: uuid 1.26.1.
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-### Texto 206
+### Texto 226
+
+Lo usan: want 0.3.1.
+
+    Copyright (c) 2018-2019 Sean McArthur
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in
+    all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+    THE SOFTWARE.
+
+### Texto 227
 
 Lo usan: web-time 1.1.0.
 
@@ -12665,7 +13958,7 @@ Lo usan: web-time 1.1.0.
        See the License for the specific language governing permissions and
        limitations under the License.
 
-### Texto 207
+### Texto 228
 
 Lo usan: web-time 1.1.0.
 
@@ -12691,7 +13984,7 @@ Lo usan: web-time 1.1.0.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 208
+### Texto 229
 
 Lo usan: window-vibrancy 0.8.1.
 
@@ -12717,7 +14010,7 @@ Lo usan: window-vibrancy 0.8.1.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 209
+### Texto 230
 
 Lo usan: window-vibrancy 0.8.1.
 
@@ -12741,7 +14034,7 @@ Lo usan: window-vibrancy 0.8.1.
     PackageDownloadLocation: git+ssh://github.com/tauri-apps/window-vibrancy.git
     Creator: Person: Daniel Thompson-Yvetot
 
-### Texto 210
+### Texto 231
 
 Lo usan: winnow 1.0.4.
 
@@ -12764,7 +14057,7 @@ Lo usan: winnow 1.0.4.
     OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
     WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-### Texto 211
+### Texto 232
 
 Lo usan: wry 0.57.0.
 
@@ -12790,7 +14083,7 @@ Lo usan: wry 0.57.0.
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
-### Texto 212
+### Texto 233
 
 Lo usan: wry 0.57.0.
 
@@ -12815,7 +14108,7 @@ Lo usan: wry 0.57.0.
     PackageDownloadLocation: git+ssh://github.com/tauri-apps/wry.git
     Creator: Person: Daniel Thompson-Yvetot
 
-### Texto 213
+### Texto 234
 
 Lo usan: xlsx 0.20.3.
 
@@ -13021,7 +14314,7 @@ Lo usan: xlsx 0.20.3.
        See the License for the specific language governing permissions and
        limitations under the License.
 
-### Texto 214
+### Texto 235
 
 Lo usan: zerocopy 0.8.59.
 
@@ -13227,7 +14520,7 @@ Lo usan: zerocopy 0.8.59.
        See the License for the specific language governing permissions and
        limitations under the License.
 
-### Texto 215
+### Texto 236
 
 Lo usan: zerocopy 0.8.59.
 
@@ -13256,7 +14549,7 @@ Lo usan: zerocopy 0.8.59.
     (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
     OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-### Texto 216
+### Texto 237
 
 Lo usan: zerocopy 0.8.59.
 
@@ -13286,7 +14579,7 @@ Lo usan: zerocopy 0.8.59.
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-### Texto 217
+### Texto 238
 
 Lo usan: zeroize 1.9.0.
 
@@ -13316,7 +14609,7 @@ Lo usan: zeroize 1.9.0.
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-### Texto 218
+### Texto 239
 
 Lo usan: zlib-rs 0.6.8.
 
@@ -13340,7 +14633,7 @@ Lo usan: zlib-rs 0.6.8.
 
     3. This notice may not be removed or altered from any source distribution.
 
-### Texto 219
+### Texto 240
 
 Lo usan: zod 4.6.5.
 

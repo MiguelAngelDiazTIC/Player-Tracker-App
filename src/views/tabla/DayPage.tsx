@@ -3,6 +3,11 @@ import { useState } from "react";
 import { useStore } from "../../app/store";
 import { ValueInput } from "../../components/cells";
 import { ChoiceGroup } from "../../components/ChoiceGroup";
+import {
+  SyncButton,
+  SyncNotice,
+  useMatchSync,
+} from "../../components/matchSync";
 import { Button } from "../../components/ui/Button";
 import { Dialog } from "../../components/ui/Dialog";
 import { Labeled } from "../../components/ui/fields";
@@ -23,6 +28,8 @@ interface DayPageProps {
   onOpenScrims: () => void;
   onOpenRankeds: (date: string) => void;
   onOpenNote: (id: string) => void;
+  /** Lleva a Ajustes > Sincronizar partidas. */
+  onOpenSync: () => void;
 }
 
 /** La fila de un día abierta como página: sus campos y el editor de feelings. */
@@ -33,6 +40,7 @@ export function DayPage({
   onOpenScrims,
   onOpenRankeds,
   onOpenNote,
+  onOpenSync,
 }: DayPageProps) {
   const store = useStore();
   const {
@@ -56,6 +64,7 @@ export function DayPage({
     ]),
   ];
   const [confirmingDelete, setConfirmingDelete] = useState(false);
+  const sync = useMatchSync(date, date);
 
   const day = days.find((item) => item.date === date) ?? emptyDay(date);
   const index = days.findIndex((item) => item.date === date);
@@ -195,6 +204,11 @@ export function DayPage({
               </dl>
             )}
             <div className="flex flex-wrap gap-2">
+              <SyncButton
+                state={sync.state}
+                label="Sincronizar"
+                onRun={() => void sync.run()}
+              />
               <Button onClick={() => onOpenRankeds(date)}>
                 {daySessions.length === 0 ? "Apuntar partidas" : "Ver partidas"}
               </Button>
@@ -208,6 +222,11 @@ export function DayPage({
                 </Button>
               ) : null}
             </div>
+            <SyncNotice
+              state={sync.state}
+              period="este día"
+              onOpenSettings={onOpenSync}
+            />
           </Card>
 
           <Card title="Notas enlazadas">

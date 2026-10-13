@@ -6,7 +6,7 @@
 
 Diario de escritorio para jugadores de Valorant: apunta cada día tus partidas, tus hábitos, tu sueño y cómo te has sentido, y descubre con tus propios números qué te hace jugar mejor.
 
-Es una app para Windows, gratuita y libre. Funciona sin cuenta y sin internet: todo lo que apuntas se queda en una carpeta de tu ordenador.
+Es una app para Windows, gratuita y libre. Funciona sin cuenta y sin internet: todo lo que apuntas se queda en una carpeta de tu ordenador. Si quieres, puede traer tus partidas por ti.
 
 ![La Tabla de MikaLog en modo oscuro, con una fila por día](docs/captura-tabla.png)
 
@@ -15,6 +15,7 @@ Es una app para Windows, gratuita y libre. Funciona sin cuenta y sin internet: t
 - **Tabla**: una fila por día, como en una hoja de cálculo. Rankeds, scrims, DMs, Kovaaks, gimnasio, suplementación, nutrición, sueño, K/D, ACS, agentes y mapas, con colores según tus umbrales y una gráfica por columna.
 - **Página del día**: los campos del día y un editor para escribir tus feelings, con `#etiquetas` como `#tilt` o `#saturado`.
 - **Rankeds** y **Scrims y 10mans**: cada partida con su mapa, agente y resultado, y tus cifras por mapa y por agente.
+- **Sincronizar partidas** (opcional): con una clave gratuita de HenrikDev, un botón rellena las rankeds, el K/D, el ACS, los agentes y los mapas del día.
 - **Calendario**: mapa de calor mensual de la métrica que elijas.
 - **Dashboard**: tendencias, rachas de hábitos y comparación con el periodo anterior.
 - **Insights**: tu rendimiento con y sin cada hábito, por tramos de sueño y por etiqueta, con avisos de saturación y una puntuación de preparación del día.
@@ -41,13 +42,24 @@ El tutorial del primer arranque te ofrece tres caminos, y puedes repetirlo desde
 - **Cargar una copia**: un JSON exportado desde MikaLog en otro ordenador.
 - **Empezar de cero**: crea el día de hoy y lo abre para que lo rellenes.
 
+## Rellenar tus partidas solo
+
+Es opcional: sin esto, la app funciona igual y apuntas las partidas a mano. MikaLog usa HenrikDev, un servicio gratuito y no oficial que lee tu historial de VALORANT. Sacar la clave lleva unos diez minutos y se hace una sola vez:
+
+1. Entra en el Discord de HenrikDev: <https://discord.com/invite/X3GaVkX2YN>.
+2. Completa la verificación que te pide el servidor.
+3. Ve al canal **#get-a-key**, elige **VALORANT** y después la clave **Basic**.
+4. Copia la clave (empieza por `HDEV-`) y pégala en MikaLog, en Ajustes > «Sincronizar partidas», con tu Riot ID y tu región. Pulsa «Probar conexión».
+
+Después, el botón **Sincronizar** de la página de cada día trae sus partidas, y **Sincronizar los últimos 7 días**, en Rankeds, pone al día la semana. No duplica partidas ni pisa lo que corrijas a mano. La guía completa, con qué hacer si algo falla, está en [docs/GUIA-HENRIKDEV.md](docs/GUIA-HENRIKDEV.md).
+
 ## Tus datos
 
 - **Dónde están**: en la carpeta de datos que elegiste (`tracker.db` y las imágenes de tus notas). Puedes cambiarla en Ajustes, copiarla o sincronizarla con Drive por tu cuenta.
 - **Copias automáticas**: al abrir la app, si la última copia tiene una semana o más, se guarda una copia completa en la carpeta `copias` y se conservan las 8 más recientes. La frecuencia se cambia en Ajustes.
 - **Exportar**: a Excel (una pestaña por registro) o CSV desde Ajustes, y «Exportar lo que ves» en la Tabla, Rankeds y Scrims para llevarte solo las filas filtradas. La hoja de días sale con un formato que la app puede volver a importar.
 - **Cambiar de ordenador**: Ajustes > «Exportar JSON» en el antiguo e «Importar JSON» en el nuevo.
-- **Privacidad**: MikaLog no recoge ni envía ningún dato y no se conecta a internet.
+- **Privacidad**: MikaLog no recoge ningún dato. Solo se conecta a internet si pones tu clave de HenrikDev y pulsas Sincronizar o Probar conexión; entonces envía a HenrikDev (`api.henrikdev.xyz`, un servicio de terceros no oficial) tu Riot ID, tu región y tu clave. La clave se guarda en el almacén de credenciales de Windows y no va en tus copias ni exportaciones.
 
 ## Licencia y avisos
 
@@ -99,16 +111,16 @@ Documentación del proyecto:
 
 ### Cómo está organizado
 
-| Carpeta                          | Qué contiene                                                                 |
-| -------------------------------- | ---------------------------------------------------------------------------- |
-| `src/domain/`                    | Lógica pura con pruebas: campos, fechas, estadísticas, importar y exportar   |
-| `src/data/`                      | SQLite, migraciones, repositorio y copias                                    |
-| `src/app/`                       | Estado de la app y la interfaz `Platform`, que aísla lo que depende de Tauri |
-| `src/platform/`                  | `Platform` con Tauri y el arranque (carpeta de datos)                        |
-| `src/views/` y `src/components/` | Pantallas y componentes                                                      |
-| `src/test/`                      | SQLite en memoria y servicios de prueba para probar la app entera            |
-| `src-tauri/`                     | Lado nativo, iconos, permisos e instalador                                   |
-| `server/`                        | Servidor de sincronización con Riot (Cloudflare Workers); ver su README      |
+| Carpeta                          | Qué contiene                                                                  |
+| -------------------------------- | ----------------------------------------------------------------------------- |
+| `src/domain/`                    | Lógica pura con pruebas: campos, fechas, estadísticas, importar y exportar    |
+| `src/data/`                      | SQLite, migraciones, repositorio y copias                                     |
+| `src/app/`                       | Estado de la app, la sincronización y la interfaz `Platform`, que aísla Tauri |
+| `src/platform/`                  | `Platform` con Tauri y el arranque (carpeta de datos)                         |
+| `src/views/` y `src/components/` | Pantallas y componentes                                                       |
+| `src/test/`                      | SQLite en memoria y servicios de prueba para probar la app entera             |
+| `src-tauri/`                     | Lado nativo, iconos, permisos e instalador                                    |
+| `server/`                        | Servidor de sincronización con Riot (Cloudflare Workers); ver su README       |
 
 ### Publicar una versión
 

@@ -57,7 +57,7 @@ export function AboutPanel() {
         </div>
       </div>
 
-      <dl className="grid grid-cols-1 gap-4 md:grid-cols-3">
+      <dl className="grid grid-cols-1 gap-4 md:grid-cols-2">
         {LEGAL_NOTICES.map(({ title, text }) => (
           <div key={title} className="flex flex-col gap-1">
             <dt className="text-ink/70 text-xs font-semibold tracking-wide uppercase">

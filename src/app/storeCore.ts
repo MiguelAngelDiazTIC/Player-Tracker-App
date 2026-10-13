@@ -36,6 +36,8 @@ export interface AppActions {
   /** Guarda la revisión de una semana; si queda vacía, la borra. */
   saveReview(review: WeeklyReview): void;
   addSession(date: string): RankedSession;
+  /** Añade partidas ya formadas (las que trae la sincronización). */
+  addSessions(sessions: readonly RankedSession[]): void;
   updateSession(session: RankedSession): void;
   deleteSession(id: string): void;
   addNote(title?: string): Note;
@@ -250,6 +252,12 @@ export function createAppStore(services: Services): AppStoreCore {
         repository.saveRankedSessions([session]),
       );
       return session;
+    },
+    addSessions(sessions) {
+      if (sessions.length === 0) return;
+      apply({ sessions: [...current().sessions, ...sessions] }, () =>
+        repository.saveRankedSessions(sessions),
+      );
     },
     updateSession(session) {
       apply(

@@ -205,6 +205,13 @@ describe("edición Saiz", () => {
     ).toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "Empezar" }));
     await user.click(screen.getByRole("button", { name: "Siguiente" }));
+    // El paso de la sincronización está en las dos ediciones.
+    expect(
+      screen.getByRole("dialog", {
+        name: "Rellena tus partidas solo (opcional)",
+      }),
+    ).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "Siguiente" }));
 
     const titles = [];
     for (let stop = 0; stop < 5; stop += 1) {

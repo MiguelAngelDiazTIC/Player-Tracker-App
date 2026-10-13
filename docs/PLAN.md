@@ -485,6 +485,19 @@ El usuario decidió el 11/10/2026 no esperar a Riot y el 13/10/2026 que HenrikDe
 - Pruebas: conversión de partidas de ejemplo de HenrikDev (incluida una que empieza antes de medianoche), paginación hasta dejar atrás el día, 429, clave inválida (401/403) con aviso claro, que repetir no duplica, y en las dos ediciones el paso del tutorial y la tarjeta con la guía.
 - **Terminada cuando**: alguien que no conoce la app sigue la guía, pega su clave, sincroniza un día y la app da el mismo K/D, ACS, agentes y mapas que su historial del juego, y repetirlo no duplica partidas.
 
+Cómo quedó hecho (13/10/2026):
+
+- **Lógica**: `src/domain/henrikMatches.ts` convierte cada partida de HenrikDev a `RiotMatch` y `src/data/henrikSource.ts` es la `MatchSource` (páginas, errores y "Probar conexión"). `MatchSource` pasó de `fetchDay(fecha)` a `fetchDays(desde, hasta, colas)`, para que una semana cueste una petición por cola, y dice con qué `source` se guardan sus partidas. `planSync` (en `riotMatches.ts`) aplica `planDaySync` a cada día del periodo; un día sin partidas no se crea ni se toca.
+- **Orquestación**: `src/app/sync.ts` (`syncMatches`) lee la cuenta y la clave, pide las partidas, guarda las nuevas y escribe los días. Los botones y sus avisos son `src/components/matchSync.tsx`, que usan la página del día y Rankeds.
+- **Ajustes**: el Riot ID y la región siguen en `riot.id` y `riot.region`, los mismos ajustes de la fase 4, así que una instalación de entonces los conserva. `sync.source` se pone a `henrikdev` al probar la conexión con éxito. La tarjeta también deja elegir las colas (`riot.queues`): competitivo siempre, y Premier, no competitivo y Swiftplay a voluntad, con una petición por cola.
+- **Clave**: `Platform.secrets` (dos comandos en `src-tauri/src/lib.rs`, `secret_read` y `secret_write`, sobre el crate `keyring`). El servicio del almacén es el identificador de la app, así que cada edición tiene su clave. Los comandos solo aceptan el nombre `henrikdev-api-key`. Una clave que la fase 4 dejó en el ajuste `henrikdev.apiKey` se pasa al almacén y se borra de los ajustes la primera vez que se lee.
+- **Red**: `tauri-plugin-http` con el TLS de Windows (`native-tls`) en vez de `rustls`. Así el instalador no lleva una lista propia de certificados, cuya licencia (CDLA-Permissive-2.0) no estaba en la lista de compatibles de `npm run notices`. **La CSP no se ha tocado**: las peticiones salen por el lado nativo, no por el navegador, y lo que las limita es el permiso `http:default`, solo hacia `https://api.henrikdev.xyz/*`.
+- **429**: no se espera sola. El aviso dice cuántos segundos faltan y el usuario vuelve a pulsar.
+- **Textos**: `src/app/legal.ts` (privacidad y un aviso nuevo, "Sincronización"), `NOTICE.md`, README (con la guía de la clave) y las notas de la Release. La bienvenida del tutorial dice ahora "Lo que apuntas no sale de tu ordenador".
+- **Pendiente a propósito: la web** (`site/`). No se ha tocado, porque se publica al fusionar en `main` y el plan pide cambiarla a la vez que sale la versión. Al publicar hay que actualizar `site/privacidad.html` y quitar de `site/index.html` y `site/maqueta.html` lo que diga que solo se usa la conexión oficial.
+- Pruebas: `src/data/henrikSource.test.ts` (conversión, páginas, errores) y `src/App.sync.test.tsx` (la app entera en las dos ediciones: tarjeta, clave, sincronizar un día y la semana, repetir, errores y el paso del tutorial).
+- Comprobado en la app real (modo demo): la clave se guarda, se lee y se borra en el Administrador de credenciales de Windows, y "Probar conexión" llega a HenrikDev y enseña "Clave no válida" con una clave falsa. **Sin comprobar**: una sincronización real con una clave válida, y que Premier, no competitivo y Swiftplay se llamen así en el `mode` de HenrikDev.
+
 #### Plan B si Riot no lo aprueba o no contesta
 
 - **B1, HenrikDev**: ya es la fuente de las dos ediciones desde el 13/10/2026 (7.6).

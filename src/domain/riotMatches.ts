@@ -76,9 +76,21 @@ export const riotMatchesSchema = z.array(riotMatchSchema);
  * no toca nada más.
  */
 export interface MatchSource {
-  /** Partidas que empezaron ese día, en la hora local del jugador. */
-  fetchDay(date: string): Promise<RiotMatch[]>;
+  /** Con qué `source` se guardan las partidas que trae. */
+  readonly source: SyncSource;
+  /**
+   * Partidas de esas colas que empezaron entre los dos días, incluidos, en la
+   * hora local del jugador. Puede devolver alguna de más: `planSync` filtra.
+   */
+  fetchDays(
+    from: string,
+    to: string,
+    queues: readonly RiotQueue[],
+  ): Promise<RiotMatch[]>;
 }
+
+/** Fuentes de partidas sincronizadas, tal como quedan en `source`. */
+export type SyncSource = Exclude<RankedSession["source"], "manual">;
 
 /** Valor de `external_match_id` de una partida de Riot. */
 export function riotExternalId(matchId: string): string {
@@ -93,7 +105,11 @@ export function riotMatchDate(match: Pick<RiotMatch, "startedAtMillis">) {
   return todayIso(new Date(match.startedAtMillis));
 }
 
-export function toRankedSession(match: RiotMatch, id: string): RankedSession {
+export function toRankedSession(
+  match: RiotMatch,
+  id: string,
+  source: SyncSource = "riot",
+): RankedSession {
   return {
     id,
     date: riotMatchDate(match),
@@ -104,7 +120,7 @@ export function toRankedSession(match: RiotMatch, id: string): RankedSession {
     deaths: match.deaths,
     score: match.score,
     rounds: match.rounds,
-    source: "riot",
+    source,
     externalMatchId: riotExternalId(match.matchId),
   };
 }
@@ -130,6 +146,7 @@ export function planDaySync(
   existing: readonly RankedSession[],
   queues: readonly RiotQueue[],
   newId: () => string,
+  source: SyncSource = "riot",
 ): DaySyncPlan {
   const seen = new Set<string>();
   const matches = fetched
@@ -145,7 +162,7 @@ export function planDaySync(
   const known = new Set(existing.map((session) => session.externalMatchId));
   const newSessions = matches
     .filter((match) => !known.has(riotExternalId(match.matchId)))
-    .map((match) => toRankedSession(match, newId()));
+    .map((match) => toRankedSession(match, newId(), source));
 
   return {
     newSessions,
@@ -155,4 +172,37 @@ export function planDaySync(
       ...newSessions,
     ]),
   };
+}
+
+export interface SyncPlan {
+  /** Todas las partidas nuevas del periodo, en el orden en que se jugaron. */
+  newSessions: RankedSession[];
+  /** Partidas del periodo que tiene la fuente, nuevas o no. */
+  found: number;
+  /**
+   * Días con alguna partida y lo que se escribe en cada uno. Un día sin
+   * partidas no aparece: no se crea ni se toca.
+   */
+  days: { date: string; values: RankedDayValues }[];
+}
+
+/** `planDaySync` para cada día de un periodo, con una sola lectura. */
+export function planSync(
+  dates: readonly string[],
+  fetched: readonly RiotMatch[],
+  existing: readonly RankedSession[],
+  queues: readonly RiotQueue[],
+  newId: () => string,
+  source: SyncSource,
+): SyncPlan {
+  const plan: SyncPlan = { newSessions: [], found: 0, days: [] };
+  for (const date of [...dates].sort()) {
+    const day = planDaySync(date, fetched, existing, queues, newId, source);
+    plan.newSessions.push(...day.newSessions);
+    plan.found += day.found;
+    if (day.found > 0) {
+      plan.days.push({ date, values: day.values });
+    }
+  }
+  return plan;
 }

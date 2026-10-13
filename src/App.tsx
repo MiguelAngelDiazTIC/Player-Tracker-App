@@ -21,7 +21,7 @@ import { RevisionView } from "./views/revision/RevisionView";
 import { ScrimsView } from "./views/scrims/ScrimsView";
 import { DayPage } from "./views/tabla/DayPage";
 import { TablaView, type TablaState } from "./views/tabla/TablaView";
-import { Tutorial, type StartChoice } from "./views/tutorial/Tutorial";
+import { Tutorial, type TutorialExit } from "./views/tutorial/Tutorial";
 
 const INITIAL_TABLA: TablaState = {
   preset: "all",
@@ -87,25 +87,33 @@ function Shell() {
     setTutorial(true);
   }
 
-  function closeTutorial(start: StartChoice | null) {
+  /** Abre Ajustes y, si se pide, baja hasta una de sus tarjetas. */
+  function openSettings(panelId?: string) {
+    select("ajustes");
+    if (panelId === undefined) return;
+    // Cuando Ajustes ya esté pintado.
+    setTimeout(() => {
+      const panel = document.getElementById(panelId);
+      if (panel && "scrollIntoView" in panel) {
+        panel.scrollIntoView({ block: "start" });
+      }
+    }, 0);
+  }
+
+  const openSync = () => openSettings("sincronizar");
+
+  function closeTutorial(exit: TutorialExit) {
     setTutorial(false);
     // Si no se pudiera guardar, el tutorial volvería a salir: no es grave.
     void services.platform.markTutorialSeen().catch(() => undefined);
-    if (start === "scratch") {
+    if (exit === "scratch") {
       const today = todayIso();
       createDay(today);
       openDay(today);
-    } else if (start !== null) {
-      select("ajustes");
-      if (start === "sheet") {
-        // Cuando Ajustes ya esté pintado, baja hasta el importador de la hoja.
-        setTimeout(() => {
-          const panel = document.getElementById("importar-hoja");
-          if (panel && "scrollIntoView" in panel) {
-            panel.scrollIntoView({ block: "start" });
-          }
-        }, 0);
-      }
+    } else if (exit === "sync") {
+      openSync();
+    } else if (exit !== null) {
+      openSettings(exit === "sheet" ? "importar-hoja" : undefined);
     }
   }
 
@@ -120,6 +128,7 @@ function Shell() {
             onOpenScrims={() => select("scrims")}
             onOpenRankeds={openRankeds}
             onOpenNote={openNote}
+            onOpenSync={openSync}
           />
         ) : (
           <TablaView
@@ -132,7 +141,11 @@ function Shell() {
       case "rankeds":
         // La clave reinicia el filtro al llegar desde otro día.
         return (
-          <RankedsView key={rankedDate ?? "todas"} focusDate={rankedDate} />
+          <RankedsView
+            key={rankedDate ?? "todas"}
+            focusDate={rankedDate}
+            onOpenSync={openSync}
+          />
         );
       case "scrims":
         return <ScrimsView />;

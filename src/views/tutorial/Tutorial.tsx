@@ -2,6 +2,7 @@ import { CalendarPlus, FileJson, FileSpreadsheet } from "lucide-react";
 import { useId, useLayoutEffect, useRef, useState } from "react";
 import { APP_LOGO_URL, APP_NAME } from "../../app/brand";
 import type { Edition } from "../../app/edition";
+import { HENRIK_GUIDE, HENRIK_INTRO } from "../../app/henrikGuide";
 import { PRIVACY_SHORT } from "../../app/legal";
 import { Button } from "../../components/ui/Button";
 import { Dialog } from "../../components/ui/Dialog";
@@ -9,6 +10,12 @@ import { cx } from "../../lib/cx";
 
 /** Cómo quiere empezar el usuario; la app lo lleva ahí al acabar. */
 export type StartChoice = "sheet" | "json" | "scratch";
+
+/**
+ * Cómo acaba el tutorial: con la forma de empezar elegida, yendo a poner la
+ * clave de sincronización (`sync`), o `null` si se saltó o se dejó a medias.
+ */
+export type TutorialExit = StartChoice | "sync" | null;
 
 const STARTS: {
   value: StartChoice;
@@ -84,7 +91,7 @@ const TOUR: TourStop[] = [
   },
 ];
 
-const INTRO_STEPS = 2;
+const INTRO_STEPS = 3;
 const TOTAL_STEPS = INTRO_STEPS + 1;
 const GAP = 16;
 
@@ -219,20 +226,19 @@ function TourBalloon({
 
 interface TutorialProps {
   edition: Edition;
-  /** Cierra el tutorial. `start` es `null` si se saltó o se dejó a medias. */
-  onClose: (start: StartChoice | null) => void;
+  onClose: (exit: TutorialExit) => void;
 }
 
 /**
- * Tutorial del primer arranque: bienvenida, cómo empezar y un recorrido por
- * la app. Se puede saltar en cualquier paso.
+ * Tutorial del primer arranque: bienvenida, cómo empezar, la sincronización
+ * de partidas y un recorrido por la app. Se puede saltar en cualquier paso.
  */
 export function Tutorial({ edition, onClose }: TutorialProps) {
   // Sin registro de scrims, su sección no está en la barra lateral.
   const tour = edition.scrimLog
     ? TOUR
     : TOUR.filter((stop) => stop.target !== "nav-scrims");
-  // 0 y 1: pasos en un diálogo. Desde 2: paradas del recorrido.
+  // 0 a 2: pasos en un diálogo. Desde 3: paradas del recorrido.
   const [step, setStep] = useState(0);
   const [start, setStart] = useState<StartChoice>("scratch");
   const groupName = useId();
@@ -297,6 +303,46 @@ export function Tutorial({ edition, onClose }: TutorialProps) {
             de minutos te enseño cómo empezar. {PRIVACY_SHORT}
           </p>
         </div>
+      </Dialog>
+    );
+  }
+
+  if (step === 2) {
+    return (
+      <Dialog
+        key="sync"
+        title="Rellena tus partidas solo (opcional)"
+        onClose={() => onClose(null)}
+        actions={
+          <>
+            <Button variant="ghost" onClick={() => onClose(null)}>
+              Saltar tutorial
+            </Button>
+            <Button onClick={() => setStep(step - 1)}>Atrás</Button>
+            <Button onClick={() => onClose("sync")}>Configurar ahora</Button>
+            <Button
+              variant="primary"
+              data-autofocus
+              onClick={() => setStep(step + 1)}
+            >
+              Siguiente
+            </Button>
+          </>
+        }
+        size="xl"
+      >
+        {counter}
+        <p>{HENRIK_INTRO}</p>
+        <ol className="flex list-decimal flex-col gap-1 pl-6">
+          {HENRIK_GUIDE.map((item) => (
+            <li key={item.short}>{item.short}</li>
+          ))}
+        </ol>
+        <p className="text-ink/70 text-sm">
+          Se tarda unos diez minutos y solo se hace una vez. Si ahora no te
+          apetece, sigue: sin clave la app funciona igual, apuntando a mano, y
+          la guía completa te espera en Ajustes &gt; Sincronizar partidas.
+        </p>
       </Dialog>
     );
   }

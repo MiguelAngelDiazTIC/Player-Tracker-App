@@ -27,7 +27,9 @@ MikaLog isn't endorsed by Riot Games and doesn't reflect the views or opinions o
 
 ## Privacidad
 
-MikaLog no recoge ni envía ningún dato y no se conecta a internet. Todo lo que apuntas se queda en la carpeta de datos de tu ordenador, y solo sale de ahí si tú copias o compartes esos archivos.
+MikaLog no recoge ningún dato. Todo lo que apuntas se queda en la carpeta de datos de tu ordenador, y solo sale de ahí si tú copias o compartes esos archivos.
+
+La app solo se conecta a internet si activas la sincronización de partidas, que es opcional. Usa HenrikDev (`api.henrikdev.xyz`), un servicio de terceros no oficial, ajeno a Riot Games y a MikaLog, con una clave que saca cada jugador. Cuando pulsas «Sincronizar» o «Probar conexión», y solo entonces, la app envía a HenrikDev tu Riot ID, tu región y tu clave, y recibe tus partidas. La clave se guarda en el almacén de credenciales de Windows, no en la carpeta de datos, y no sale en las copias ni en las exportaciones. Lo que HenrikDev haga con esas peticiones depende de sus propias condiciones.
 
 ## Software de terceros
 

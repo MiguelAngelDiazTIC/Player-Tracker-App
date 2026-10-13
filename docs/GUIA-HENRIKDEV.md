@@ -1,6 +1,6 @@
 # Rellenar tus partidas solo: cómo sacar tu clave de HenrikDev
 
-Guía para cualquier jugador de MikaLog (edición normal o Saiz Edition). Describe la app con la sincronización de la fase 7.6 ya hecha. La primera vez se tarda unos 10 minutos; después, un clic al día.
+Guía para cualquier jugador de MikaLog (edición normal o Saiz Edition). La primera vez se tarda unos 10 minutos; después, un clic al día.
 
 Es opcional: sin clave, MikaLog funciona igual y apuntas las partidas a mano.
 

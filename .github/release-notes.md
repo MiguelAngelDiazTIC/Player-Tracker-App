@@ -8,6 +8,6 @@ Si ya tenías una versión anterior, instala esta encima: tus datos se conservan
 
 ## Licencia y avisos
 
-MikaLog es software libre bajo la [GPL-3.0](https://github.com/MiguelAngelDiazTIC/Player-Tracker-App/blob/main/LICENSE), sin garantía de ningún tipo. No recoge ni envía ningún dato: todo se queda en tu ordenador. Más detalles en [NOTICE.md](https://github.com/MiguelAngelDiazTIC/Player-Tracker-App/blob/main/NOTICE.md).
+MikaLog es software libre bajo la [GPL-3.0](https://github.com/MiguelAngelDiazTIC/Player-Tracker-App/blob/main/LICENSE), sin garantía de ningún tipo. No recoge ningún dato: lo que apuntas se queda en tu ordenador. Solo se conecta a internet si activas la sincronización de partidas con tu clave de HenrikDev, un servicio de terceros no oficial ([guía](https://github.com/MiguelAngelDiazTIC/Player-Tracker-App/blob/main/docs/GUIA-HENRIKDEV.md)). Más detalles en [NOTICE.md](https://github.com/MiguelAngelDiazTIC/Player-Tracker-App/blob/main/NOTICE.md).
 
 MikaLog no está avalado por Riot Games ni refleja sus opiniones. Valorant y Riot Games son marcas de Riot Games, Inc.

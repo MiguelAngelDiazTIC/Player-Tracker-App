@@ -1,11 +1,23 @@
 import type { BackupFolder } from "../data/autoBackup";
 import type { AttachmentStore } from "../data/backup";
+import type { HttpClient } from "../data/henrikSource";
 import type { Repository } from "../data/repository";
 import type { Edition } from "./edition";
 
 export interface PickedFile {
   name: string;
   bytes: Uint8Array;
+}
+
+/**
+ * Almacén de credenciales del sistema (en Windows, el Administrador de
+ * credenciales). Lo que se guarda aquí no está en la base de datos, así que
+ * no sale en las exportaciones ni en las copias.
+ */
+export interface SecretStore {
+  get(name: string): Promise<string | null>;
+  /** Con `null`, borra el secreto. */
+  set(name: string, value: string | null): Promise<void>;
 }
 
 /**
@@ -16,6 +28,9 @@ export interface Platform {
   /** Carpeta que contiene `tracker.db` y `attachments/`. */
   dataFolder: string;
   attachments: AttachmentStore;
+  /** Peticiones a HenrikDev; solo se usan cuando el usuario sincroniza. */
+  http: HttpClient;
+  secrets: SecretStore;
   /** URL con la que el editor puede pintar una imagen de `attachments/`. */
   attachmentUrl(name: string): string;
   pickFile(options: {

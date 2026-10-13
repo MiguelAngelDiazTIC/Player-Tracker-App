@@ -1,4 +1,4 @@
-import { convertFileSrc } from "@tauri-apps/api/core";
+import { convertFileSrc, invoke } from "@tauri-apps/api/core";
 import { appConfigDir, documentDir, join, sep } from "@tauri-apps/api/path";
 import { open, save } from "@tauri-apps/plugin-dialog";
 import {
@@ -12,12 +12,19 @@ import {
   writeFile,
   writeTextFile,
 } from "@tauri-apps/plugin-fs";
+import { fetch as httpFetch } from "@tauri-apps/plugin-http";
 import Database from "@tauri-apps/plugin-sql";
 import { resolveEdition } from "../app/edition";
-import type { PickedFile, Platform, Services } from "../app/services";
+import type {
+  PickedFile,
+  Platform,
+  SecretStore,
+  Services,
+} from "../app/services";
 import type { BackupFolder } from "../data/autoBackup";
 import type { AttachmentStore } from "../data/backup";
 import type { SqlDriver } from "../data/driver";
+import type { HttpClient } from "../data/henrikSource";
 import { createRepository } from "../data/repository";
 
 /** La edición con la que se compiló esta app. */
@@ -127,6 +134,34 @@ function pickFile({
   });
 }
 
+/**
+ * Peticiones desde el lado nativo: el navegador las bloquearía por CORS. El
+ * permiso de Tauri solo deja salir hacia api.henrikdev.xyz.
+ */
+const http: HttpClient = {
+  async get(url, headers) {
+    const response = await httpFetch(url, { method: "GET", headers });
+    const wait = Number(
+      response.headers.get("retry-after") ??
+        response.headers.get("x-ratelimit-reset"),
+    );
+    return {
+      status: response.status,
+      body: await response.json().catch(() => null),
+      retryAfterSeconds:
+        Number.isFinite(wait) && wait > 0 ? Math.ceil(wait) : null,
+    };
+  },
+};
+
+/** Administrador de credenciales de Windows, por dos comandos de `lib.rs`. */
+const secrets: SecretStore = {
+  get: (name) => invoke<string | null>("secret_read", { name }),
+  async set(name, value) {
+    await invoke("secret_write", { name, value });
+  },
+};
+
 async function openDriver(databasePath: string): Promise<SqlDriver> {
   const database = await Database.load(`sqlite:${databasePath}`);
   return {
@@ -223,6 +258,8 @@ export async function openDataFolder(folder: string): Promise<Services> {
   const platform: Platform = {
     dataFolder: folder,
     attachments,
+    http,
+    secrets,
     attachmentUrl: (name) =>
       convertFileSrc(`${attachmentsFolder}${sep()}${name}`),
 
