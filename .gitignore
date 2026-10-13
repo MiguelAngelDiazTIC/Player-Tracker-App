@@ -29,3 +29,4 @@ dist-ssr
 # Notas de trabajo locales, fuera del repositorio
 CLAUDE.md
 docs/PLAN.md
+.claude/
