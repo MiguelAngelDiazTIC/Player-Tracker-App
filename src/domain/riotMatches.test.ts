@@ -219,7 +219,7 @@ describe("planDaySync", () => {
 });
 
 describe("riotMatchesSchema", () => {
-  it("acepta lo que entrega el servidor y rechaza lo que no", () => {
+  it("acepta una partida bien formada y rechaza lo que no", () => {
     expect(riotMatchesSchema.safeParse([match()]).success).toBe(true);
     expect(
       riotMatchesSchema.safeParse([{ ...match(), kills: -1 }]).success,

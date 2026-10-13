@@ -106,7 +106,6 @@ Cada una tiene su identificador (`com.playertracker.desktop` y `com.playertracke
 Documentación del proyecto:
 
 - [La idea](docs/IDEA.md): el concepto original y sus vistas.
-- [El plan](docs/PLAN.md): tecnologías, modelo de datos, fases y cómo quedó hecha cada una.
 - [El diseño](docs/DESIGN.md): tokens, componentes y reglas de accesibilidad.
 
 ### Cómo está organizado
@@ -120,7 +119,6 @@ Documentación del proyecto:
 | `src/views/` y `src/components/` | Pantallas y componentes                                                       |
 | `src/test/`                      | SQLite en memoria y servicios de prueba para probar la app entera             |
 | `src-tauri/`                     | Lado nativo, iconos, permisos e instalador                                    |
-| `server/`                        | Servidor de sincronización con Riot (Cloudflare Workers); ver su README       |
 
 ### Publicar una versión
 
